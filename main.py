@@ -3,7 +3,7 @@ import pyperclip
 root = Tk()
 
 root.title("Agostinus")
-root.geometry("500x800")
+root.geometry("500x600")
 #root.iconbitmap("sources/icon.ico")
 
 clefs = [
@@ -57,8 +57,18 @@ qtext.pack()
 
 atext = Text(root, width=50, height=15)
 atext.pack()
-line_break = Checkbutton(text="Adicionar quebra de linha depois de todos os pontos finais", onvalue="y", offvalue="n")
-respiration = Checkbutton(text="Adicionar respiração depois das vírgulas", onvalue="y", offvalue="n")
+global clicked_line_break
+global clicked_respiration
+clicked_line_break = StringVar(root)
+clicked_respiration = StringVar(root)
+
+qline_break = Checkbutton(text="Adicionar quebra de linha depois de todos os pontos finais", variable=clicked_line_break, onvalue="n", offvalue="y")
+qline_break.select()
+qline_break.pack()
+qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", variable=clicked_respiration, onvalue="n", offvalue="y")
+qrespiration.select()
+qrespiration.pack()
+
 global text_final
 text_final = ""
 text = atext.get("1.0",'end-1c')
@@ -105,30 +115,44 @@ def generate():
         note_down = "l"
 
 
-    text_clef = "("+ clicked_clefs.get()+")"+ atext.get("1.0",'end-1c')
+    text_clef = "("+ clicked_clefs.get() + ")" + atext.get("1.0",'end-1c')
 
     text_dot_fix = text_clef.replace(". ",".")
-    text_comma_fix = text_dot_fix.replace(", ",",")
 
-    text_space = text_comma_fix.replace(" ",f"({note}) ")
+
+    text_space = text_dot_fix.replace(" ",f"({note}) ")
     text_hyphen = text_space.replace("-",f"-({note})")
-    if line_break == "y":
-        text_dot = text_hyphen.replace(".",f".({note_down}.) (::Z)")
-    else:
-        text_dot = text_hyphen.replace(".",f".({note_down}.) (::)")
+
+    line_break = clicked_line_break.get()
+    respiration = clicked_respiration.get()
 
 
-    if respiration == "y":
-        text_comma = text_dot.replace(",",f",({note_down}.) (,)")
+    if line_break == "n":
+        text_dot = text_hyphen.replace(".",f".({note}.) (::Z) ")
     else:
-        text_comma = text_dot.replace(",",f",({note_down}.)")
+        text_dot = text_hyphen.replace(".",f".({note}.) (::) ")
+
+
+    if respiration == "n":
+        text_comma = text_dot.replace(",",f",({note}.) (,) ")
+    else:
+        text_comma = text_dot.replace(",",f",({note}.)")
 
     text_down = text_comma.replace("*",f"({note_down})")
 
     text_down_fix = text_down.replace(f"({note})({note_down})",f"({note_down})")
     text_up_fix = text_down_fix.replace(f"({note_down})({note})",f"({note_down})")
-    text_down_comma_fix = text_up_fix.replace(f"({note_down}),({note_down}.)",f",({note_down}.)")
-    text_final = text_down_comma_fix
+
+    text_up_comma_fix = text_up_fix.replace(f"({note_down}),({note_down}.)",f",({note_down}.)")
+    text_down_comma_fix = text_up_comma_fix.replace(f"({note}),({note}.)",f",({note}.)")
+
+    text_up_respiration_fix = text_down_comma_fix.replace(f"(,) ({note})",f"(,)")
+    text_down_respiration_fix = text_up_respiration_fix.replace(f"(,) ({note_down})",f"(,)")
+
+    text_down_long_comma_fix = text_down_respiration_fix.replace(f"(f),(g.)",f",(f.)")
+    text_down_long_dot_fix = text_down_long_comma_fix.replace(f"(f).(g.)",f".(f.)")
+
+    text_final = text_down_long_dot_fix
     text_copy.configure(state=NORMAL)
     text_copy.delete('1.0', END)
     text_copy.insert(INSERT, text_final)
@@ -156,6 +180,9 @@ button_copy.pack()
 
 #Final 1
 #Por(g) Cris-(h)to,(h) nos-(h)so(h) Se-(h)nhor(hg.). F
-#Ó* Deus, ao par-ti-ci-par-mos da a-le-gri-a da sal-va-ção que en-cheu de jú-bi-lo São Ma-teus*, re-*ce-ben-do o Sal-va-dor em su-a ca-sa, con-*ce-dei se-ja-mos sem-pre re-fei-tos à me-sa da-que-le que vei-o cha-mar à sal-va-ção não os jus-tos*, mas* os pe-*ca-*do-res.
+#Ó* Deus, ao parti-ci-par-mos da a-le-gri-a da sal-va-ção que en-cheu de jú-*bi-lo São Ma-teus*, re-*ce-ben-do o Sal-va-dor em su-a ca-sa, con-*ce-dei se-ja-mos sem-pre re-fei-tos à me-sa da-que-le que vei-o cha-mar à sal-va-ção não os jus-tos*, mas* os pe-*ca-*do-res.
+#Mateus*, re*cebendo
 
+#Ó Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça, pa-ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-ser-vais. Por nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho, na u-ni-da-de do Es-pí-ri-to San-to.
+#Ó* Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça*, pa-*ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-*ser-*vais. Por* nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho*, na* u-ni-da-de do Es-pí-ri-*to San-to*.
 root.mainloop()

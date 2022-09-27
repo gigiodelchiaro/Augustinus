@@ -72,7 +72,7 @@ text_down = text_comma.replace("*",f"({note_down})")
 
 text_down_fix = text_down.replace(f"({note})({note_down})",f"({note_down})")
 text_up_fix = text_down_fix.replace(f"({note_down})({note})",f"({note_down})")
-text_down_comma_fix = text_up_fix.replace(f"({note_down}),({note_down}.)",f",({note_down} +.)")
+text_down_comma_fix = text_up_fix.replace(f"({note_down})({note_down}.)",f",({note_down}.)")
 print(text_down_comma_fix)
 
 quit = input("Deseja sair do programa? (S/N) ")
