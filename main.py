@@ -117,10 +117,10 @@ def generate():
 
     text_clef = "("+ clicked_clefs.get() + ")" + atext.get("1.0",'end-1c')
 
-    text_dot_fix = text_clef.replace(". ",".")
+    fix1 = text_clef.replace(". ",".")
 
 
-    text_space = text_dot_fix.replace(" ",f"({note}) ")
+    text_space = fix1.replace(" ",f"({note}) ")
     text_hyphen = text_space.replace("-",f"-({note})")
 
     line_break = clicked_line_break.get()
@@ -136,23 +136,33 @@ def generate():
     if respiration == "n":
         text_comma = text_dot.replace(",",f",({note}.) (,) ")
     else:
-        text_comma = text_dot.replace(",",f",({note}.)")
+        text_comma = text_dot.replace(",",f",({note})")
 
-    text_down = text_comma.replace("*",f"({note_down})")
 
-    text_down_fix = text_down.replace(f"({note})({note_down})",f"({note_down})")
-    text_up_fix = text_down_fix.replace(f"({note_down})({note})",f"({note_down})")
 
-    text_up_comma_fix = text_up_fix.replace(f"({note_down}),({note_down}.)",f",({note_down}.)")
-    text_down_comma_fix = text_up_comma_fix.replace(f"({note}),({note}.)",f",({note}.)")
+    fix2 = text_comma.replace("<",f"({note_down})")
+    text_manual_respiration = fix2.replace(">",f"({note_down}.) (,) ")
+    text_manual_double = text_manual_respiration.replace("@",f"({note}{note_down}.)")
 
-    text_up_respiration_fix = text_down_comma_fix.replace(f"(,) ({note})",f"(,)")
-    text_down_respiration_fix = text_up_respiration_fix.replace(f"(,) ({note_down})",f"(,)")
+    fix3 = text_manual_double.replace(f"({note}.) (,) ({note_down}.) (,)",f"({note_down}.) (,)")
+    fix4 = fix3.replace(f"({note})({note_down}.)",f"({note_down}.)")
 
-    text_down_long_comma_fix = text_down_respiration_fix.replace(f"(f),(g.)",f",(f.)")
-    text_down_long_dot_fix = text_down_long_comma_fix.replace(f"(f).(g.)",f".(f.)")
+    fix5 = fix4.replace(f"({note})({note_down})",f"({note_down})")
+    fix6 = fix5.replace(f"({note_down})({note})",f"({note_down})")
 
-    text_final = text_down_long_dot_fix
+    fix7 = fix6.replace(f"({note_down}),({note_down}.)",f",({note_down}.)")
+    fix8 = fix7.replace(f"({note}),({note}.)",f",({note}.)")
+
+    fix9 = fix8.replace(f"(,) ({note})",f"(,)")
+    fix10 = fix9.replace(f"(,) ({note_down})",f"(,)")
+
+    fix11 = fix10.replace(f"({note_down}),({note}.)",f",({note_down}.)")
+    fix12 = fix11.replace(f"({note_down}).({note}.)",f".({note_down}.)")
+    fix13 = fix12.replace(f"({note})({note}{note_down}.)",f"({note}{note_down}.)")
+
+    fix14 = fix13.replace(f"({note})({note})", f"({note})")
+
+    text_final = fix14
     text_copy.configure(state=NORMAL)
     text_copy.delete('1.0', END)
     text_copy.insert(INSERT, text_final)
@@ -175,7 +185,7 @@ def copy_select():
 button_generate = Button(root, text="Gerar", command=generate)
 button_generate.pack()
 
-button_copy = Button(root,text="Copiar",command=lambda:copy_select())
+button_copy = Button(root,text="Copiar",command=copy_select)
 button_copy.pack()
 
 #Final 1
@@ -184,5 +194,6 @@ button_copy.pack()
 #Mateus*, re*cebendo
 
 #Ó Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça, pa-ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-ser-vais. Por nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho, na u-ni-da-de do Es-pí-ri-to San-to.
-#Ó* Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça*, pa-*ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-*ser-*vais. Por* nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho*, na* u-ni-da-de do Es-pí-ri-*to San-to*.
+#Ó< Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça>, pa-<ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-<ser-<vais. Por< nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho>, na< u-ni-da-de do Es-pí-ri-<to San-@to.
+#Ó< Deus, que, pa-ra o so-cor-ro dos po-bres e for-ma-ção do cle-ro,> en-<ri-que-ces-tes o pres-bí-te-ro São Vi-cen-te de Pau-lo com as vir-tu-des a-pos-tó-li-<cas,> fa-<zei-nos, a-ni-ma-dos pe-lo mes-mo es-pí-ri-to, a-mar o que e-le a-mou e pra-ti-car o que en-<si-<nou. Por< nos-so Se-nhor Je-sus Cri-sto, vos-so Fi-lho, na u-ni-da-de do Es-pí-ri-<to San-@to.
 root.mainloop()
