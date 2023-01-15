@@ -54,7 +54,7 @@ anote.pack()
 
 qtext = Label(root, text="Qual vai ser o texto?")
 qtext.pack()
-
+global atext
 atext = Text(root, width=50, height=15)
 atext.pack()
 global clicked_line_break
@@ -69,10 +69,47 @@ qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", v
 qrespiration.select()
 qrespiration.pack()
 
+
+def syllable(palavra):
+    import os
+    lpalavra = palavra.split()
+    count = 0
+    global separated
+    separated = []
+
+
+    os.environ['CLASSPATH'] = "./fb_nlplib.jar"
+
+    from jnius import autoclass
+
+    class FalaBrasilNLP:
+        def __init__(self):
+            self.jClass = autoclass('ufpa.util.PyUse')()
+
+        def fb_getsyl(self, palavra):
+
+            return self.jClass.useSyll(palavra)
+
+    if __name__ == '__main__':
+
+        fb_nlp = FalaBrasilNLP()
+        while count < len(lpalavra):
+            palavra = lpalavra[count]
+            count = count + 1
+            separated.append(fb_nlp.fb_getsyl(palavra))
+
+
+        
+
+
 global text_final
 text_final = ""
-text = atext.get("1.0",'end-1c')
+
 def generate():
+    text_ns = atext.get("1.0", "end-1c")
+    syllable(text_ns)
+
+    text_separated = " ".join(separated)
     note = clicked_notes.get()
 
     if note == "a":
@@ -115,7 +152,7 @@ def generate():
         note_down = "l"
 
 
-    text_clef = "("+ clicked_clefs.get() + ")" + atext.get("1.0",'end-1c')
+    text_clef = "("+ clicked_clefs.get() + ")" + text_separated + " "
 
     fix1 = text_clef.replace(". ",".")
 
@@ -170,6 +207,7 @@ def generate():
 
 
 
+
 atext_copy = Label(root, text="Resultado:")
 atext_copy.pack()
 global text_copy
@@ -197,3 +235,4 @@ button_copy.pack()
 #Ó< Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça>, pa-<ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-<ser-<vais. Por< nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho>, na< u-ni-da-de do Es-pí-ri-<to San-@to.
 #Ó< Deus, que, pa-ra o so-cor-ro dos po-bres e for-ma-ção do cle-ro,> en-<ri-que-ces-tes o pres-bí-te-ro São Vi-cen-te de Pau-lo com as vir-tu-des a-pos-tó-li-<cas,> fa-<zei-nos, a-ni-ma-dos pe-lo mes-mo es-pí-ri-to, a-mar o que e-le a-mou e pra-ti-car o que en-<si-<nou. Por< nos-so Se-nhor Je-sus Cri-sto, vos-so Fi-lho, na u-ni-da-de do Es-pí-ri-<to San-@to.
 root.mainloop()
+
