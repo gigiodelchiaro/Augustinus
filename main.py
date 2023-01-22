@@ -1,18 +1,12 @@
 from tkinter import *
 from tkinter.ttk import *
 import pyperclip
-from idlelib.tooltip import Hovertip
 root = Tk()
 
-root.title("Agostinus")
-root.geometry("500x700")
+root.title("Augustinus")
+root.geometry("500x650")
 root.iconbitmap("sources/augustinus.ico")
 
-title = Label(root, text="Augustinus")
-title.pack()
-tooltip = Label(root, text="?")
-tooltip.pack()
-howto = Hovertip(tooltip, "Use '<' para descer a nota. \nUse '>' para descer a nota e adicionar uma respiração. \nUse '@' para adicionar um clivis")
 clefs = [
 	"c1",
 	"c2",
