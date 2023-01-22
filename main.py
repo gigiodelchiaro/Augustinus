@@ -5,7 +5,7 @@ root = Tk()
 
 root.title("Agostinus")
 root.geometry("500x600")
-#root.iconbitmap("sources/icon.ico")
+root.iconbitmap("sources/augustinus.ico")
 
 title = Label(root, text="Augustinus")
 title.pack()
@@ -86,7 +86,7 @@ def syllable():
 
 	
 
-	os.environ['CLASSPATH'] = "./fb_nlplib.jar"
+	os.environ['CLASSPATH'] = "./sources/fb_nlplib.jar"
 
 	from jnius import autoclass
 
