@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.ttk import *
 import pyperclip
 root = Tk()
 
@@ -6,33 +7,36 @@ root.title("Agostinus")
 root.geometry("500x600")
 #root.iconbitmap("sources/icon.ico")
 
+title = Label(root, text="Augustinus")
+title.pack()
+
 clefs = [
-    "c1",
-    "c2",
-    "c3",
-    "c4",
-    "c5",
-    
+	"c1",
+	"c2",
+	"c3",
+	"c4",
+	"c5",
+	
 ]
 clicked_clefs = StringVar(root)
 clicked_clefs.set(clefs[0])
 
 
 notes = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    
+	"a",
+	"b",
+	"c",
+	"d",
+	"e",
+	"f",
+	"g",
+	"h",
+	"i",
+	"j",
+	"k",
+	"l",
+	"m",
+	
 ]
 
 clicked_notes = StringVar(root)
@@ -57,153 +61,132 @@ qtext.pack()
 global atext
 atext = Text(root, width=50, height=15)
 atext.pack()
+
 global clicked_line_break
 global clicked_respiration
 clicked_line_break = StringVar(root)
 clicked_respiration = StringVar(root)
 
-qline_break = Checkbutton(text="Adicionar quebra de linha depois de todos os pontos finais", variable=clicked_line_break, onvalue="n", offvalue="y")
-qline_break.select()
+qline_break = Checkbutton(text="Adicionar quebra de linha depois de todos os pontos finais", variable=clicked_line_break, onvalue="y", offvalue="n")
 qline_break.pack()
-qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", variable=clicked_respiration, onvalue="n", offvalue="y")
-qrespiration.select()
+qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", variable=clicked_respiration, onvalue="y", offvalue="n")
 qrespiration.pack()
 
 
-def syllable(palavra):
-    import os
-    lpalavra = palavra.split()
-    count = 0
-    global separated
-    separated = []
+def syllable():
+	import os
+	import re
+	input = atext.get("1.0", "end-1c").lower()
+	lpalavra = input.split()
+
+	global separated
+	separated = []
+	where = []
+	final = []
+
+	
+
+	os.environ['CLASSPATH'] = "./fb_nlplib.jar"
+
+	from jnius import autoclass
+
+	class FalaBrasilNLP:
+		def __init__(self):
+			self.jClass = autoclass('ufpa.util.PyUse')()
+
+		def fb_getsyl(self, input):
+
+			return self.jClass.useSyll(input)
+
+	if __name__ == '__main__':
+		fb_nlp = FalaBrasilNLP()
+		
+		
+		for i in lpalavra:
+			if re.search(r"\.", i):
+				where.append(".")
+			if re.search(r",", i):
+				where.append(",")
+			else:
+				where.append("")
+			i = i.replace(".", "")
+			i = i.replace(",", "")
+
+			separated.append(fb_nlp.fb_getsyl(i))
 
 
-    os.environ['CLASSPATH'] = "./fb_nlplib.jar"
-
-    from jnius import autoclass
-
-    class FalaBrasilNLP:
-        def __init__(self):
-            self.jClass = autoclass('ufpa.util.PyUse')()
-
-        def fb_getsyl(self, palavra):
-
-            return self.jClass.useSyll(palavra)
-
-    if __name__ == '__main__':
-
-        fb_nlp = FalaBrasilNLP()
-        while count < len(lpalavra):
-            palavra = lpalavra[count]
-            count = count + 1
-            separated.append(fb_nlp.fb_getsyl(palavra))
-
-
-        
-
+		for s,w in zip(separated, where):
+			final.append(s + w)
+		
+		atext.delete('1.0', END)
+		atext.insert(INSERT, final)
+   
 
 global text_final
 text_final = ""
 
 def generate():
-    text_ns = atext.get("1.0", "end-1c")
-    syllable(text_ns)
 
-    text_separated = " ".join(separated)
-    note = clicked_notes.get()
-
-    if note == "a":
-        note_down = "a"
-
-    elif note == "b":
-        note_down = "a"
-
-    elif note == "c":
-        note_down = "b"
-
-    elif note == "d":
-        note_down = "c"
-
-    elif note == "e":
-        note_down = "d"
-
-    elif note == "f":
-        note_down = "e"
-
-    elif note == "g":
-        note_down = "f"
-
-    elif note == "h":
-        note_down = "g"
-
-    elif note == "i":
-        note_down = "h"
-
-    elif note == "j":
-        note_down = "i"
-
-    elif note == "k":
-        note_down = "j"
-
-    elif note == "l":
-        note_down = "k"
-
-    elif note == "m":
-        note_down = "l"
+	
+	note = clicked_notes.get()
+	position_note = notes.index(note)
+	if note == "a":
+		note_down = "a"
+	else:
+		note_down = notes[position_note -1] 
 
 
-    text_clef = "("+ clicked_clefs.get() + ")" + text_separated + " "
+	text_clef = f'({clicked_clefs.get()}){atext.get("1.0", "end-1c")} '
 
-    fix1 = text_clef.replace(". ",".")
-
-
-    text_space = fix1.replace(" ",f"({note}) ")
-    text_hyphen = text_space.replace("-",f"-({note})")
-
-    line_break = clicked_line_break.get()
-    respiration = clicked_respiration.get()
+	fix1 = text_clef.replace(". ",".")
 
 
-    if line_break == "n":
-        text_dot = text_hyphen.replace(".",f".({note}.) (::Z) ")
-    else:
-        text_dot = text_hyphen.replace(".",f".({note}.) (::) ")
+	text_space = fix1.replace(" ",f"({note}) ")
+	text_hyphen = text_space.replace("-",f"-({note})")
+
+	line_break = clicked_line_break.get()
+	respiration = clicked_respiration.get()
 
 
-    if respiration == "n":
-        text_comma = text_dot.replace(",",f",({note}.) (,) ")
-    else:
-        text_comma = text_dot.replace(",",f",({note})")
+	if line_break == "y":
+		text_dot = text_hyphen.replace(".",f".({note}.) (::Z) ")
+	else:
+		text_dot = text_hyphen.replace(".",f".({note}.) (::) ")
 
 
+	if respiration == "y":
+		text_comma = text_dot.replace(",",f",({note}.) (,) ")
+	else:
+		text_comma = text_dot.replace(",",f",({note})")
 
-    fix2 = text_comma.replace("<",f"({note_down})")
-    text_manual_respiration = fix2.replace(">",f"({note_down}.) (,) ")
-    text_manual_double = text_manual_respiration.replace("@",f"({note}{note_down}.)")
 
-    fix3 = text_manual_double.replace(f"({note}.) (,) ({note_down}.) (,)",f"({note_down}.) (,)")
-    fix4 = fix3.replace(f"({note})({note_down}.)",f"({note_down}.)")
+	fix2 = text_comma.replace("<",f"({note_down})")
+	text_manual_respiration = fix2.replace(">",f"({note_down}.) (,) ")
+	text_manual_double = text_manual_respiration.replace("@",f"({note}{note_down}.)")
 
-    fix5 = fix4.replace(f"({note})({note_down})",f"({note_down})")
-    fix6 = fix5.replace(f"({note_down})({note})",f"({note_down})")
+	fix3 = text_manual_double.replace(f"({note}.) (,) ({note_down}.) (,)",f"({note_down}.) (,)")
+	fix4 = fix3.replace(f"({note})({note_down}.)",f"({note_down}.)")
 
-    fix7 = fix6.replace(f"({note_down}),({note_down}.)",f",({note_down}.)")
-    fix8 = fix7.replace(f"({note}),({note}.)",f",({note}.)")
+	fix5 = fix4.replace(f"({note})({note_down})",f"({note_down})")
+	fix6 = fix5.replace(f"({note_down})({note})",f"({note_down})")
 
-    fix9 = fix8.replace(f"(,) ({note})",f"(,)")
-    fix10 = fix9.replace(f"(,) ({note_down})",f"(,)")
+	fix7 = fix6.replace(f"({note_down}),({note_down}.)",f",({note_down}.)")
+	fix8 = fix7.replace(f"({note}),({note}.)",f",({note}.)")
 
-    fix11 = fix10.replace(f"({note_down}),({note}.)",f",({note_down}.)")
-    fix12 = fix11.replace(f"({note_down}).({note}.)",f".({note_down}.)")
-    fix13 = fix12.replace(f"({note})({note}{note_down}.)",f"({note}{note_down}.)")
+	fix9 = fix8.replace(f"(,) ({note})",f"(,)")
+	fix10 = fix9.replace(f"(,) ({note_down})",f"(,)")
 
-    fix14 = fix13.replace(f"({note})({note})", f"({note})")
+	fix11 = fix10.replace(f"({note_down}),({note}.)",f",({note_down}.)")
+	fix12 = fix11.replace(f"({note_down}).({note}.)",f".({note_down}.)")
+	fix13 = fix12.replace(f"({note})({note}{note_down}.)",f"({note}{note_down}.)")
 
-    text_final = fix14
-    text_copy.configure(state=NORMAL)
-    text_copy.delete('1.0', END)
-    text_copy.insert(INSERT, text_final)
-    text_copy.configure(state=DISABLED)
+	fix14 = fix13.replace(f"({note})({note})", f"({note})")
+
+	text_final = fix14
+	text_copy.configure(state=NORMAL)
+	text_copy.delete('1.0', END)
+	text_copy.insert(INSERT, text_final)
+	text_copy.configure(state=DISABLED)
 
 
 
@@ -218,8 +201,9 @@ text_copy.pack()
 
 
 def copy_select():
-    pyperclip.copy(text_copy.get("1.0",'end-1c'))
-
+	pyperclip.copy(text_copy.get("1.0",'end-1c'))
+button_separate = Button(root, text="Separar", command=syllable)
+button_separate.pack()
 button_generate = Button(root, text="Gerar", command=generate)
 button_generate.pack()
 
