@@ -1,15 +1,18 @@
 from tkinter import *
 from tkinter.ttk import *
 import pyperclip
+from idlelib.tooltip import Hovertip
 root = Tk()
 
 root.title("Agostinus")
-root.geometry("500x600")
+root.geometry("500x700")
 root.iconbitmap("sources/augustinus.ico")
 
 title = Label(root, text="Augustinus")
 title.pack()
-
+tooltip = Label(root, text="?")
+tooltip.pack()
+howto = Hovertip(tooltip, "Use '<' para descer a nota. \nUse '>' para descer a nota e adicionar uma respiração. \nUse '@' para adicionar um clivis")
 clefs = [
 	"c1",
 	"c2",
@@ -58,18 +61,19 @@ anote.pack()
 
 qtext = Label(root, text="Qual vai ser o texto?")
 qtext.pack()
-global atext
-atext = Text(root, width=50, height=15)
-atext.pack()
 
+global atext
+atext = Text(root, width=50, height=15, font="Corbel")
+atext.pack()
 global clicked_line_break
 global clicked_respiration
 clicked_line_break = StringVar(root)
 clicked_respiration = StringVar(root)
 
-qline_break = Checkbutton(text="Adicionar quebra de linha depois de todos os pontos finais", variable=clicked_line_break, onvalue="y", offvalue="n")
+
+qline_break = Checkbutton(text="Adicionar quebra de linha depois de todos os pontos finais", variable=clicked_line_break, onvalue=True, offvalue=False)
 qline_break.pack()
-qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", variable=clicked_respiration, onvalue="y", offvalue="n")
+qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", variable=clicked_respiration, onvalue=True, offvalue=False)
 qrespiration.pack()
 
 
@@ -83,8 +87,6 @@ def syllable():
 	separated = []
 	where = []
 	final = []
-
-	
 
 	os.environ['CLASSPATH'] = "./sources/fb_nlplib.jar"
 
@@ -100,18 +102,19 @@ def syllable():
 
 	if __name__ == '__main__':
 		fb_nlp = FalaBrasilNLP()
-		
-		
+    
 		for i in lpalavra:
 			if re.search(r"\.", i):
 				where.append(".")
-			if re.search(r",", i):
+    
+			elif re.search(r",", i):
 				where.append(",")
+    
 			else:
 				where.append("")
+    
 			i = i.replace(".", "")
 			i = i.replace(",", "")
-
 			separated.append(fb_nlp.fb_getsyl(i))
 
 
@@ -127,7 +130,6 @@ text_final = ""
 
 def generate():
 
-	
 	note = clicked_notes.get()
 	position_note = notes.index(note)
 	if note == "a":
@@ -135,11 +137,9 @@ def generate():
 	else:
 		note_down = notes[position_note -1] 
 
-
 	text_clef = f'({clicked_clefs.get()}){atext.get("1.0", "end-1c")} '
 
 	fix1 = text_clef.replace(". ",".")
-
 
 	text_space = fix1.replace(" ",f"({note}) ")
 	text_hyphen = text_space.replace("-",f"-({note})")
@@ -148,13 +148,13 @@ def generate():
 	respiration = clicked_respiration.get()
 
 
-	if line_break == "y":
+	if line_break:
 		text_dot = text_hyphen.replace(".",f".({note}.) (::Z) ")
 	else:
 		text_dot = text_hyphen.replace(".",f".({note}.) (::) ")
 
 
-	if respiration == "y":
+	if respiration:
 		text_comma = text_dot.replace(",",f",({note}.) (,) ")
 	else:
 		text_comma = text_dot.replace(",",f",({note})")
@@ -194,7 +194,7 @@ def generate():
 atext_copy = Label(root, text="Resultado:")
 atext_copy.pack()
 global text_copy
-text_copy = Text(root, width=50 ,height=5)
+text_copy = Text(root, width=50 ,height=5, font="Corbel")
 text_copy.insert(INSERT, text_final)
 text_copy.configure(state=DISABLED)
 text_copy.pack()
@@ -211,12 +211,6 @@ button_copy = Button(root,text="Copiar",command=copy_select)
 button_copy.pack()
 
 #Final 1
-#Por(g) Cris-(h)to,(h) nos-(h)so(h) Se-(h)nhor(hg.). F
-#Ó* Deus, ao parti-ci-par-mos da a-le-gri-a da sal-va-ção que en-cheu de jú-*bi-lo São Ma-teus*, re-*ce-ben-do o Sal-va-dor em su-a ca-sa, con-*ce-dei se-ja-mos sem-pre re-fei-tos à me-sa da-que-le que vei-o cha-mar à sal-va-ção não os jus-tos*, mas* os pe-*ca-*do-res.
-#Mateus*, re*cebendo
-
-#Ó Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça, pa-ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-ser-vais. Por nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho, na u-ni-da-de do Es-pí-ri-to San-to.
-#Ó< Deus, que mos-trais vos-so po-der so-bre-tu-do no per-dão e na mi-se-ri-cór-dia, der-ra-mai sem-pre em nós a vos-sa gra-ça>, pa-<ra que, ca-mi-nhan-do ao en-con-tro das vos-sas pro-mes-sas, al-can-ce-mos os bens que re-<ser-<vais. Por< nos-so Sen-hor Je-sus Cris-to, vos-so Fi-lho>, na< u-ni-da-de do Es-pí-ri-<to San-@to.
-#Ó< Deus, que, pa-ra o so-cor-ro dos po-bres e for-ma-ção do cle-ro,> en-<ri-que-ces-tes o pres-bí-te-ro São Vi-cen-te de Pau-lo com as vir-tu-des a-pos-tó-li-<cas,> fa-<zei-nos, a-ni-ma-dos pe-lo mes-mo es-pí-ri-to, a-mar o que e-le a-mou e pra-ti-car o que en-<si-<nou. Por< nos-so Se-nhor Je-sus Cri-sto, vos-so Fi-lho, na u-ni-da-de do Es-pí-ri-<to San-@to.
+#Por(g) Cris-(h)to,(h) nos-(h)so(h) Se-(h)nhor.(hg.) 
 root.mainloop()
 
