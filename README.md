@@ -8,3 +8,6 @@ Após clicar no botão de "Separar", é possível adicionar símbolos que marcam
 '<' para marcar uma nota caída  
 '>' para marcar uma nota caída e adicionar uma respiração  
 '@' para marcar uma nota dupla (nota normal e outra caída)  
+## Sobre
+Feito por Giovanni Del Chiaro.  
+Fique a vontade para usar este projeto (Apenas fale que vc usou), enviar alguma sugestão ou erro encontrado. Se quiser editar, basta pedir um pull request. 
