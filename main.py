@@ -74,13 +74,10 @@ qrespiration.pack()
 def syllable():
 	import os
 	import re
-	input = atext.get("1.0", "end-1c").lower()
-	lpalavra = input.split()
-
-	global separated
-	separated = []
+	text = atext.get("1.0", "end-1c").lower()
+	lpalavra = text.split()
 	where = []
-	final = []
+
 
 	os.environ['CLASSPATH'] = "./sources/fb_nlplib.jar"
 
@@ -89,14 +86,16 @@ def syllable():
 	class FalaBrasilNLP:
 		def __init__(self):
 			self.jClass = autoclass('ufpa.util.PyUse')()
+			self.fb_getsyl = self.jClass.useSyll
 
-		def fb_getsyl(self, input):
-
-			return self.jClass.useSyll(input)
-
+		def fb_process_input(self, text):
+			lpalavra = text.split()
+			separated = [self.fb_getsyl(i.replace(".", "").replace(",", "")) for i in lpalavra]
+			return separated
 	if __name__ == '__main__':
 		fb_nlp = FalaBrasilNLP()
-    
+		#where = [".,".find(i) if i in ".," else "" for i in lpalavra]
+
 		for i in lpalavra:
 			if re.search(r"\.", i):
 				where.append(".")
@@ -106,15 +105,15 @@ def syllable():
     
 			else:
 				where.append("")
-    
-			i = i.replace(".", "")
-			i = i.replace(",", "")
-			separated.append(fb_nlp.fb_getsyl(i))
-
-
-		for s,w in zip(separated, where):
-			final.append(s + w)
+   
+		i = i.replace(".", "")
+		i = i.replace(",", "")
+		separated = [fb_nlp.fb_getsyl(i.replace(".", "").replace(",", "")) for i in lpalavra]
 		
+
+
+		final = list(map(lambda s, w: s + w, separated, where))
+  
 		atext.delete('1.0', END)
 		atext.insert(INSERT, final)
    
@@ -205,6 +204,6 @@ button_copy = Button(root,text="Copiar",command=copy_select)
 button_copy.pack()
 
 #Final 1
-#Por(g) Cris-(h)to,(h) nos-(h)so(h) Se-(h)nhor.(hg.) 
+#Por(g) Cris-(h)to,(h) nos-(h)so(h) Se-(h)nhor.(hg.)
 root.mainloop()
 
