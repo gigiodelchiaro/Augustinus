@@ -71,10 +71,9 @@ qrespiration = Checkbutton(text="Adicionar respiração depois das vírgulas", v
 qrespiration.pack()
 
 
-def syllable():
+def syllable(text):
 	import os
 	import re
-	text = atext.get("1.0", "end-1c").lower()
 	lpalavra = text.split()
 	where = []
 

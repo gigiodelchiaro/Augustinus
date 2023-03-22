@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>My Form</title>
-	<script>
-		function submitForm() {
-			var text = document.getElementById("text").value;
-			var clef = document.getElementById("clef").value;
-			var note = document.getElementById("note").value;
-			var lineBreak = document.getElementById("lineBreak").checked;
-			var respiration = document.getElementById("respiration").checked;
-
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "myPythonScript.py", true);
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					alert(xhr.responseText);
-				}
-			};
-			var data = JSON.stringify({
-				"text": text,
-				"clef": clef,
-				"note": note,
-				"lineBreak": lineBreak,
-				"respiration": respiration
-			});
-			xhr.send(data);
-		}
-	</script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
+	<script>function submitForm() {
+		var inputText = document.getElementById("text").value;
+		var clef = document.getElementById("clef").value;
+		var note = document.getElementById("note").value;
+		var lineBreak = document.getElementById("lineBreak").checked;
+		var respiration = document.getElementById("respiration").checked;
+	  
+	  const noteList = ['a','b','c','d','e','f','g','h','i','j','k','l','m'];
+	  const note_down = noteList[noteList.indexOf(note) - 1] || 'a';
+	  let text = `(${clef})${inputText} `;
+	  
+	  const toReplace = {
+		'-': `-(${note})`,
+		' ': `(${note}) `,
+	  };
+	  
+	  for (const [i, j] of Object.entries(toReplace)) {
+		text = text.replace(new RegExp(i, 'g'), j);
+	  }
+	  
+	  console.log(text);
+	}
+	</script>
 	<form>
 		<label for="text">Text:</label>
 		<input type="text" id="text" name="text"><br><br>
@@ -45,19 +45,19 @@
 
 		<label for="note">Note:</label>
 		<select id="note" name="note">
-			<option value="0">a</option>
-            <option value="1">b</option>
-            <option value="2">c</option>
-            <option value="3">d</option>
-            <option value="4">e</option>
-            <option value="5">f</option>
-            <option value="6">g</option>
-            <option value="7">h</option>
-            <option value="8">i</option>
-            <option value="9">j</option>
-            <option value="10">k</option>
-            <option value="11">l</option>
-            <option value="12">m</option>
+			<option value="a">a</option>
+            <option value="b">b</option>
+            <option value="c">c</option>
+            <option value="d">d</option>
+            <option value="e">e</option>
+            <option value="f">f</option>
+            <option value="g">g</option>
+            <option value="h">h</option>
+            <option value="i">i</option>
+            <option value="j">j</option>
+            <option value="k">k</option>
+            <option value="l">l</option>
+            <option value="m">m</option>
 		</select><br><br>
 
 		<label for="lineBreak">Line Break:</label>
