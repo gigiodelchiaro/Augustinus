@@ -1,31 +1,29 @@
 
 if __name__ == '__main__':
 	import sys
-	'''
+
 	try:
 		inputText = sys.argv[1]
 		clef = sys.argv[2]
 		note = sys.argv[3].casefold()
-		lnBreak = bool(sys.argv[4])
-		resp = bool(sys.argv[5])
 
 	except IndexError:
 		print("Usage: text, clef, note, line break, respiration")
 		sys.exit(0)
-	'''
-	inputText = "Senhor nosso Deus, dai-nos, por vossa graça, caminhar com alegria na mesma caridade que levou o vosso Filho a entregar-se à morte no seu amor pelo mundo. Por nosso Senhor Jesus Cristo, vosso Filho, na unidade do Espírito Santo."
-	clef = 'c4' 
-	note = 'f' 
-	lnBreak = 'y' 
-	resp = 'y'
+	
+
 def syllable(text):
 	import os
+	
+
 	
 	lpalavra = text.split()
 	where = []
 	separated = []
 
 	os.environ['CLASSPATH'] = "./sources/fb_nlplib.jar"
+ 
+ 
 	from jnius import autoclass
 	class FalaBrasilNLP:
 		def __init__(self):
@@ -45,14 +43,7 @@ def syllable(text):
 			separated.append(fb_nlp.fb_getsyl(i.replace(".", "").replace(",", "").casefold()).capitalize())
 		else:
 			separated.append(fb_nlp.fb_getsyl(i.replace(".", "").replace(",", "").casefold()))
-		# separated = [i.replace(".", "").replace(",", "").casefold()]
 
-
-
-		
-
-				
-	
 
 	return " ".join(list(map(lambda s, w: s + w, separated, where)))
 
