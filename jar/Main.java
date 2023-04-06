@@ -1,22 +1,10 @@
+import java.nio.charset.Charset;
 import java.util.Scanner;
 public class Main {
     static Syllabificator s = new Syllabificator();
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String inputText, clef, note;
-        
-        if (args.length >= 3) {
-            inputText = args[0];
-            clef = args[1].toLowerCase();
-            note = args[2].toLowerCase();
-        } else {
-            System.out.print("Text: ");
-            inputText = scanner.nextLine();
-            System.out.print("Clef: ");
-            clef = scanner.nextLine().toLowerCase();
-            System.out.print("Note: ");
-            note = scanner.nextLine().toLowerCase();
-        }
+    public String func (String inputText, String clef, String note) {
+        Scanner scanner = new Scanner(System.in, Charset.defaultCharset());
+      
 
         String text = "(" + clef + ")" + syllable(inputText) + " ";
 
@@ -26,9 +14,7 @@ public class Main {
             text = text.replace(toReplace[i], toReplace[i + 1]);
         }
 
-        System.out.println(text);
-        System.out.println("Closing the program...");
-        scanner.nextLine();
+        return text;
     }
 
     public static String syllable(String text) {
