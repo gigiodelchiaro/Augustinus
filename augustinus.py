@@ -40,6 +40,7 @@ def syllable(text):
 			skip = True
 		elif i[0].isupper():
 			hasUpper = True
+			skip = False
 		else:
 			hasUpper = False
 			skip = False
