@@ -1,10 +1,7 @@
-import java.nio.charset.Charset;
-import java.util.Scanner;
+
 public class Main {
     static Syllabificator s = new Syllabificator();
-    public String func (String inputText, String clef, String note) {
-        Scanner scanner = new Scanner(System.in, Charset.defaultCharset());
-      
+    public static String func (String inputText, String clef, String note) {
 
         String text = "(" + clef + ")" + syllable(inputText) + " ";
 
@@ -43,10 +40,10 @@ public class Main {
             if (skip) {
                 separated[i] = lpalavra[i];
             } else if (hasUpper) {
-                separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase());
+                separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase()) + where[i];
                 separated[i] = Character.toUpperCase(separated[i].charAt(0)) + separated[i].substring(1);
             } else {
-                separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase());
+                separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase())+ where[i];
             }
         }
 
