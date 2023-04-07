@@ -6,43 +6,35 @@ import java.util.regex.Pattern;
 public class Main {
     static Syllabificator s = new Syllabificator();
     public static void main(String[] args){
-        System.out.println(func("Isso sim, *Isso aqui não,) isso de novo sim, *mas agora não)", "c4", "f"));
+        System.out.println(func("Isso sim, (Isso aqui não,)* isso de novo sim, (mas agora não)*", "c4", "f"));
     }
     public static String func (String inputText, String clef, String note) {
-
         String text = "(" + clef + ")" + syllable(inputText) + " ";
-
         String[] toReplace = {"-", "-(" + note + ")", " ", "(" + note + ") "};
-
         for (int i = 0; i < toReplace.length; i += 2) {
             text = text.replace(toReplace[i], toReplace[i + 1]);
         }
-
         return text;
     }
-
     public static String syllable(String text) {
         List<String> matchList = new ArrayList<String>();
-    	Pattern regex = Pattern.compile("\\*([^()]*)\\)");
+    	Pattern regex = Pattern.compile("\\(([^()]*)\\)*");
     	Matcher regexMatcher = regex.matcher(text);
-        String str = "";
-        String str2 = "";
+        ArrayList<String> str = new ArrayList<String>();
+        ArrayList<String> str2 = new ArrayList<String>();
+        
     	while (regexMatcher.find()) {
-    	   matchList.add("*"+regexMatcher.group(1));
+    	   matchList.add(regexMatcher.group(1));
     	}
-
     	for(String string:matchList) {
-    	    str = "*" + string.replace("*","") + ")";
-           
+            str2.add("(" + string + ")*");
+            string = "*" + string.replace(" "," *");
+            str.add(string);
     	}
-        String[] skipwords = str.split(" ");
-        for(String item:skipwords){
-            str2 += "*" + item.replace("*","")+" ";
-            
-        }
-        System.out.println("str:" + str + "str2:" + str2);
-        System.out.println(text.replace(str,str2));
-        String[] lpalavra = text.replace(str,str2.trim()).split(" ");
+        for (int i = 0; i < str.size(); i++) {
+                text = text.replace(str2.get(i),str.get(i).trim());
+            }
+        String[] lpalavra = text.replace("*(","*").split(" ");
         String[] where = new String[lpalavra.length];
         String[] separated = new String[lpalavra.length];
         boolean skip = false;
