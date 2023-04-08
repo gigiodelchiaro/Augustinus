@@ -44,19 +44,20 @@ public class Frame extends JFrame {
 	public Frame() {
 		setTitle("Augustinus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 400, 400);
+		setBounds(100, 100, 800, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{10, 10, 0, 0, 0, 0, 151, 0};
-		gbl_contentPane.rowHeights = new int[]{27, 20, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 0};
+		gbl_contentPane.columnWidths = new int[]{10, 10, 99, 0, 0, 0, 151, 0};
+		gbl_contentPane.rowHeights = new int[]{27, 20, 27, -89, 375, 27, 27, 27, 27, 27, 27, 27, 27, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel LabelClef = new JLabel("Clave:");
+		LabelClef.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		GridBagConstraints gbc_LabelClef = new GridBagConstraints();
 		gbc_LabelClef.fill = GridBagConstraints.BOTH;
 		gbc_LabelClef.insets = new Insets(0, 0, 5, 5);
@@ -65,6 +66,7 @@ public class Frame extends JFrame {
 		contentPane.add(LabelClef, gbc_LabelClef);
 		
 		JComboBox iClef = new JComboBox();
+		iClef.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		iClef.setModel(new DefaultComboBoxModel(new String[] {"C1", "C2", "C3", "C4", "C5"}));
 		GridBagConstraints gbc_iClef = new GridBagConstraints();
 		gbc_iClef.fill = GridBagConstraints.BOTH;
@@ -74,6 +76,7 @@ public class Frame extends JFrame {
 		contentPane.add(iClef, gbc_iClef);
 		
 		JLabel LabelNote = new JLabel("Nota:");
+		LabelNote.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		GridBagConstraints gbc_LabelNote = new GridBagConstraints();
 		gbc_LabelNote.fill = GridBagConstraints.BOTH;
 		gbc_LabelNote.insets = new Insets(0, 0, 5, 5);
@@ -82,6 +85,7 @@ public class Frame extends JFrame {
 		contentPane.add(LabelNote, gbc_LabelNote);
 		
 		JComboBox iNote = new JComboBox();
+		iNote.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		iNote.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"}));
 		GridBagConstraints gbc_iNote = new GridBagConstraints();
 		gbc_iNote.fill = GridBagConstraints.BOTH;
@@ -92,7 +96,7 @@ public class Frame extends JFrame {
 		
 		JTextArea iText = new JTextArea();
 		iText.setLineWrap(true);
-		iText.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		iText.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		iText.setColumns(50);
 		iText.setRows(200);
 		GridBagConstraints gbc_iText = new GridBagConstraints();
@@ -105,6 +109,7 @@ public class Frame extends JFrame {
 		contentPane.add(iText, gbc_iText);
 		
 		JLabel LabelText = new JLabel("Texto:");
+		LabelText.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		GridBagConstraints gbc_LabelText = new GridBagConstraints();
 		gbc_LabelText.insets = new Insets(0, 0, 5, 5);
 		gbc_LabelText.gridx = 0;
@@ -113,6 +118,7 @@ public class Frame extends JFrame {
 				
 						
 						JButton Button = new JButton("Gerar");
+						Button.setFont(new Font("Tahoma", Font.PLAIN, 22));
 						Button.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								iText.setText(m.func(iText.getText(),iClef.getSelectedItem().toString().toLowerCase(), iNote.getSelectedItem().toString().toLowerCase()));

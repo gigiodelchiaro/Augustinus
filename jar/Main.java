@@ -14,7 +14,14 @@ public class Main {
         for (int i = 0; i < toReplace.length; i += 2) {
             text = text.replace(toReplace[i], toReplace[i + 1]);
         }
-        return text;
+        String[] lText = text.split(" ");
+        for (int i = 0; i < lText.length; i++) {
+            if (lText[i].startsWith("*")) {
+                lText[i] =lText[i].substring(1, lText[i].length() - 3);
+            }
+        }
+
+        return String.join(" ", lText);
     }
     public static String syllable(String text) {
         List<String> matchList = new ArrayList<String>();
@@ -36,10 +43,7 @@ public class Main {
             }
         String[] lpalavra = text.replace("*(","*").split(" ");
         String[] where = new String[lpalavra.length];
-        String[] separated = new String[lpalavra.length];
-        boolean skip = false;
-        boolean hasUpper = false;
-       
+        String[] separated = new String[lpalavra.length];    
         
         for (int i = 0; i < lpalavra.length; i++) {
             if (lpalavra[i].endsWith(",") || lpalavra[i].endsWith(".")) {
@@ -47,19 +51,9 @@ public class Main {
             } else {
                 where[i] = "";
             }
-
             if (lpalavra[i].startsWith("*")) {
-                skip = true;
+                separated[i] = lpalavra[i].replace(")","");
             } else if (Character.isUpperCase(lpalavra[i].charAt(0))) {
-                hasUpper = true;
-            } else {
-                hasUpper = false;
-                skip = false;
-            }
-
-            if (skip) {
-                separated[i] = lpalavra[i].replace("*", "").replace(")","");
-            } else if (hasUpper) {
                 separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase()) + where[i];
                 separated[i] = Character.toUpperCase(separated[i].charAt(0)) + separated[i].substring(1);
             } else {
