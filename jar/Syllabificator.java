@@ -12,17 +12,12 @@ public class Syllabificator {
 	private String delimitador = "-";
 	private int indResto;
 	private String palavra0;
-	private String vogalTonica;
 	private int indexVogalTonica;
-	private ArrayList<String> composto = new ArrayList();
-	private ArrayList<Integer> tamCompostos = new ArrayList();
-	private ArrayList<String> tonicaComposto = new ArrayList();
-	private ArrayList<Integer> numTonicaComposto = new ArrayList();
+	private ArrayList<String> composto = new ArrayList<String>();
+	private ArrayList<Integer> tamCompostos = new ArrayList<Integer>();
 
 	private void calling(String var1) {
 		this.palavra0 = var1;
-		this.composto = new ArrayList();
-		this.tamCompostos = new ArrayList();
 		this.palavra = null;
 		this.saida = null;
 		this.comprimento = -1;
@@ -42,10 +37,7 @@ public class Syllabificator {
 	}
 
 	private void updateVars() {
-		this.vogalTonica = this.STV.vogalTonica;
 		this.indexVogalTonica = this.STV.indexVogalTonica;
-		this.tonicaComposto = this.STV.tonicaComposto;
-		this.numTonicaComposto = this.STV.numTonicaComposto;
 	}
 
 	private int getIndex() {
@@ -54,7 +46,6 @@ public class Syllabificator {
 
 	public  String syllabs(String var1) {
 		var1 = var1.replace("ü", "u");
-		boolean var3 = false;
 		this.calling(var1);
 		this.STV.findStress(var1);
 		this.updateVars();
@@ -707,7 +698,7 @@ public class Syllabificator {
 	}
 
 	private String[] convertString2ArrayString(String var1) {
-		LinkedList var3 = new LinkedList();
+		LinkedList<String> var3 = new LinkedList<String>();
 		var1 = "###" + var1 + "#########";
 
 		int var7;
@@ -850,7 +841,7 @@ public class Syllabificator {
 		var2[1] = "#";
 		var2[2] = "#";
 
-		for (Iterator var8 = var3.iterator(); var8.hasNext(); ++var7) {
+		for (Iterator<String> var8 = var3.iterator(); var8.hasNext(); ++var7) {
 			String var9 = (String) var8.next();
 			var2[var7] = var9;
 		}

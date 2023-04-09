@@ -16,7 +16,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class Frame extends JFrame {
+public class Gui extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	static Main m = new Main();
 
 	private JPanel contentPane;
@@ -28,7 +33,7 @@ public class Frame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame frame = new Frame();
+					Gui frame = new Gui();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,7 +46,7 @@ public class Frame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Frame() {
+	public Gui() {
 		setTitle("Augustinus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 800);
@@ -65,9 +70,9 @@ public class Frame extends JFrame {
 		gbc_LabelClef.gridy = 0;
 		contentPane.add(LabelClef, gbc_LabelClef);
 		
-		JComboBox iClef = new JComboBox();
+		JComboBox<String> iClef = new JComboBox<String>();
 		iClef.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		iClef.setModel(new DefaultComboBoxModel(new String[] {"C1", "C2", "C3", "C4", "C5"}));
+		iClef.setModel(new DefaultComboBoxModel<String>(new String[] {"C1", "C2", "C3", "C4", "C5"}));
 		GridBagConstraints gbc_iClef = new GridBagConstraints();
 		gbc_iClef.fill = GridBagConstraints.BOTH;
 		gbc_iClef.insets = new Insets(0, 0, 5, 5);
@@ -84,9 +89,9 @@ public class Frame extends JFrame {
 		gbc_LabelNote.gridy = 0;
 		contentPane.add(LabelNote, gbc_LabelNote);
 		
-		JComboBox iNote = new JComboBox();
+		JComboBox<String> iNote = new JComboBox<String> ();
 		iNote.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		iNote.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"}));
+		iNote.setModel(new DefaultComboBoxModel<String> (new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"}));
 		GridBagConstraints gbc_iNote = new GridBagConstraints();
 		gbc_iNote.fill = GridBagConstraints.BOTH;
 		gbc_iNote.insets = new Insets(0, 0, 5, 5);

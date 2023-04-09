@@ -6,17 +6,17 @@ public class StressVowel {
 	String palavra;
 	String vogalTonica;
 	int indexVogalTonica;
-	ArrayList<String> composto = new ArrayList();
-	ArrayList<String> tonicaComposto = new ArrayList();
-	ArrayList<Integer> numTonicaComposto = new ArrayList();
+	ArrayList<String> composto = new ArrayList<String>();
+	ArrayList<String> tonicaComposto = new ArrayList<String>();
+	ArrayList<Integer> numTonicaComposto = new ArrayList<Integer>();
 
 	private void calling(String var1) {
 		this.palavra = var1;
 		this.vogalTonica = "";
 		this.indexVogalTonica = 0;
-		this.composto = new ArrayList();
-		this.tonicaComposto = new ArrayList();
-		this.numTonicaComposto = new ArrayList();
+		this.composto = new ArrayList<String>();
+		this.tonicaComposto = new ArrayList<String>();
+		this.numTonicaComposto = new ArrayList<Integer>();
 		String[] var2 = this.palavra.split("-");
 		int var3 = var2.length;
 
@@ -24,20 +24,16 @@ public class StressVowel {
 			String var5 = var2[var4];
 			this.composto.add(var5);
 		}
-
 	}
-
 	public int findStress(String var1) {
 		this.calling(var1);
 		String var2 = null;
 		String var3 = null;
 		String var4 = "";
-		ArrayList var5 = new ArrayList();
-		ArrayList var6 = new ArrayList();
-		boolean var7 = false;
+		ArrayList<String> var5 = new ArrayList<String>();
+		ArrayList<String> var6 = new ArrayList<String>();
 		int var8 = 0;
 		boolean var9 = false;
-		var7 = false;
 		var9 = false;
 		int var10;
 		if (!this.palavra.contains("<s>") && !this.palavra.contains("</s>")) {
@@ -64,7 +60,6 @@ public class StressVowel {
 			for (var10 = 0; var10 < var6.size(); ++var10) {
 				var2 = (String) var5.get(var10);
 				var3 = (String) var6.get(var10);
-				var7 = false;
 				var9 = false;
 
 				while (!var9) {
