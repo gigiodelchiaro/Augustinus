@@ -5,10 +5,32 @@ import java.util.regex.Pattern;
 
 public class Main {
     static Syllabificator s = new Syllabificator();
-    public static void main(String[] args){
-        System.out.println(func("Isso sim, (Isso aqui não,)* isso de novo sim, (mas agora não)*", "c4", "f"));
+    static char[] charPunc = {',','.','?','!',':',';'};
+    public static class Word{
+        String original;
+        String separated;
+
+        public Word(String value){
+            this.original = value;
+            boolean Upper;
+            boolean skip = false;
+            char punctuation = 0;
+            
+            if (value.startsWith("*")){skip = true;}
+            for (char c : charPunc) {
+                if (value.charAt(value.length() - 1) == c) {
+                    punctuation = value.charAt(value.length() -1);
+                } 
+            }
+            Upper = Character.isUpperCase(value.charAt(0));
+            if (skip) {separated = value;}
+            else if (Upper){separated = s.syllabs(value.replaceAll("[,.?!:;]", "").toLowerCase()) + punctuation;
+            separated = separated.substring(0,1).toUpperCase() + separated.substring(1);}
+            else{separated = s.syllabs(value.replaceAll("[,.?!:;]", "").toLowerCase()) + punctuation;}     
+        }   
     }
     public static String func (String inputText, String clef, String note) {
+        checkSkip(inputText);
         String text = "(" + clef + ")" + syllable(inputText) + " ";
         String[] toReplace = {"-", "-(" + note + ")", " ", "(" + note + ") "};
         for (int i = 0; i < toReplace.length; i += 2) {
@@ -23,7 +45,7 @@ public class Main {
 
         return String.join(" ", lText);
     }
-    public static String syllable(String text) {
+    public static void checkSkip(String text){
         List<String> matchList = new ArrayList<String>();
     	Pattern regex = Pattern.compile("\\(([^()]*)\\)*");
     	Matcher regexMatcher = regex.matcher(text);
@@ -41,26 +63,14 @@ public class Main {
         for (int i = 0; i < str.size(); i++) {
                 text = text.replace(str2.get(i),str.get(i).trim());
             }
-        String[] lpalavra = text.replace("*(","*").split(" ");
-        String[] where = new String[lpalavra.length];
-        String[] separated = new String[lpalavra.length];    
-        
-        for (int i = 0; i < lpalavra.length; i++) {
-            if (lpalavra[i].endsWith(",") || lpalavra[i].endsWith(".")) {
-                where[i] = lpalavra[i].substring(lpalavra[i].length() - 1);
-            } else {
-                where[i] = "";
-            }
-            if (lpalavra[i].startsWith("*")) {
-                separated[i] = lpalavra[i].replace(")","");
-            } else if (Character.isUpperCase(lpalavra[i].charAt(0))) {
-                separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase()) + where[i];
-                separated[i] = Character.toUpperCase(separated[i].charAt(0)) + separated[i].substring(1);
-            } else {
-                separated[i] = s.syllabs(lpalavra[i].replace(".", "").replace(",", "").toLowerCase())+ where[i];
-            }
+    }
+    public static String syllable(String text) {
+        ArrayList<String> separatedList = new ArrayList<String>();
+        for (String s : text.split(" ")) {
+            Word wordlist = new Word(s);
+            separatedList.add(wordlist.separated);
         }
-
-        return String.join(" ", separated);
+        return String.join(" ", separatedList);
     }
 }
+

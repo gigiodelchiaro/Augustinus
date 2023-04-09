@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class test_test {
+public class testezinho {
     static Syllabificator s = new Syllabificator();
     static char[] charPunc = {',','.','?','!',':',';'};
     public static class Word{
@@ -11,11 +11,11 @@ public class test_test {
         String separated;
 
         public Word(String value){
-            this.original = value;
+            original = value;
             ArrayList<Integer> Upper = new ArrayList<Integer>();
             boolean skip = false;
             char punctuation = 0;
-            
+            int nDash;
             if (value.startsWith("*")){skip = true;}
             for (char c : charPunc) {
                 if (value.charAt(value.length() - 1) == c) {
@@ -23,14 +23,17 @@ public class test_test {
                 } 
             }
             for (int i = 0; i < value.length(); i++) {
-                if (Character.charAt(value).isUpperCase()) {
-                    
-                }
-                
+                if (Character.isUpperCase(value.charAt(i))) {
+                    Upper.add(i);
+                }   
             }
-            Upper = Character.isUpperCase(value.charAt(0));
+
             if (skip) {separated = value;}
-            else if (Upper){separated = (s.syllabs(value.replaceAll("[,.?!:;]", "").toLowerCase()) + punctuation)separated.substring(0,1).toUpperCase() + separated.substring(1);}
+            else{separated = (s.syllabs(value.replaceAll("[,.?!:;]", "").toLowerCase()) + punctuation);}
+            for (int i = 0; i < Upper.size(); i++) {
+                nDash = separated.substring(0, i + 1).length() - separated.substring(0, i + 1).replace("-","").length();
+                separated = separated.substring(i + nDash,i + nDash + 1).toUpperCase() + separated.substring(1);
+            }
             
             
         }   
@@ -39,7 +42,7 @@ public class test_test {
 
     public static void main(String[] args){
 
-        System.out.println(syllable("Teste? com *palavras"));
+        System.out.println(syllable("TesTe? coM *palavras"));
 
         // System.out.print("Value: " + palavra.value + "\nSeparated: " + palavra.separated + "\nPunctuation: " + palavra.punctuation + "\nHasUpper: " + palavra.hasUpper + "\nSkip: " + palavra.skip);
         // System.out.println(func("Isso sim, (Isso aqui não,)* isso de novo sim, (mas agora não)*", "c4", "f"));
