@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class test {
+public class test_test {
     static Syllabificator s = new Syllabificator();
     static char[] charPunc = {',','.','?','!',':',';'};
     public static class Word{
@@ -12,7 +12,7 @@ public class test {
 
         public Word(String value){
             this.original = value;
-            boolean Upper;
+            ArrayList<Integer> Upper = new ArrayList<Integer>();
             boolean skip = false;
             char punctuation = 0;
             
@@ -21,6 +21,12 @@ public class test {
                 if (value.charAt(value.length() - 1) == c) {
                     punctuation = value.charAt(value.length() -1);
                 } 
+            }
+            for (int i = 0; i < value.length(); i++) {
+                if (Character.charAt(value).isUpperCase()) {
+                    
+                }
+                
             }
             Upper = Character.isUpperCase(value.charAt(0));
             if (skip) {separated = value;}
