@@ -30,9 +30,9 @@ public class Main {
             else {
             s = reverseCount(reverseCount(s, num + 2), num + 1).trim().replaceFirst(" ", "> ");}
             newStr += s + ".  (:)";
-            
         }
-        String text = "(" + clef + ")" + newStr.replace(". ", ".") + "(::)";
+        str = newStr;
+        String text = "(" + clef + ")" + str.replace(". ", ".") + "(::)";
         String notes[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m"};
         int found = Arrays.asList(notes).indexOf(note);
         String noteDown;
@@ -80,12 +80,12 @@ public class Main {
             }
     }
     public static ArrayList<Word> syllable(String text) {
-        ArrayList<Word> wordlList = new ArrayList<Word>();
+        ArrayList<Word> wordList = new ArrayList<Word>();
         for (String s : text.split(" ")) {
             Word w = new Word(s);
-            wordlList.add(w);
+            wordList.add(w);
         }
-        return wordlList;
+        return wordList;
     }
     public static String reverseCount(String str, int num){
         int count = 0;
@@ -94,7 +94,7 @@ public class Main {
         for(int i = 0; i < str.length(); i++){    
             if(str.charAt(i) == '-' || str.charAt(i) == ' '){
                 count++;
-                if (count == num + 1){
+                if (count == num + 1 && Word.countChar(str, ' ') + Word.countChar(str, '-') > 8){
                     changed = str.substring(0, i) + '>' + str.substring(i, str.length());
                     return changed;
                 } 
