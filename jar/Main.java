@@ -4,46 +4,51 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Arrays;
 public class Main {
-    static Syllabificator s = new Syllabificator();
-    static char[] charPunc = {',','.','?','!',':',';'};
-    public static class Word{
-        String original;
-        String separated;
-        public Word(String value){
-            this.original = value;
-            boolean Upper;
-            boolean skip = false;
-            char punctuation = '#';
-            
-            if (value.startsWith("*")){skip = true;}
-            for (char c : charPunc) {
-                if (value.charAt(value.length() - 1) == c) {
-                    punctuation = value.charAt(value.length() -1);
-                } 
-            }
-            Upper = Character.isUpperCase(value.charAt(0));
-            if (skip) {separated = value;}
-            else if (Upper){separated = (s.syllabs(value.replaceAll("[,.?!:;]", "").toLowerCase()) + punctuation).replace("#","");
-            separated = separated.substring(0,1).toUpperCase() + separated.substring(1);}
-            else{separated = (s.syllabs(value.replaceAll("[,.?!:;]", "").toLowerCase()) + punctuation).replace("#","");}     
-        }   
-    }
-    public String func (String inputText, String clef, String note) {
+    public static String func (String inputText, String clef, String note) {
         // change note type and clef type to save memory
         checkSkip(inputText);
-        String text = "(" + clef + ")" + syllable(inputText) + " ";
+        ArrayList<Word> wordList = syllable(inputText);
+        String str = " ";
+        for (Word i : wordList) {
+            str += i.separated + " ";
+        }
+        ArrayList<String> strList = new ArrayList<String>(
+            Arrays.asList(str.split("[.]")));
+        String newStr = "";
+        int temp = 0;
+        for (int i = 0; i < strList.size() - 1; i++) {
+
+            String s = strList.get(i);
+            ArrayList<String> sList = new ArrayList<String>(
+            Arrays.asList(s.split(" ")));
+            temp += sList.size() - 2;
+            int num = wordList.get(temp).syllableCount - wordList.get(temp).stressSyllable;
+            if (sList.get(0).contains("-") || sList.get(1).contains("-")){
+                s = reverseCount(reverseCount(s, num + 2), num + 1).trim().replaceFirst("-", ">-");
+            }
+
+            else {
+            s = reverseCount(reverseCount(s, num + 2), num + 1).trim().replaceFirst(" ", "> ");}
+            newStr += s + ".  (:)";
+            
+        }
+        String text = "(" + clef + ")" + newStr.replace(". ", ".") + "(::)";
         String notes[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m"};
         int found = Arrays.asList(notes).indexOf(note);
         String noteDown;
-        if (note == "a"){
-            noteDown = note;
+        try {
+            noteDown = notes[found - 1];
+        } catch (Exception IndexOutOfBounds) {
+            noteDown = notes[found];
         }
-        else{noteDown = notes[found - 1];}
-        String[] toReplace = {"-rr","r-r","-ss","s-s","-xc","x-c", "-", "-(" + note + ")", " ", "(" + note + ") ",
-        "Por(" + note + ") Cris-(" + note + ")to,(" + note + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor.(" + note + ")",
-        "(:) Por("+ noteDown + ") Cris-("+ note + ")to("+ note +"), nos-("+ note +")so("+ note +") Se-("+ note +")nhor.("+ note + noteDown + ".) (::)",
-        "Por(" + note + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor(" + note + ") Je-(" + note + ")sus("+ note + ") Cris-(" + note + ")to,(" + note + ") vos-(" + note + ")so(" + note + ") Fi-(" + note + ")lho,(" + note + ") na(" + note + ") u-(" + note + ")ni-(" + note + ")da-(" + note + ")de(" + note + ") do(" + note + ") Es-(" + note + ")pí-(" + note + ")ri-(" + note + ")to(" + note + ") San-(" + note + ")to.(" + note + ")", 
-        "(:) Por(" + noteDown + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor(" + note + ") Je-(" + note + ")sus(" + note + ") Cris-(" + note + ")to(" + note + "), vos-(" + noteDown + ")so(" + noteDown + ") Fi-(" + note + ")lho,(" + note + ".) (;) na(" + noteDown + ") u-(" + note + ")ni-(" + note + ")da-(" + note + ")de(" + note + ") do(" + note + ") Es-(" + note + ")pí(" + note + ")ri(" + noteDown + ")to(" + note + ") San-("+ note + noteDown + ")to.(" + noteDown + ".) (::)"};
+        String[] finais = {"Por(" + noteDown + ") Cris-(" + note + ")to,(" + note + ") nos-(" + note + ")so(" + noteDown + ") Se-(" + noteDown + ")nhor.(" + note + ".)",
+        "Por("+ noteDown + ") Cris-("+ note + ")to("+ note +"), nos-("+ note +")so("+ note +") Se-("+ note +")nhor.("+ note + noteDown + ".)",
+        "Por(" + noteDown + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor(" + note + ") Je-(" + note + ")sus(" + note + ") Cris-(" + note + ")to,(" + note + ") vos-(" + note +     ")so(" + note +     ") Fi-(" + note + ")lho,(" + note +      ") na(" + note +     ") u-(" + note + ")ni-(" + note + ")da-(" + note + ")de(" + note + ") do(" + note + ") Es-(" + note + ")pí-(" + noteDown + ")ri-(" + noteDown + ")to(" + note + ") San-(" + note +           ")to.(" + note +     ".)", 
+        "Por(" + noteDown + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor(" + note + ") Je-(" + note + ")sus(" + note + ") Cris-(" + note + ")to,(" + note + ") vos-(" + noteDown + ")so(" + noteDown + ") Fi-(" + note + ")lho,(" + note + ".) (;) na(" + noteDown + ") u-(" + note + ")ni-(" + note + ")da-(" + note + ")de(" + note + ") do(" + note + ") Es-(" + note + ")pí(" + note +      ")ri(" + noteDown +  ")to(" + note + ") San-("+ note + noteDown + ")to.(" + noteDown + ".)"
+        };
+
+        String[] toReplace = { "-", "-(" + note + ")", " ", "(" + note + ") ",">-(" + note + ")", "-(" + noteDown + ")",">(" + note + ") ", "(" + noteDown + ") ","." + "(" + note + ")", "." + "(" + note + ".)", finais[0], finais[1], finais[2], finais[3], "(:)(::)","(::)"
+        };
         for (int i = 0; i < toReplace.length; i += 2) {
             text = text.replace(toReplace[i], toReplace[i + 1]);
         }
@@ -74,13 +79,27 @@ public class Main {
                 text = text.replace(str2.get(i),str.get(i).trim());
             }
     }
-    public static String syllable(String text) {
-        ArrayList<String> separatedList = new ArrayList<String>();
+    public static ArrayList<Word> syllable(String text) {
+        ArrayList<Word> wordlList = new ArrayList<Word>();
         for (String s : text.split(" ")) {
-            Word wordlist = new Word(s);
-            separatedList.add(wordlist.separated);
+            Word w = new Word(s);
+            wordlList.add(w);
         }
-        return String.join(" ", separatedList);
+        return wordlList;
+    }
+    public static String reverseCount(String str, int num){
+        int count = 0;
+        num = Word.countChar(str, ' ') + Word.countChar(str, '-') - num;
+        String changed;
+        for(int i = 0; i < str.length(); i++){    
+            if(str.charAt(i) == '-' || str.charAt(i) == ' '){
+                count++;
+                if (count == num + 1){
+                    changed = str.substring(0, i) + '>' + str.substring(i, str.length());
+                    return changed;
+                } 
+            }
+        }
+        return str;
     }
 }
-

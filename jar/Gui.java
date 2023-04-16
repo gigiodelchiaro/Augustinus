@@ -1,6 +1,4 @@
-
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,18 +15,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 public class Gui extends JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	static Main m = new Main();
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -40,12 +31,7 @@ public class Gui extends JFrame {
 				}
 			}
 		});
-		
 	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Gui() {
 		setTitle("Augustinus");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,7 +112,7 @@ public class Gui extends JFrame {
 						Button.setFont(new Font("Tahoma", Font.PLAIN, 22));
 						Button.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
-								iText.setText(m.func(iText.getText(),iClef.getSelectedItem().toString().toLowerCase(), iNote.getSelectedItem().toString().toLowerCase()));
+								iText.setText(Main.func(iText.getText().trim(),iClef.getSelectedItem().toString().toLowerCase(), iNote.getSelectedItem().toString().toLowerCase()));
 							}
 						});
 						GridBagConstraints gbc_Button = new GridBagConstraints();

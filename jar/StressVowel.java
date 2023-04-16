@@ -441,7 +441,9 @@ public class StressVowel {
 			System.err.printf("[VOW] Untreatable error at word %s, skipping word, dumping index\n", this.palavra);
 			return this.indexVogalTonica;
 		}
-
+		if (var1.length() == 1) {
+			this.indexVogalTonica = 1;
+		}
 		return this.indexVogalTonica;
 	}
 }
