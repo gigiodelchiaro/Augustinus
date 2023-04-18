@@ -58,7 +58,7 @@ public class Gui extends JFrame {
 		
 		JComboBox<String> iClef = new JComboBox<String>();
 		iClef.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		iClef.setModel(new DefaultComboBoxModel<String>(new String[] {"C1", "C2", "C3", "C4", "C5"}));
+		iClef.setModel(new DefaultComboBoxModel<String>(new String[] {"C1", "C2", "C3", "C4", "F3", "F4", "Cb3"}));
 		GridBagConstraints gbc_iClef = new GridBagConstraints();
 		gbc_iClef.fill = GridBagConstraints.BOTH;
 		gbc_iClef.insets = new Insets(0, 0, 5, 5);

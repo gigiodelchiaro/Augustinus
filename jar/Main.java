@@ -29,10 +29,11 @@ public class Main {
 
             else {
             s = reverseCount(reverseCount(s, num + 2), num + 1).trim().replaceFirst(" ", "> ");}
-            newStr += s + ".  (:)";
+            newStr += s + ". (:)";
+            str = newStr;
         }
-        str = newStr;
-        String text = "(" + clef + ")" + str.replace(". ", ".") + "(::)";
+        
+        String text = "(" + clef + ")" + str.trim() + "(::)";
         String notes[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m"};
         int found = Arrays.asList(notes).indexOf(note);
         String noteDown;
@@ -41,7 +42,8 @@ public class Main {
         } catch (Exception IndexOutOfBounds) {
             noteDown = notes[found];
         }
-        String[] finais = {"Por(" + noteDown + ") Cris-(" + note + ")to,(" + note + ") nos-(" + note + ")so(" + noteDown + ") Se-(" + noteDown + ")nhor.(" + note + ".)",
+        String[] finais = {
+        "Por(" + noteDown + ") Cris-(" + note + ")to,(" + note + ") nos-(" + note + ")so(" + noteDown + ") Se-(" + noteDown + ")nhor.(" + note + ".)",
         "Por("+ noteDown + ") Cris-("+ note + ")to("+ note +"), nos-("+ note +")so("+ note +") Se-("+ note +")nhor.("+ note + noteDown + ".)",
         "Por(" + noteDown + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor(" + note + ") Je-(" + note + ")sus(" + note + ") Cris-(" + note + ")to,(" + note + ") vos-(" + note +     ")so(" + note +     ") Fi-(" + note + ")lho,(" + note +      ") na(" + note +     ") u-(" + note + ")ni-(" + note + ")da-(" + note + ")de(" + note + ") do(" + note + ") Es-(" + note + ")pí-(" + noteDown + ")ri-(" + noteDown + ")to(" + note + ") San-(" + note +           ")to.(" + note +     ".)", 
         "Por(" + noteDown + ") nos-(" + note + ")so(" + note + ") Se-(" + note + ")nhor(" + note + ") Je-(" + note + ")sus(" + note + ") Cris-(" + note + ")to,(" + note + ") vos-(" + noteDown + ")so(" + noteDown + ") Fi-(" + note + ")lho,(" + note + ".) (;) na(" + noteDown + ") u-(" + note + ")ni-(" + note + ")da-(" + note + ")de(" + note + ") do(" + note + ") Es-(" + note + ")pí(" + note +      ")ri(" + noteDown +  ")to(" + note + ") San-("+ note + noteDown + ")to.(" + noteDown + ".)"
