@@ -1,5 +1,5 @@
 # Augustinus
-O Gregorio é um gerador de canto gregoriano. O Augustinus é um gerador de templates para o Gregorio. Apenas coloque o texto e informe a nota principal que ele automaticamente separa as sílabas, coloca uma nota para cada sílaba em um formato que o Gregorio entende.  
+O Augustinus é um gerador de gabc. Apenas coloque o texto e informe a clave e a nota principal que ele automaticamente separa as sílabas, coloca uma nota para cada sílaba no padrão gabc.
 ## Funções
 - Separação de sílaba automática  
 - Finais pré-feitos: "Por Cristo nosso Senhor" e "Por nosso Senhor Jesus Cristo, vosso Filho, na unidade do Espírito Santo."  
