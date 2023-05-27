@@ -1,4 +1,3 @@
-
 public class Word{
     static Syllabificator s = new Syllabificator();
     static StressVowel v = new StressVowel();

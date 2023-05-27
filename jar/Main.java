@@ -1,9 +1,54 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Arrays;
+import java.util.Scanner;
 public class Main {
+    public static void main(String[] args){
+            PrintWriter writer = null;
+            
+            File file = new File("input.txt");
+            Scanner sc = null;
+            try {
+                sc = new Scanner(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            
+
+            sc.useDelimiter("\n");
+            String inputText = sc.next();
+            String clef = sc.next();
+            String note = sc.next();
+            sc.close();
+
+            try {
+                writer = new PrintWriter("file.gabc");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+                writer.println("%%");
+                writer.println(func(inputText, clef, note));
+                writer.close();
+                writer = null;
+            try {
+                writer = new PrintWriter("file.tex");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+                writer.println("\\documentclass[11pt]{article}");
+                writer.println("\\usepackage{fontspec}");
+                writer.println("\\usepackage[autocompile]{gregoriotex}");
+                writer.println("\\begin{document}");
+                writer.println("\\gregorioscore{file}");
+                writer.println("\\end{document}");
+                writer.close();         
+    }
+
     public static String func (String inputText, String clef, String note) {
         // change note type and clef type to save memory
         checkSkip(inputText);

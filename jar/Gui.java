@@ -49,7 +49,7 @@ public class Gui extends JFrame {
 		
 		JLabel LabelClef = new JLabel("Clave:");
 		LabelClef.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		GridBagConstraints gbc_LabelClef = new GridBagConstraints();
+		GridBagConstraints gbc_LabelClef = new GridBagConstraints(); 
 		gbc_LabelClef.fill = GridBagConstraints.BOTH;
 		gbc_LabelClef.insets = new Insets(0, 0, 5, 5);
 		gbc_LabelClef.gridx = 0;
