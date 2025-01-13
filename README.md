@@ -1,11 +1,14 @@
 # Augustinus
-O Augustinus é um gerador de gabc. Apenas coloque o texto e informe a clave e a nota principal que ele automaticamente separa as sílabas, coloca uma nota para cada sílaba no padrão gabc.
-## Funções
-- Separação de sílaba automática  
-- Finais pré-feitos: "Por Cristo, nosso Senhor." e "Por nosso Senhor Jesus Cristo, vosso Filho, na unidade do Espírito Santo."  
-- Para pular uma palavra: *palavra  
-- Para pular uma frase: (Frase a pular aqui dentro)*  
+O Augustinus é um gerador de canto gregoriano em formato .gabc.
+___
+Este projeto está passando por mudanças grandes para a versão 2.0:
+- Mudança de linguagem Java -> Javascript
+- Separação silábica e sílabas tônicas por meio de algorítmos próprios
+
+
+### Como usar
+Abra o site do augustinus (em breve), e preencha o campo de modelo e o de texto
+
 ## Links
 Gregorio - https://github.com/gregorio-project/gregorio  
-Separação de Sílabas - Annotator (Grupo Fala Brasil) - https://github.com/falabrasil/annotator  
 
