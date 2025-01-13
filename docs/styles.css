@@ -78,6 +78,6 @@ textarea:focus {
     outline: none;
     border-color: #4CAF50;
 }
-#result {
+.result {
     font-family: 'EB Garamond';
 }
