@@ -1,74 +1,85 @@
 import re
 
-# Define character groups
-strong_consonants = 'bcdfjkpqtvxç'
-weak_consonants = 'glmnrsz'
-strong_vowels = 'aeáéóàèòãẽõâêôäëöíúìùĩũîû'
-weak_vowels = 'iouïü'
+# Definir grupos de caracteres
+consoantes_fortes = 'bcdfjkpqtvxç'
+consoantes_fracas = 'glmnrsz'
+vogais_fortes = 'aeáéóàèòãẽõâêôäëíúìùĩũîû'
+vogais_fracas = 'iouïöü'
 
-strong_consonants = strong_consonants + strong_consonants.upper()
-weak_consonants = weak_consonants + weak_consonants.upper()
-strong_vowels = strong_vowels + strong_vowels.upper()
-weak_vowels = weak_vowels + weak_vowels.upper()
+consoantes_fortes = consoantes_fortes + consoantes_fortes.upper()
+consoantes_fracas = consoantes_fracas + consoantes_fracas.upper()
+vogais_fortes = vogais_fortes + vogais_fortes.upper()
+vogais_fracas = vogais_fracas + vogais_fracas.upper()
+dígrafos = ['nh', 'lh', 'ch', 'gu', 'qu'] 
+vogais = vogais_fortes + vogais_fracas
 
-digraphs = ['nh', 'lh', 'ch', 'gu', 'qu'] 
-vowels = strong_vowels + weak_vowels
+def aplicar_regras(texto, divisor="-"):
+    # Regra 1: Adicionar o divisor antes de qualquer consoante forte
+    padrao_forte = rf"([{consoantes_fortes}])"
+    texto = re.sub(padrao_forte, rf"{divisor}\1", texto)
 
-def apply_rules(text, divider="-"):
-    # Rule 1: Add the divider before any strong consonant
-    pattern_strong = rf"([{strong_consonants}])"
-    text = re.sub(pattern_strong, rf"{divider}\1", text)
+    # Regra 2: Adicionar o divisor antes de qualquer consoante fraca se seguida por uma vogal e não precedida por uma consoante forte
+    padrao_fraca = rf"(?<![{consoantes_fortes}])([{consoantes_fracas}])(?=[{vogais}])"
+    texto = re.sub(padrao_fraca, rf"{divisor}\1", texto)
 
-    # Rule 2: Add the divider before any weak consonant if followed by a vowel and not preceded by a strong consonant
-    pattern_weak = rf"(?<![{strong_consonants}])([{weak_consonants}])(?=[{vowels}])"
-    text = re.sub(pattern_weak, rf"{divider}\1", text)
+    # Regra 3: Adicionar o divisor antes de cada dígrafo
+    for dígrafo in dígrafos:
+        padrao_dígrafo = rf"({dígrafo})"
+        texto = re.sub(padrao_dígrafo, rf"{divisor}\1", texto)
 
-    # Rule 3: Add the divider before every digraph
-    for digraph in digraphs:
-        pattern_digraph = rf"({digraph})"
-        text = re.sub(pattern_digraph, rf"{divider}\1", text)
+    # Regra 4: Adicionar o divisor entre cada hiato (vogal fraca seguida de vogal forte)
+    padrao_vogal_fraca_forte = rf"([{vogais}])([{vogais_fortes}])"
+    texto = re.sub(padrao_vogal_fraca_forte, rf"\1{divisor}\2", texto)
 
-    # Rule 4: Add the divider between every weak and strong vowel encounter
-    pattern_weak_strong_vowel = rf"([{vowels}])([{strong_vowels}])"
-    text = re.sub(pattern_weak_strong_vowel, rf"\1{divider}\2", text)
+    # Regra 5: Adicionar o divisor entre letras repetidas
+    padrao_letras_repetidas = rf"(\w)(\1)"
+    texto = re.sub(padrao_letras_repetidas, r"\1" + divisor + r"\2", texto)
 
-    # Exception 1: Prevent adding the divider before 'x' if followed by a weak consonant
-    pattern_x_weak = rf"(?<!{re.escape(divider)})(x)(?=[{weak_consonants}])"
-    text = re.sub(pattern_x_weak, r"\1", text)
+    # Exceção 1: Prevenir a adição do divisor antes de 'x' se seguido por uma consoante fraca
+    padrao_x_fraco = rf"(?<!{re.escape(divisor)})(x)(?=[{consoantes_fracas}])"
+    texto = re.sub(padrao_x_fraco, r"\1", texto)
 
-    # Exception 2: 'gu' and 'qu' expect a vowel after them
-    pattern_gu_qu = rf"(gu|qu){re.escape(divider)}"
-    text = re.sub(pattern_gu_qu, r"\1", text)
+    # Exceção 2: 'gu' e 'qu' esperam uma vogal após eles
+    padrao_gu_qu_vogal = rf"(?<=(gu|qu)){re.escape(divisor)}([{vogais_fortes}])"
+    texto = re.sub(padrao_gu_qu_vogal, r"\2", texto)
 
-    return text
+    # Exceção 3: Encontro de 3 vogais fracas seguidas
+    padrao_tres_fracas = rf"([{re.escape(vogais_fracas)}])([{re.escape(vogais_fracas)}])([{re.escape(vogais_fracas)}])"
+    texto = re.sub(padrao_tres_fracas, r"\1" + divisor + r"\2" + r"\3", texto)
 
-def clean_up(text, divider="-"):
-    # Clean-up Rule 1: If there is a divider before and after a strong consonant, remove the first
-    pattern_double_divider = rf"{re.escape(divider)}([{strong_consonants}]){re.escape(divider)}"
-    text = re.sub(pattern_double_divider, r"\1" + divider, text)
 
-    # Clean-up Rule 2: Remove multiple dividers
-    text = re.sub(rf"{re.escape(divider)}+", divider, text)
+    return texto
 
-    # Clean-up Rule 3: Remove leading dividers
-    text = text.lstrip(divider)
+def limpar_texto(texto, divisor="-"):
+    # Regra de Limpeza 1: Se houver um divisor antes e depois de uma consoante forte, remover o primeiro
+    padrao_divisor_duplo = rf"{re.escape(divisor)}([{consoantes_fortes}]){re.escape(divisor)}"
+    texto = re.sub(padrao_divisor_duplo, r"\1" + divisor, texto)
 
-    # Clean-up Rule 4: Remove misplaced spaces around dividers
-    text = text.replace(f" {divider}", " ")
-    text = text.replace(f"{divider} ", " ")
+    # Regra de Limpeza 2: Remover múltiplos divisores consecutivos
+    texto = re.sub(rf"{re.escape(divisor)}+", divisor, texto)
 
-    return text
+    # Regra de Limpeza 3: Remover divisores no início do texto
+    texto = texto.lstrip(divisor)
 
-def separate_word(text, divider="-"):
-    modified_text = apply_rules(text, divider)
-    return clean_up(modified_text, divider)
+    # Regra de Limpeza 4: Remover espaços incorretos ao redor dos divisores
+    texto = texto.replace(f" {divisor}", " ")
+    texto = texto.replace(f"{divisor} ", " ")
 
+    return texto
+
+def separar_palavra(texto, divisor="-"):
+    texto_modificado = aplicar_regras(texto, divisor)
+    return limpar_texto(texto_modificado, divisor)
 
 if __name__ == "__main__":
+    import tonic
     while True:
-        # Input text
-        text = input("Enter text: ")
-        separated_text = separate_word(text, "(g)")
-        separated_text = separated_text.replace(" ", "(g) ")
-    
-        print(separated_text)
+
+        # Exemplo de uso
+        texto = input("Digite uma palavra: ")
+        print()
+        texto_separado = separar_palavra(texto)
+        print(f"Texto original: {texto}")
+        print(f"Texto separado: {texto_separado}")
+        print(f"Sílaba tônica: '{texto}': {tonic.tonic(texto_separado.split('-'))}")
+        print()

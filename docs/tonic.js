@@ -20,7 +20,7 @@ function tonic(wordSeparated) {
     }
 
     const lastSyllable = wordSeparated[wordSeparated.length - 1];
-    const regex = /(i(s)?|u|z|im|us|r|l|x|n|um(s)?|ps|om|on(s)?)\W+?$/;
+    const regex = /(i(s)?|u|z|im|us|r|l|x|n|um(s)?|ps|om|on(s)?)(\W+)?$/;
 
     // Check for special case
     if (regex.test(lastSyllable)) {

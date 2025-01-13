@@ -26,13 +26,21 @@ function applyRules(text, divider = '-') {
     let patternWeakStrongVowel = new RegExp(`([${vowels}])([${strongVowels}])`, 'g');
     text = text.replace(patternWeakStrongVowel, `$1${divider}$2`);
 
+    // Rule 5: Add the divider between repeated letters
+    let patternRepeatedLetters = new RegExp(`(\w)($1)`, 'g');
+    text = text.replace(patternRepeatedLetters, `$1${divider}$2`);
+
     // Exception 1: Prevent adding the divider before 'x' if followed by a weak consonant
     let patternXWeak = new RegExp(`(?<!${divider})(x)(?=[${weakConsonants}])`, 'g');
     text = text.replace(patternXWeak, '$1');
 
     // Exception 2: 'gu' and 'qu' expect a vowel after them
-    let patternGuQu = new RegExp(`(gu|qu)${divider}`, 'g');
-    text = text.replace(patternGuQu, '$1');
+    let patternGuQu = new RegExp(`(?<=(gu|qu))${divider}([${strongVowels}])`, 'g');
+    text = text.replace(patternGuQu, '$2');
+
+    // Exception 3: Handle encounters of three consecutive weak vowels
+    let patternThreeWeakVowels = new RegExp(`([${weakVowels}])([${weakVowels}])([${weakVowels}])`, 'g');
+    text = text.replace(patternThreeWeakVowels, `$1${divider}$2$3`);
 
     return text;
 }
