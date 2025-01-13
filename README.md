@@ -7,7 +7,9 @@ Este projeto está passando por mudanças grandes para a versão 2.0:
 
 
 ### Como usar
-Abra o site do augustinus (em breve), e preencha o campo de modelo e o de texto
+1. Abra o site do augustinus, https://gigiodelchiaro.github.io/Augustinus/
+2. Insira o texto
+3. Insira a melodia (em breve)
 
 ## Links
 Gregorio - https://github.com/gregorio-project/gregorio  
