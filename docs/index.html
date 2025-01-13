@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Augustinus App</title>
+</head>
+<body>
+    <header>
+        <h1>Augustinus App</h1>
+        <div class="white">
+            <label>
+                <input type="checkbox" id="remove-numbers" checked>
+                Remove Numbers
+            </label>
+            <label>
+                <input type="checkbox" id="add-tonics">
+                Add tonics
+            </label>
+            <label>
+                <input type="checkbox" id="option3">
+                Option 3
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <form>
+            <label for="text">Text:</label><br>
+            <textarea id="text" name="text" rows="5" cols="40"></textarea><br><br>
+
+            <label for="melody">Melody:</label><br>
+            <textarea id="melody" name="melody" rows="5" cols="40"></textarea><br><br>
+
+            <label for="result">Result:</label><br>
+            <textarea id="result" name="result" rows="5" cols="40" disabled></textarea><br><br>
+
+            <button type="button" onclick="processText()">Generate</button>
+        </form>
+    </main>
+    <script src="syllable.js"></script>
+    <script src="tonic.js"></script>
+    <script>
+    /*
+    function separateWord(text, divider = '-') => string
+    function tonic([syllables]) => number
+    */
+    function processText() {
+        const textInput = document.getElementById('text').value;
+        const resultOutput = document.getElementById('result');
+        const removeNumbers = document.getElementById('remove-numbers').checked;
+        const addTonics = document.getElementById('add-tonics').checked;
+
+        let text = textInput;
+        if (removeNumbers) {
+            text = text.replace(/\d/gm, '');
+        }
+        if (addTonics) {
+            let words = text.split(" ");
+            let result = "";
+            for (let word of words) {
+                let separated = separateWord(word);
+                result += tonic(separated.split("-")) + separated + " ";
+            }
+            resultOutput.value = result;
+            return;
+        }
+        const processedText = separateWord(text);
+        resultOutput.value = processedText;
+    }
+    </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 import re
-import requests
+
 # Define character groups
-strong_consonants = 'bcdfgjkpqtvxç'
-weak_consonants = 'lmnrsz'
+strong_consonants = 'bcdfjkpqtvxç'
+weak_consonants = 'glmnrsz'
 strong_vowels = 'aeáéóàèòãẽõâêôäëöíúìùĩũîû'
 weak_vowels = 'iouïü'
 
