@@ -17,4 +17,3 @@ def tonic(word_separated):
     if re.search(pattern, last_syllable):
         return 1
     return 2
-#convert this python code to javascript
