@@ -20,13 +20,13 @@ function processText() {
             let syllables = separated.split("-");
             let tonicNumber = tonic(syllables);
             tonicNumber = syllables.length - tonicNumber;
-            syllables[tonicNumber] = syllables[tonicNumber] + "*";
+            syllables[tonicNumber] = "<b>" + syllables[tonicNumber] + "</b>";
 
             result += syllables.join("-") + " ";
         }
-        resultOutput.value = result;
+        resultOutput.innerHTML = result;
         return;
     }
     const processedText = separateWord(text);
-    resultOutput.value = processedText;
+    resultOutput.innerHTML = processedText;
 }
