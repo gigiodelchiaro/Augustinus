@@ -19,7 +19,7 @@ h1 {
 }
 
 form {
-    max-width: 800px;
+    max-width: 80%;
     margin: 20px auto;
     background-color: #fff;
     padding: 20px;
@@ -41,6 +41,7 @@ textarea {
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 1em;
+    font-family: 'EB Garamond';
 }
 
 button {
@@ -71,10 +72,7 @@ main {
 }
 
 /* Additional Styling for Textarea */
-textarea:disabled {
-    background-color: #f0f0f0;
-    color: #aaa;
-}
+
 
 textarea:focus {
     outline: none;
