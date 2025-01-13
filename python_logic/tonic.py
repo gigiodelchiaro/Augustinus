@@ -13,7 +13,8 @@ def tonic(word_separated):
             return i
     
     last_syllable = word_separated[-1]
-    if re.search(r'(i(s)?|u|z|im|us|r|l|x|n|um(s)?|ps|om|on(s)?)(\W+)?$', last_syllable):
+    pattern = r'(i(s)?|u|z|im|us|r|l|x|n|um(s)?|ps|om|on(s)?)\W+?$'
+    if re.search(pattern, last_syllable):
         return 1
     return 2
 #convert this python code to javascript
