@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script> <!--para separar silabas-->
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script> <!--para marcar silabas tônicas-->
+    <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
+    <!--para marcar silabas tônicas-->
     <script src="script.js"></script>
     <title>Augustinus</title>
 </head>
-<body>
+
+<body onload="updateChant()" onresize="layoutChant()">
     <header>
         <h1>Augustinus</h1>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/376px-Saint_Augustine_by_Philippe_de_Champaigne.jpg" alt="augustunus.jpg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/376px-Saint_Augustine_by_Philippe_de_Champaigne.jpg"
+            alt="augustunus.jpg">
         <div class="white">
             <label>
                 <input type="checkbox" id="remove-numbers" checked>
@@ -22,6 +26,14 @@
                 <input type="checkbox" id="add-tonics" checked>
                 Marcar sílabas tônicas
             </label>
+            <label>
+                <input type="checkbox" id="add-end" unchecked>
+                Incluir divisão no final
+            </label>
+            <label>
+                Separador: 
+                <input id="separator" value="-">
+            </label>
         </div>
     </header>
 
@@ -30,12 +42,24 @@
             <label for="text">Texto:</label><br>
             <textarea id="text" name="text" rows="5" cols="40"></textarea><br><br>
 
-            <label for="result">Resultado:</label><br>
-            <div id="result" name="result" class="result"></div><br><br>
+            <label for="model">Modelo:</label><br>
+            <textarea id="model" name="model" rows="5"
+                cols="40">(c4) (f) (gh) (:) (hr) (hr) (hr) (hr1) (gr) (g) (,) (hr) (hr) (hr) (g) (hr1) (fr) (f) (:) (hr) (hr) (hr) (f) (gh) (gr1) (fr) (f) (::)</textarea><br><br>
 
+            <label for="result">Texto separado:</label><br>
+            <div id="result" name="result" class="result"></div><br><br>
+            <label for="gabcSource">GabC:</label><br>
+            <textarea rows="10" cols="80" id="gabcSource"></textarea>
+            <div id="chant-container">
+            </div>
+            <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js">/* W3C Custom Elements */</script>
+            <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
+            <script type="text/javascript" src="gabc.js"></script>
             <button type="button" onclick="processText()">Gerar</button>
         </form>
     </main>
-    
+
 </body>
+
 </html>
