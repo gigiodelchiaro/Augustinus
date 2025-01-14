@@ -2,7 +2,7 @@ var rules;
 // Wait for the DOM to load
 document.addEventListener("DOMContentLoaded", async () => {
     // Load the rules from the JSON file
-    const rulesFile = "../rules.json"; // Update to your JSON file path
+    const rulesFile = "https://raw.githubusercontent.com/gigiodelchiaro/Augustinus/refs/heads/main/rules.json"; // Update to your JSON file path
     rules = await loadRules(rulesFile);
 });
 
