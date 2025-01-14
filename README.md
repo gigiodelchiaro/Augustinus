@@ -13,4 +13,4 @@ Este projeto está passando por mudanças grandes para a versão 2.0:
 
 ## Links
 Gregorio - https://github.com/gregorio-project/gregorio  
-
+Separador de sílabas - https://github.com/gigiodelchiaro/separador-silabas 
