@@ -33,7 +33,7 @@
         },
         {
             "nome": "excecao_uiu",
-            "regex": "(?<![gq])(u)(iu)",
+            "regex": "(?<![gq])(u)([{vogais}]+)",
             "replace": "{\\1}{divisor}{\\2}"
         },
         {
