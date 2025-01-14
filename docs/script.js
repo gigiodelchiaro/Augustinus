@@ -1,10 +1,4 @@
-var rules;
-// Wait for the DOM to load
-document.addEventListener("DOMContentLoaded", async () => {
-    // Load the rules from the JSON file
-    const rulesFile = "https://raw.githubusercontent.com/gigiodelchiaro/Augustinus/refs/heads/main/rules.json"; // Update to your JSON file path
-    rules = await loadRules(rulesFile);
-});
+
 
 function processText() {
     const textInput = document.getElementById('text').value;
@@ -12,9 +6,6 @@ function processText() {
     const removeNumbers = document.getElementById('remove-numbers').checked;
     const addTonics = document.getElementById('add-tonics').checked;
 
-    // Prepare patterns
-    preparePatterns(rules);
-    
     let text = " " + textInput;
     if (removeNumbers) {
         text = text.replace(/\d/gm, '');
@@ -23,9 +14,8 @@ function processText() {
         let words = text.split(" ");
         let result = "";
         for (let word of words) {
-            let separated = applyRules(word, rules)
-            let syllables = separated.split("-");
-            let tonicNumber = tonic(syllables);
+            let syllables = separarTexto(word).split("-");
+            let tonicNumber = tonica(syllables);
             tonicNumber = syllables.length - tonicNumber;
             syllables[tonicNumber] = "<b>" + syllables[tonicNumber] + "</b>";
 
