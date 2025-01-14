@@ -1,70 +1,40 @@
-// Define character groups
-const strongConsonants = 'bcdfjkpqtvxçBCDFJKPQTVCÇ';
-const weakConsonants = 'glmnrszGLMNRSZ';
-const strongVowels = 'aeáéóàèòãẽõâêôäëöíúìùĩũîûAEÁÉÓÀÈÒÃẼÕÂÊÔÄËÖÍÚÌÙĨŨÎÛ';
-const weakVowels = 'iouïüIOUÏÜ';
-
-const digraphs = ['nh', 'lh', 'ch', 'gu', 'qu'];
-const vowels = strongVowels + weakVowels;
-
-function applyRules(text, divider = '-') {
-    // Rule 1: Add the divider before any strong consonant
-    let patternStrong = new RegExp(`([${strongConsonants}])`, 'g');
-    text = text.replace(patternStrong, `${divider}$1`);
-
-    // Rule 2: Add the divider before any weak consonant if followed by a vowel and not preceded by a strong consonant
-    let patternWeak = new RegExp(`(?<![${strongConsonants}])([${weakConsonants}])(?=[${vowels}])`, 'g');
-    text = text.replace(patternWeak, `${divider}$1`);
-
-    // Rule 3: Add the divider before every digraph
-    for (let digraph of digraphs) {
-        let patternDigraph = new RegExp(`(${digraph})`, 'g');
-        text = text.replace(patternDigraph, `${divider}$1`);
-    }
-
-    // Rule 4: Add the divider between every weak and strong vowel encounter
-    let patternWeakStrongVowel = new RegExp(`([${vowels}])([${strongVowels}])`, 'g');
-    text = text.replace(patternWeakStrongVowel, `$1${divider}$2`);
-
-    // Rule 5: Add the divider between repeated letters
-    let patternRepeatedLetters = new RegExp(`(\w)($1)`, 'g');
-    text = text.replace(patternRepeatedLetters, `$1${divider}$2`);
-
-    // Exception 1: Prevent adding the divider before 'x' if followed by a weak consonant
-    let patternXWeak = new RegExp(`(?<!${divider})(x)(?=[${weakConsonants}])`, 'g');
-    text = text.replace(patternXWeak, '$1');
-
-    // Exception 2: 'gu' and 'qu' expect a vowel after them
-    let patternGuQu = new RegExp(`(?<=(gu|qu))${divider}([${strongVowels}])`, 'g');
-    text = text.replace(patternGuQu, '$2');
-
-    // Exception 3: Handle encounters of three consecutive weak vowels
-    let patternThreeWeakVowels = new RegExp(`([${weakVowels}])([${weakVowels}])([${weakVowels}])`, 'g');
-    text = text.replace(patternThreeWeakVowels, `$1${divider}$2$3`);
-
-    return text;
+// Function to load JSON rules file
+async function loadRules(filePath) {
+    const response = await fetch(filePath);
+    return await response.json();
 }
 
-function cleanUp(text, divider = '-') {
-    // Clean-up Rule 1: If there is a divider before and after a strong consonant, remove the first
-    let patternDoubleDivider = new RegExp(`${divider}([${strongConsonants}])${divider}`, 'g');
-    text = text.replace(patternDoubleDivider, `$1${divider}`);
+// Function to prepare patterns by substituting placeholders
+function preparePatterns(rules) {
+    const vogais = rules.vogais_fortes + rules.vogais_fracas;
+    const digrafos = rules.digrafos;
 
-    // Clean-up Rule 2: Remove multiple dividers
-    let patternMultipleDividers = new RegExp(`${divider}+`, 'g');
-    text = text.replace(patternMultipleDividers, divider);
+    rules.padroes.forEach(pattern => {
+        // Replace placeholders in regex
+        pattern.regex = pattern.regex
+            .replace("{consoantes_fortes}", rules.consoantes_fortes)
+            .replace("{consoantes_fracas}", rules.consoantes_fracas)
+            .replace("{vogais}",vogais)
+            .replace("{vogais_fortes}", rules.vogais_fortes)
+            .replace("{digrafos}", digrafos)
+            .replace("{divisor}", rules.divisor);
 
-    // Clean-up Rule 3: Remove leading dividers
-    text = text.replace(new RegExp(`^${divider}+`), '');
+        // Replace placeholders in replacement string
+        pattern.replace = pattern.replace
+            .replace("{divisor}", rules.divisor)
+            .replace("{\\1}", "$1")
+            .replace("{\\2}", "$2")
+            .replace("{\\3}", "$3")
 
-    // Clean-up Rule 4: Remove misplaced spaces around dividers
-    text = text.replace(new RegExp(` ${divider}`, 'g'), ' ');
-    text = text.replace(new RegExp(`${divider} `, 'g'), ' ');
-
-    return text;
+    });
+    return rules;
 }
 
-function separateWord(text, divider = '-') {
-    let modifiedText = applyRules(text, divider);
-    return cleanUp(modifiedText, divider);
+// Function to apply rules to the input text
+function applyRules(text, rules) {
+    rules.padroes.forEach(pattern => {
+        const regex = new RegExp(pattern.regex, 'g');
+        text = text.replace(regex, pattern.replace);
+    });
+    return text;
 }

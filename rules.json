@@ -1,0 +1,76 @@
+{
+    "vogais_fracas": "iouïöüIOUÏÖÜ",
+    "vogais_fortes": "aeáéóàèòãẽõâêôäëöíúìùĩũîûAEÁÉÓÀÈÒÃẼÕÂÊÔÄËÖÍÚÌÙĨŨÎÛ",
+    "consoantes_fortes": "bcfjkpqtvxçBCFJKPQTVCÇ",
+    "consoantes_fracas": "dglmnrszDGLMNRSZ",
+    "digrafos": "ch|nh|gu|qu|lh",
+    "divisor":  "-",
+    "padroes":[
+        {
+        "nome": "consoantes_fortes",
+        "regex": "([{consoantes_fortes}])",
+        "replace": "{divisor}{\\1}"
+        },
+        {
+            "nome": "consoantes_fracas",
+            "regex": "(?<![{consoantes_fortes}])([{consoantes_fracas}])(?=[{vogais}])",
+            "replace": "{divisor}{\\1}"
+        },
+        {
+            "nome": "digrafo",
+            "regex": "({digrafos})",
+            "replace": "{divisor}{\\1}"
+        },
+        {
+            "nome": "hiato",
+            "regex": "([{vogais}])(?=[{vogais_fortes}])",
+            "replace": "{\\1}{divisor}"
+        },
+        {
+            "nome": "letras_repetidas",
+            "regex": "(\\w)(\\1)",
+            "replace": "{\\1}{divisor}{\\1}"
+        },
+        {
+            "nome": "x",
+            "regex": "(?<!{divisor})(x)(?=[{consoantes_fracas}])",
+            "replace": "{\\1}"
+        },
+        {
+            "nome": "excecao_gu_qu",
+            "regex": "(?<=(gu|qu)){divisor}([{vogais_fortes}])",
+            "replace": "{\\2}"
+        },
+        {
+            "nome": "excecao_a-um",
+            "regex": "(a)(um)([^{vogais}]|$)",
+            "replace": "{\\1}{divisor}{\\2}"
+        },
+        {
+            "nome": "limpeza_consoantes_fortes",
+            "regex": "{divisor}([{consoantes_fortes}]){divisor}",
+            "replace": "{\\1}{divisor}"
+        },
+        {
+            "nome": "limpeza_separador_duplo",
+            "regex": "{divisor}{divisor}",
+            "replace": "{divisor}"
+        },
+        {
+            "nome": "limpeza_espaco_antes",
+            "regex": " {divisor}",
+            "replace": " "
+        },
+        {
+            "nome": "limpeza_espaco_depois",
+            "regex": "{divisor} ",
+            "replace": " "
+        },
+        {
+            "nome": "limpeza_comeco_string",
+            "regex": "^{divisor}",
+            "replace": ""
+        }
+        
+    ]
+}

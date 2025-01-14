@@ -1,14 +1,21 @@
-/*
-function separateWord(text, divider = '-') => string
-function tonic([syllables]) => number
-*/
+var rules;
+// Wait for the DOM to load
+document.addEventListener("DOMContentLoaded", async () => {
+    // Load the rules from the JSON file
+    const rulesFile = "../rules.json"; // Update to your JSON file path
+    rules = await loadRules(rulesFile);
+});
+
 function processText() {
     const textInput = document.getElementById('text').value;
     const resultOutput = document.getElementById('result');
     const removeNumbers = document.getElementById('remove-numbers').checked;
     const addTonics = document.getElementById('add-tonics').checked;
 
-    let text = textInput;
+    // Prepare patterns
+    preparePatterns(rules);
+    
+    let text = " " + textInput;
     if (removeNumbers) {
         text = text.replace(/\d/gm, '');
     }
@@ -16,7 +23,7 @@ function processText() {
         let words = text.split(" ");
         let result = "";
         for (let word of words) {
-            let separated = separateWord(word, "-");
+            let separated = applyRules(word, rules)
             let syllables = separated.split("-");
             let tonicNumber = tonic(syllables);
             tonicNumber = syllables.length - tonicNumber;
@@ -30,3 +37,4 @@ function processText() {
     const processedText = separateWord(text);
     resultOutput.innerHTML = processedText;
 }
+
