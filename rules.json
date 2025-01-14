@@ -32,7 +32,12 @@
             "replace": "{\\1}{divisor}{\\1}"
         },
         {
-            "nome": "x",
+            "nome": "excecao_uiu",
+            "regex": "(?<![gq])(u)(iu)",
+            "replace": "{\\1}{divisor}{\\2}"
+        },
+        {
+            "nome": "excecao_x",
             "regex": "(?<!{divisor})(x)(?=[{consoantes_fracas}])",
             "replace": "{\\1}"
         },
