@@ -109,7 +109,12 @@ function processText() {
             else {
                 let syllables_to_add = remaining_syllables.slice(tonic_last_note*(-1) + 1);
                 for (let i = 0; i < syllables_to_add.length; i++) {
-                    gabc += syllables_to_add.shift() + middle_note;
+                    if (middle_note) {
+                        gabc += syllables_to_add.shift() + middle_note;
+                    }
+                    else {
+                        gabc += syllables_to_add.shift() + last_note;
+                    }
                 }
                 gabc += syllables_to_add.shift() + last_note;
             }
