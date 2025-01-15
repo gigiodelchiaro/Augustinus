@@ -23,16 +23,16 @@
                 Remover números
             </label>
             <label>
-                <input type="checkbox" id="add-tonics" checked>
+                <input type="checkbox" id="add-tonics" unchecked>
                 Marcar sílabas tônicas
             </label>
             <label>
-                <input type="checkbox" id="add-end" unchecked>
+                <input type="checkbox" id="add-end" checked>
                 Incluir divisão no final
             </label>
             <label>
                 Separador: 
-                <input id="separator" value="-">
+                <input id="separator" value="@">
             </label>
         </div>
     </header>
@@ -40,18 +40,19 @@
     <main>
         <form>
             <label for="text">Texto:</label><br>
-            <textarea id="text" name="text" rows="5" cols="40"></textarea><br><br>
+            <textarea id="text" name="text" rows="5" cols="40">Teste de separação de sílabas</textarea><br><br>
 
             <label for="model">Modelo:</label><br>
             <textarea id="model" name="model" rows="5"
-                cols="40">(c4) (f) (gh) (:) (hr) (hr) (hr) (hr1) (gr) (g) (,) (hr) (hr) (hr) (g) (hr1) (fr) (f) (:) (hr) (hr) (hr) (f) (gh) (gr1) (fr) (f) (::)</textarea><br><br>
-
+                cols="40">(c4) (f) (gh) (:) (hr) (hr) (hr) (g) (hr1) (fr) (f)</textarea><br><br>
+            <!--(c4) (f) (gh) (:) (hr) (hr) (hr) (hr1) (gr) (g) (,) (hr) (hr) (hr) (g) (hr1) (fr) (f) (:) (hr) (hr) (hr) (f) (gh) (gr1) (fr) (f) (::)-->
             <label for="result">Texto separado:</label><br>
             <div id="result" name="result" class="result"></div><br><br>
             <label for="gabcSource">GabC:</label><br>
             <textarea rows="10" cols="80" id="gabcSource"></textarea>
-            <div id="chant-container">
-            </div>
+            <div id="chant-container"></div>
+            <textarea rows="10" cols="80" id="gabcSource"></textarea>
+            <div id="chant-container"></div>
             <script
                 src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js">/* W3C Custom Elements */</script>
             <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
