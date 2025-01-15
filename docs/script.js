@@ -2,8 +2,7 @@
 var clefs = ["c1", "c2", "c3", "c4", "f2", "f3", "f4", "cb3"];
 var notes = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"];
 
-function note_merge(string1, string2)
-{
+function note_merge(string1, string2) {
     return string1.replace(")", "") + string2.replace("(", "");
 }
 function processText() {
@@ -18,13 +17,13 @@ function processText() {
     const gabcSource = document.getElementById('gabcSource');
 
     const model = document.getElementById('model').value;
-    
+
     let text = textInput;
-    
+
     const all_symbols = model.match(/\(\S+\)/gm);
-    
+
     let final = ""
-    
+
     if (removeNumbers) {
         text = text.replace(/\d/gm, '');
     }
@@ -65,27 +64,24 @@ function processText() {
     remaining_symbols.shift();
     while (remaining_symbols.length > 0) {
         let symbol = all_symbols[0];
-        if (symbol.match(note_pattern))
-        {
-            if (hit_generic_note){
+        if (symbol.match(note_pattern)) {
+            if (hit_generic_note) {
                 notes_before_tonic.push(symbol);
             }
-            else{
+            else {
                 gabc += remaining_syllables.shift() + symbol;
             }
             remaining_symbols.shift();
         }
-        else if (symbol.match(generic_note_pattern))
-        {
-            if(!hit_generic_note){
+        else if (symbol.match(generic_note_pattern)) {
+            if (!hit_generic_note) {
                 generic_note = symbol;
                 gabc += symbol;
                 hit_generic_note = true;
             }
             remaining_symbols.shift();
         }
-        else if (symbol.match(tonic_pattern))
-        {
+        else if (symbol.match(tonic_pattern)) {
             remaining_symbols.shift();
             let last_symbols = remaining_symbols.join(" ");
             symbol = symbol.replace("r1", "");
@@ -94,27 +90,21 @@ function processText() {
             last_symbols = last_symbols.replace(generic_note_pattern, "");
             last_note = last_symbols.match(note_pattern)[0];
 
-            
-            if (tonic_last_note == 1){
 
-                
+            if (tonic_last_note == 1) {
+
                 gabc = gabc.slice(0, -1);
                 gabc += last_note.replace("(", "");
             }
-            else if (tonic_last_note == 2){
+            else if (tonic_last_note == 2) {
 
                 gabc += remaining_syllables[remaining_syllables.length - tonic_last_note + 1] + last_note;
                 remaining_syllables.pop();
             }
             else {
-                let syllables_to_add = remaining_syllables.slice(tonic_last_note*(-1) + 1);
+                let syllables_to_add = remaining_syllables.slice(tonic_last_note * (-1) + 1);
                 for (let i = 0; i < syllables_to_add.length; i++) {
-                    if (middle_note) {
-                        gabc += syllables_to_add.shift() + middle_note;
-                    }
-                    else {
-                        gabc += syllables_to_add.shift() + last_note;
-                    }
+                    gabc += syllables_to_add.shift() + middle_note;
                 }
                 gabc += syllables_to_add.shift() + last_note;
             }
@@ -128,14 +118,14 @@ function processText() {
             hit_last_note = true;
             break;
         }
-        else if (!hit_last_note){
+        else if (!hit_last_note) {
             gabc += symbol;
             remaining_symbols.shift();
         }
         else {
             remaining_symbols.shift();
         }
-        
+
     }
     note_to_add = generic_note.replace("r", "");
     while (remaining_syllables.length > notes_before_tonic.length) {
@@ -145,8 +135,7 @@ function processText() {
 
     while (remaining_syllables.length > 0) {
         let note = notes_before_tonic.shift();
-        if (note == undefined)
-        {
+        if (note == undefined) {
             note = note_to_add;
         }
         let index = gabc.match(generic_note).index - 1;
