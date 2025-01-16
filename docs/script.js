@@ -6,6 +6,7 @@ function note_merge(string1, string2) {
     return string1.replace(")", "") + string2.replace("(", "");
 }
 function processText() {
+
     const separator = "@";
     definirSeparador(separator);
 
@@ -14,7 +15,7 @@ function processText() {
     const removeNumbers = document.getElementById('remove-numbers').checked;
     const addTonics = document.getElementById('add-tonics').checked;
     const addEnd = document.getElementById('add-end').checked;
-    const gabcSource = document.getElementById('gabcSource');
+    const gabcSource = document.getElementById('gabc');
 
     const model = document.getElementById('model').value;
 
@@ -52,7 +53,7 @@ function processText() {
     const note_pattern = `\\([${notes.join("")}]+\\)`;
     const tonic_pattern = `\\([${notes.join("")}]+r1\\)`;
     const generic_note_pattern = `\\([${notes.join("")}]+r\\)`;
-    let gabc = all_symbols[0] + " ";
+    let gabc = "";
     let remaining_syllables = all_syllables;
     let hit_generic_note = false;
     let hit_last_note = false;
@@ -61,7 +62,6 @@ function processText() {
     let generic_note = "";
     let remaining_symbols = all_symbols;
     let notes_before_tonic = [];
-    remaining_symbols.shift();
     while (remaining_symbols.length > 0) {
         let symbol = all_symbols[0];
         if (symbol.match(note_pattern)) {
@@ -96,14 +96,10 @@ function processText() {
                 gabc = gabc.slice(0, -1);
                 gabc += last_note.replace("(", "");
             }
-            else if (tonic_last_note == 2) {
 
-                gabc += remaining_syllables[remaining_syllables.length - tonic_last_note + 1] + last_note;
-                remaining_syllables.pop();
-            }
             else {
                 let syllables_to_add = remaining_syllables.slice(tonic_last_note * (-1) + 1);
-                for (let i = 0; i < syllables_to_add.length; i++) {
+                for (let i = 1; i < syllables_to_add.length; i++) {
                     gabc += syllables_to_add.shift() + middle_note;
                 }
                 gabc += syllables_to_add.shift() + last_note;
@@ -144,6 +140,7 @@ function processText() {
     gabc = gabc.replace(generic_note, "");
     resultOutput.innerHTML = final;
     gabcSource.value = gabc;
-    updateChant()
+    initializeAndLayoutChant("gabc", "svg-final");
+    initializeAndLayoutChant("model", "svg-model");
 }
 

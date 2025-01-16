@@ -5,14 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script> <!--para separar silabas-->
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
-    <!--para marcar silabas tônicas-->
-    <script src="script.js"></script>
+
     <title>Augustinus</title>
 </head>
 
-<body onload="updateChant()" onresize="layoutChant()">
+<body>
     <header>
         <h1>Augustinus</h1>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/376px-Saint_Augustine_by_Philippe_de_Champaigne.jpg"
@@ -31,7 +28,7 @@
                 Incluir divisão no final
             </label>
             <label>
-                Separador: 
+                Separador:
                 <input id="separator" value="@">
             </label>
         </div>
@@ -40,7 +37,7 @@
     <main>
         <form>
             <label for="text">Texto:</label><br>
-            <textarea id="text" name="text" rows="5" cols="40">Teste de separação de sílabas</textarea><br><br>
+            <textarea id="text" name="text" rows="5" cols="40">Teste de separação de teste</textarea><br><br>
 
             <label for="model">Modelo:</label><br>
             <textarea id="model" name="model" rows="5"
@@ -49,18 +46,20 @@
             <label for="result">Texto separado:</label><br>
             <div id="result" name="result" class="result"></div><br><br>
             <label for="gabcSource">GabC:</label><br>
-            <textarea rows="10" cols="80" id="gabcSource"></textarea>
-            <div id="chant-container"></div>
-            <textarea rows="10" cols="80" id="gabcSource"></textarea>
-            <div id="chant-container"></div>
-            <script
-                src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js">/* W3C Custom Elements */</script>
-            <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
-            <script type="text/javascript" src="gabc.js"></script>
+            <textarea rows="10" cols="80" id="gabc" name="gabcSource"></textarea>
+            <div id="svg-model"></div>
+            <div id="svg-final"></div>
+
             <button type="button" onclick="processText()">Gerar</button>
         </form>
     </main>
-
+    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script> <!--para separar silabas-->
+    <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js">/* W3C Custom Elements */</script>
+    <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
+    <script type="text/javascript" src="gabc.js"></script>
+    <!--para marcar silabas tônicas-->
+    <script src="script.js"></script>
 </body>
 
 </html>
