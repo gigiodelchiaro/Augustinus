@@ -20,45 +20,74 @@
                 Remover números
             </label>
             <label>
-                <input type="checkbox" id="add-tonics" unchecked>
-                Marcar sílabas tônicas
+                Modelo
+                <select id="models" onchange="setModel()">
+                    <option value="">Personalizado</option>
+                    <option
+                        value="(c4) (f) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (ixir1) (h)(hr) (gr1)(hr) (h) *(,) (hr hr hr) (g) (f) (gr1) (hr) (h) (:Z) ">
+                        I</option>
+                    <option
+                        value="(f3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f_) + (,) (hr hr hr) (ir1) (hr) (h) * (;) (hr hr hr) (g) (er) (er1f) (f) (:Z) ">
+                        II</option>
+                    <option
+                        value="(c4) (g) (hi) (ir ir ir) (ir1) (hr) (h) + (,) (ir ir ir) (kr1) (jr) (j) (jr) (ih) (j) * (;) (ir ir ir) (jr1) (hr) (h) (jr1)(jr) (ih) (:Z)">
+                        III</option>
+                    <option
+                        value="(c4) (h) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (g) (h) (ir1)(hr) (h) * (;) (hr hr hr) (g) (h) (ih) (gr) (gf) (e)(:Z) ">
+                        IV</option>
+                    <option
+                        value="(c3) (d) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (ir1) (gr) (g) (hr1 fr) (f) (:Z)">
+                        V</option>
+                    <option
+                        value="(c4)(f)(gh)(h)(hr hr hr) (hr1)(gr) (g_) + (,) (h) (hr hr hr) (g) (hr1)(fr)(f) * (;) (h) (hr hr hr) (f) (gh) (gr1)(fr)(f) (:Z) ">
+                        VI</option>
+                    <option
+                        value="(c3)(hg)(hi)(ir ir ir) (ir1) (hr) (h_) + (,) (ir ir ir) (kr1 jr) (j) (ir1 jr) (j) (;) (ir ir ir) (jr1 ir) (i) (hr1 hr) (gf) (:Z)">
+                        VII</option>
+                    <option
+                        value="(c3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (f) (h) (ir1 hr) (h) (:Z) ">
+                        VIII</option>
+                    
+                </select>
+                
             </label>
-            <label>
-                <input type="checkbox" id="add-end" checked>
-                Incluir divisão no final
-            </label>
-            <label>
-                Separador:
-                <input id="separator" value="@">
-            </label>
+            <!--
+            I. (c4) (f) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (ixir1) (h)(hr) (gr1)(hr) (h) *(,) (hr hr hr) (g) (f) (gr1) (hr) (h) (:Z)             
+            II. (f3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f_) + (,) (hr hr hr) (ir1) (hr) (h) * (;) (hr hr hr) (g) (er) (er1f) (f) (:Z) 
+            III. (c4) (g) (hi) (ir ir ir) (ir1) (hr) (h) + (,) (ir ir ir) (kr1) (jr) (j) (jr) (ih) (j) * (;) (ir ir ir) (jr1) (hr) (h) (jr1)(jr) (ih) (:Z)
+            IV. (c4) (h) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (g) (h) (ir1)(hr) (h) * (;) (hr hr hr) (g) (h) (ih) (gr) (gf) (e)(:Z) 
+            V. (c3) (d) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (ir1) (gr) (g) (hr1 fr) (f) (:Z)
+            VI. (c4)(f)(gh)(h)(hr hr hr) (hr1)(gr) (g_) + (,) (h) (hr hr hr) (g) (hr1)(fr)(f) * (;) (h) (hr hr hr) (f) (gh) (gr1)(fr)(f) (:Z) 
+            VII. (c3)(hg)(hi)(ir ir ir) (ir1) (hr) (h_) + (,) (ir ir ir) (kr1 jr) (j) (ir1 jr) (j) (;) (ir ir ir) (jr1 ir) (i) (hr1 hr) (gf) (:Z)
+            VIII. (c3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (f) (h) (ir1 hr) (h) (:Z) 
+            -->
         </div>
     </header>
 
     <main>
         <form>
             <label for="text">Texto:</label><br>
-            <textarea id="text" name="text" rows="5" cols="40">Teste de separação de teste</textarea><br><br>
+            <textarea id="text" name="text" rows="5" cols="40"></textarea><br><br>
 
             <label for="model">Modelo:</label><br>
-            <textarea id="model" name="model" rows="5"
-                cols="40">(c4) (f) (gh) (:) (hr) (hr) (hr) (g) (hr1) (fr) (f)</textarea><br><br>
-            <!--(c4) (f) (gh) (:) (hr) (hr) (hr) (hr1) (gr) (g) (,) (hr) (hr) (hr) (g) (hr1) (fr) (f) (:) (hr) (hr) (hr) (f) (gh) (gr1) (fr) (f) (::)-->
-            <label for="result">Texto separado:</label><br>
-            <div id="result" name="result" class="result"></div><br><br>
+            <textarea id="model" name="model" rows="5" cols="40"></textarea><br><br>
+
+            <div id="svg-model"></div>
+
             <label for="gabcSource">GabC:</label><br>
             <textarea rows="10" cols="80" id="gabc" name="gabcSource"></textarea>
-            <div id="svg-model"></div>
+
             <div id="svg-final"></div>
 
             <button type="button" onclick="processText()">Gerar</button>
         </form>
     </main>
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script> <!--para separar silabas-->
+    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script>
     <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js">/* W3C Custom Elements */</script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>
     <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
     <script type="text/javascript" src="gabc.js"></script>
-    <!--para marcar silabas tônicas-->
     <script src="script.js"></script>
 </body>
 

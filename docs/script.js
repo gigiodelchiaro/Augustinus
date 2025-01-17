@@ -1,69 +1,56 @@
 
-var clefs = ["c1", "c2", "c3", "c4", "f2", "f3", "f4", "cb3"];
-var notes = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"];
-
-function note_merge(string1, string2) {
-    return string1.replace(")", "") + string2.replace("(", "");
+function setModel() {
+    document.getElementById('model').innerHTML = document.getElementById("models").value;
+    initializeAndLayoutChant("model", "svg-model");
 }
+
+
 function processText() {
 
     const separator = "@";
     definirSeparador(separator);
 
     const textInput = document.getElementById('text').value;
-    const resultOutput = document.getElementById('result');
     const removeNumbers = document.getElementById('remove-numbers').checked;
-    const addTonics = document.getElementById('add-tonics').checked;
-    const addEnd = document.getElementById('add-end').checked;
     const gabcSource = document.getElementById('gabc');
 
     const model = document.getElementById('model').value;
 
     let text = textInput;
 
-    const all_symbols = model.match(/\(\S+\)/gm);
+    const all_symbols = model.match(/\([^\(\)]+\)/gm);
 
     let final = ""
 
     if (removeNumbers) {
         text = text.replace(/\d/gm, '');
     }
-    if (addTonics) {
-        let words = text.split(/\s+/gm);
-        let result = "";
-        for (let word of words) {
-            let syllables = separarTexto(word).split(separator);
-            let tonicNumber = tonica(syllables);
-            tonicNumber = syllables.length - tonicNumber;
-            syllables[tonicNumber] = "<b>" + syllables[tonicNumber] + "</b>";
-            result += syllables.join(separator)
-            if (addEnd) {
-                result += separator;
-            }
-            result += " ";
 
-        }
-        final = result;
-    }
-    else {
-        const processedText = separarTexto(text).replaceAll(" ", separator + " ");
-        final = processedText
-    }
+    const processedText = separarTexto(text).replaceAll(" ", separator + " ");
+    final = processedText
+
     let all_syllables = final.split(separator);
-    const note_pattern = `\\([${notes.join("")}]+\\)`;
-    const tonic_pattern = `\\([${notes.join("")}]+r1\\)`;
-    const generic_note_pattern = `\\([${notes.join("")}]+r\\)`;
+
+    const note_pattern = /[a-m][^\dr]/;
+    const tonic_pattern = /\([^\s]+r1\)/;
+    const generic_note_pattern = /\(([a-z]r\s?)+\)/;
+
     let gabc = "";
     let remaining_syllables = all_syllables;
+
     let hit_generic_note = false;
     let hit_last_note = false;
+
     let words = final.split(" ");
     let tonic_last_note = tonica(words[words.length - 1].split(separator));
+
     let generic_note = "";
     let remaining_symbols = all_symbols;
     let notes_before_tonic = [];
+
     while (remaining_symbols.length > 0) {
-        let symbol = all_symbols[0];
+        let symbol = remaining_symbols[0];
+
         if (symbol.match(note_pattern)) {
             if (hit_generic_note) {
                 notes_before_tonic.push(symbol);
@@ -75,7 +62,7 @@ function processText() {
         }
         else if (symbol.match(generic_note_pattern)) {
             if (!hit_generic_note) {
-                generic_note = symbol;
+                generic_note = "(" + symbol.match(/[a-m]/) + ")";
                 gabc += symbol;
                 hit_generic_note = true;
             }
@@ -88,7 +75,7 @@ function processText() {
             gabc += remaining_syllables[remaining_syllables.length - tonic_last_note] + symbol;
             let middle_note = last_symbols.match(generic_note_pattern)[0].replace("r", "");
             last_symbols = last_symbols.replace(generic_note_pattern, "");
-            last_note = last_symbols.match(note_pattern)[0];
+            last_note = "(" + last_symbols.match(note_pattern)[0];
 
 
             if (tonic_last_note == 1) {
@@ -123,22 +110,18 @@ function processText() {
         }
 
     }
-    note_to_add = generic_note.replace("r", "");
+
     while (remaining_syllables.length > notes_before_tonic.length) {
-        let index = gabc.match(generic_note).index - 1;
-        gabc = gabc.slice(0, index) + remaining_syllables.shift() + note_to_add + gabc.slice(index);
+        let index = gabc.match(generic_note_pattern).index;
+        gabc = gabc.slice(0, index) + remaining_syllables.shift() + generic_note + gabc.slice(index);
     }
 
     while (remaining_syllables.length > 0) {
-        let note = notes_before_tonic.shift();
-        if (note == undefined) {
-            note = note_to_add;
-        }
-        let index = gabc.match(generic_note).index - 1;
-        gabc = gabc.slice(0, index) + remaining_syllables.shift() + note + gabc.slice(index);
+        let index = gabc.match(generic_note_pattern).index;
+        gabc = gabc.slice(0, index) + remaining_syllables.shift() + notes_before_tonic.shift() + gabc.slice(index);
     }
-    gabc = gabc.replace(generic_note, "");
-    resultOutput.innerHTML = final;
+    gabc = gabc.replace(generic_note_pattern, "");
+    gabc = gabc.replace(generic_note_pattern, "");
     gabcSource.value = gabc;
     initializeAndLayoutChant("gabc", "svg-final");
     initializeAndLayoutChant("model", "svg-model");
