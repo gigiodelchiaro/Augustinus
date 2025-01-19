@@ -42,3 +42,26 @@ function initializeAndLayoutChant(gabcSourceId, chantContainerId) {
 
     gabcSource.addEventListener('input', updateChant);  // Optional: Update chant on input change
 }
+
+function updateAll() {
+    const gabcElements = document.getElementsByClassName('gabc-source');
+    const chantElements = document.getElementsByClassName('chant-container');
+    for (let i = 0; i < gabcElements.length; i++) {
+            const gabcElement = gabcElements[i];
+            const gabcClasses = Array.from(gabcElement.classList);
+            for (let j = 0; j < chantElements.length; j++) {
+                const chantElement = chantElements[j];
+                const chantClasses = Array.from(chantElement.classList);
+                // Check if elements share the same classes (excluding the base classes)
+                const gabcOtherClasses = gabcClasses.filter(c => c !== 'gabc-source' && c !== 'gabc');
+                const chantOtherClasses = chantClasses.filter(c => c !== 'chant-container' && c !== 'gabc');
+                
+                if (gabcOtherClasses.length === chantOtherClasses.length &&
+                    gabcOtherClasses.every(c => chantOtherClasses.includes(c))) {
+                    initializeAndLayoutChant(gabcElement.id, chantElement.id);
+                    break;
+                }
+            }
+        }
+    
+}

@@ -9,7 +9,7 @@
     <title>Augustinus</title>
 </head>
 
-<body>
+<body onresize="updateAll()">
     <header>
         <h1>Augustinus</h1>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/376px-Saint_Augustine_by_Philippe_de_Champaigne.jpg"
@@ -48,7 +48,15 @@
                     <option
                         value="(c3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (f) (h) (ir1 hr) (h) (:Z) ">
                         VIII</option>
-                    
+                    <option
+                        value="(c4) (g) (hr hr hr) (hr1) (gr) (g) + (:) (g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)">
+                        Tom Solene</option>
+                    <option
+                        value="(c4) (::)">
+                        Tom Simples A</option>
+                    <option
+                        value="(c4) (::)">
+                        Tom Simples B</option>
                 </select>
                 
             </label>
@@ -79,12 +87,12 @@
             <label for="model">Modelo:</label><br>
             <textarea id="model" name="model" rows="5" cols="40"></textarea><br><br>
 
-            <div id="svg-model" class="gabc"></div>
+            <div id="svg-model" class="gabc model chant-container"></div>
 
             <label for="gabcSource">GabC:</label><br>
-            <textarea rows="10" cols="80" id="gabc" name="gabcSource"></textarea>
+            <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final"></textarea>
 
-            <div id="svg-final" class="gabc"></div>
+            <div id="svg-final" class="gabc final chant-container"></div>
 
             <button type="button" onclick="processText()">Gerar</button>
         </form>
