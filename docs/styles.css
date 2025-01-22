@@ -90,3 +90,6 @@ a {
 .gabc {
     width: 100%;
 }
+.advanced {
+    display: none;
+}

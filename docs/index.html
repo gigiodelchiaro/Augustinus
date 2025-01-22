@@ -15,51 +15,32 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/376px-Saint_Augustine_by_Philippe_de_Champaigne.jpg"
             alt="augustunus.jpg">
         <div class="white">
-            
+
             <label>
                 <input type="checkbox" id="remove-numbers" checked>
                 Remover números
             </label>
             <label>
-                Modelo
-                <select id="models" onchange="setModel()">
-                    <option value="">Personalizado</option>
-                    <option
-                        value="(c4) (f) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (ixir1) (h)(hr) (gr1)(hr) (h) *(,) (hr hr hr) (g) (f) (gr1) (hr) (h) (:Z) ">
-                        I</option>
-                    <option
-                        value="(f3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f_) + (,) (hr hr hr) (ir1) (hr) (h) * (;) (hr hr hr) (g) (er) (er1f) (f) (:Z) ">
-                        II</option>
-                    <option
-                        value="(c4) (g) (hi) (ir ir ir) (ir1) (hr) (h) + (,) (ir ir ir) (kr1) (jr) (j) (jr) (ih) (j) * (;) (ir ir ir) (jr1) (hr) (h) (jr1)(jr) (ih) (:Z)">
-                        III</option>
-                    <option
-                        value="(c4) (h) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (g) (h) (ir1)(hr) (h) * (;) (hr hr hr) (g) (h) (ih) (gr) (gf) (e)(:Z) ">
-                        IV</option>
-                    <option
-                        value="(c3) (d) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (ir1) (gr) (g) (hr1 fr) (f) (:Z)">
-                        V</option>
-                    <option
-                        value="(c4)(f)(gh)(h)(hr hr hr) (hr1)(gr) (g_) + (,) (h) (hr hr hr) (g) (hr1)(fr)(f) * (;) (h) (hr hr hr) (f) (gh) (gr1)(fr)(f) (:Z) ">
-                        VI</option>
-                    <option
-                        value="(c3)(hg)(hi)(ir ir ir) (ir1) (hr) (h_) + (,) (ir ir ir) (kr1 jr) (j) (ir1 jr) (j) (;) (ir ir ir) (jr1 ir) (i) (hr1 hr) (gf) (:Z)">
-                        VII</option>
-                    <option
-                        value="(c3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (f) (h) (ir1 hr) (h) (:Z) ">
-                        VIII</option>
-                    <option
-                        value="(c4) (g) (hr hr hr) (hr1) (gr) (g) + (:) (g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)">
-                        Tom Solene</option>
-                    <option
-                        value="(c4) (::)">
-                        Tom Simples A</option>
-                    <option
-                        value="(c4) (::)">
-                        Tom Simples B</option>
-                </select>
-                
+                <input type="checkbox" id="advanced" unchecked>
+                Modo avançado
             </label>
+            <label>
+                Tipo de canto
+                <select id="chant-type">
+                    <option value="normal">
+                        Normal</option>
+                    <option value="">
+                        Salmo (em breve)</option>
+                    <option value="">
+                        Prefácio (em breve)</option>
+                    <option value="">
+                        Evangelho (em breve)</option>
+                    <option value="">Personalizado</option>
+
+                </select>
+
+            </label>
+
             <!--
             I. (c4) (f) (gh) (hr hr hr) (hr1) (gr) (g) + (,) (hr hr hr) (ixir1) (h)(hr) (gr1)(hr) (h) *(,) (hr hr hr) (g) (f) (gr1) (hr) (h) (:Z)             
             II. (f3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f_) + (,) (hr hr hr) (ir1) (hr) (h) * (;) (hr hr hr) (g) (er) (er1f) (f) (:Z) 
@@ -69,32 +50,51 @@
             VI. (c4)(f)(gh)(h)(hr hr hr) (hr1)(gr) (g_) + (,) (h) (hr hr hr) (g) (hr1)(fr)(f) * (;) (h) (hr hr hr) (f) (gh) (gr1)(fr)(f) (:Z) 
             VII. (c3)(hg)(hi)(ir ir ir) (ir1) (hr) (h_) + (,) (ir ir ir) (kr1 jr) (j) (ir1 jr) (j) (;) (ir ir ir) (jr1 ir) (i) (hr1 hr) (gf) (:Z)
             VIII. (c3) (e) (f) (h) (hr hr hr) (hr1) (fr) (f) + (,) (hr hr hr) (ir1 hr) (h) * (;) (hr hr hr) (f) (h) (ir1 hr) (h) (:Z) 
+            Final 1 Por(g) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hg) (:) e(g) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)
+
+            Final 2 Por(g) Cris(h)to,(h) nos(h)so(g) Se(h)nhor.(hg) (::)
+
+            Final 3 E(g)le(h) que_é(h) Deus,(h) e(h) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(g) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)
+
+            Final 4 Vós(g) que(h) sois(h) Deus,(h) e(h) vi(h)veis(h) e(h) e(h) rei(h)nais(h) com(h) o(h) Pai,(hg) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)
+
+            Final 5 E(g)le(h) que(h) vi(h)ve(h) e(h) rei(h)na(h) pe(h)los(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los(g) (::)
             -->
-                    <nav>
-                        <ul>
-                            <li><a href="separar.html">Separação de sílabas</a></li>
-                            <li><a href="kalendas.html">Kalendas</a></li>
-                        </ul>
-                    </nav>
+            <nav>
+                <ul>
+                    <li><a href="separar.html">Separação de sílabas</a></li>
+                    <li><a href="editor.html">Editor gabc</a></li>
+                    <li><a href="kalendas.html">Kalendas</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
     <main>
         <form>
             <label for="text">Texto:</label><br>
-            <textarea id="text" name="text" rows="5" cols="40"></textarea><br><br>
+            <textarea id="text" name="text" rows="5"
+                cols="40">Deus eterno e todo-poderoso, que governais o céu e a terra, escutai clemente as súplicas do vosso povo e dai ao nosso tempo a vossa paz. +
+Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.</textarea><br><br>
+            <div class="advanced">
+                <label for="model">Modelo:</label><br>
+                <textarea id="model" name="model" rows="5"
+                    cols="40">(g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)</textarea><br><br>
 
-            <label for="model">Modelo:</label><br>
-            <textarea id="model" name="model" rows="5" cols="40"></textarea><br><br>
+                <div id="svg-model" class="gabc model chant-container"></div>
 
-            <div id="svg-model" class="gabc model chant-container"></div>
+                <label for="flexa">Modelo (flexa):</label><br>
+                <textarea id="flexa" name="flexa" rows="5"
+                    cols="40">(c4) (g) (hr hr hr) (hr1) (gr) (g) + (:)</textarea><br><br>
 
-            <label for="gabcSource">GabC:</label><br>
-            <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final"></textarea>
+                <div id="svg-flexa" class="gabc flexa chant-container"></div>
 
+                <label for="gabcSource">GabC:</label><br>
+                <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final"></textarea>
+            </div>
             <div id="svg-final" class="gabc final chant-container"></div>
 
-            <button type="button" onclick="processText()">Gerar</button>
+            <button type="button" onclick="generateGabcNotation()">Gerar</button>
         </form>
     </main>
     <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script>
