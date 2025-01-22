@@ -18,7 +18,7 @@ h1 {
     font-size: 2.5em;
 }
 
-form {
+form, .print {
     max-width: 80%;
     margin: 20px auto;
     background-color: #fff;
@@ -92,4 +92,38 @@ a {
 }
 .advanced {
     display: none;
+}
+.back-print {
+    display: none;
+}
+.is-printing
+{
+    max-width: 210mm !important;
+    margin: auto !important;
+    padding: 0 !important;
+    align-self: center;
+    .hide-print {
+        display: none;
+    }
+    .print {
+        width: 100% !important;
+        margin: auto !important;
+        padding: 0 !important;
+        align-self: center;
+        background-color: #fff;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .back-print {
+        display: block;
+    }
+}
+@media print {
+    .back-print
+    {
+        display: none;
+        *  {
+            display: none;
+        }
+    }
 }

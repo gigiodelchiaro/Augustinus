@@ -10,6 +10,7 @@
 </head>
 
 <body onresize="updateAll()">
+    <div class="hide-print">
     <header>
         <h1>Augustinus</h1>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Saint_Augustine_by_Philippe_de_Champaigne.jpg/376px-Saint_Augustine_by_Philippe_de_Champaigne.jpg"
@@ -74,8 +75,7 @@
         <form>
             <label for="text">Texto:</label><br>
             <textarea id="text" name="text" rows="5"
-                cols="40">Deus eterno e todo-poderoso, que governais o céu e a terra, escutai clemente as súplicas do vosso povo e dai ao nosso tempo a vossa paz. +
-Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.</textarea><br><br>
+                cols="40">Deus eterno e todo-poderoso, que governais o céu e a terra, escutai clemente as súplicas do vosso povo e dai ao nosso tempo a vossa paz.Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.</textarea><br><br>
             <div class="advanced">
                 <label for="model">Modelo:</label><br>
                 <textarea id="model" name="model" rows="5"
@@ -92,12 +92,19 @@ Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina
                 <label for="gabcSource">GabC:</label><br>
                 <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final"></textarea>
             </div>
-            <div id="svg-final" class="gabc final chant-container"></div>
-
+            
             <button type="button" onclick="generateGabcNotation()">Gerar</button>
+            <button type="button" onclick="printGabc()">Imprimir</button>
         </form>
     </main>
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script>
+    </div>
+    <div class="print">
+        <div id="svg-final" class="gabc final chant-container"></div>
+    </div>
+    <div class="back-print">
+        <button type="button" onclick="unprintGabc()">Voltar</button>
+    </div>    
+        <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script>
     <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>

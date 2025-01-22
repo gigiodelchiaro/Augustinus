@@ -3,14 +3,23 @@ const advancedCheckbox = document.getElementById('advanced');
 const advancedElements = document.querySelectorAll('.advanced');
 
 // Add an event listener to the checkbox
-advancedCheckbox.addEventListener('change', function() {
+advancedCheckbox.addEventListener('change', function () {
     // Loop through all advanced elements
     advancedElements.forEach(element => {
         // Toggle visibility based on checkbox state
         element.style.display = this.checked ? 'block' : 'none';
     });
 });
+function printGabc() {
 
+    document.body.classList.add('is-printing');
+    updateAll();
+}
+function unprintGabc() {
+
+    document.body.classList.remove('is-printing');
+    updateAll();
+}
 function updateModelDisplay() {
     document.getElementById('model').innerHTML = document.getElementById("models").value;
     initializeAndLayoutChant("model", "svg-model");
@@ -29,8 +38,11 @@ function generateGabcNotation() {
     const basicNoteRegex = /[a-m][^\dr]/;
     const tonicNoteRegex = /\([^\s]+r1\)/;
     const genericNoteRegex = /\(([a-z]r\s?)+\)/;
-
-    const textFragments = inputText.split("\n");
+    let text = inputText;
+    text = text.replace("+", '+\n');
+    text = text.replace('.', '.\n');
+    text = text.replace(/\n+/, '\n');
+    const textFragments = text.split("\n");
     let gabcOutput = "";
     const endings = [
         "Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
@@ -115,6 +127,7 @@ function generateGabcNotation() {
                 if (tonicSyllablePosition == 1) {
                     gabcOutput = gabcOutput.slice(0, -1);
                     gabcOutput += finalNoteSymbol.replace("(", "");
+
                 } else {
                     let syllablesToInsert = remainingSyllables.slice(tonicSyllablePosition * (-1) + 1);
                     for (let i = 1; i < syllablesToInsert.length; i++) {
@@ -150,7 +163,7 @@ function generateGabcNotation() {
             let placeholderIndex = gabcOutput.match(genericNoteRegex).index;
             gabcOutput = gabcOutput.slice(0, placeholderIndex) + remainingSyllables.shift() + preTonicNotes.shift() + gabcOutput.slice(placeholderIndex);
         }
-
+        gabcOutput = gabcOutput.replace(/([a-h])\1/gm, "$1");
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
     }
