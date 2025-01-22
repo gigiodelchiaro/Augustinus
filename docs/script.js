@@ -10,16 +10,7 @@ advancedCheckbox.addEventListener('change', function () {
         element.style.display = this.checked ? 'block' : 'none';
     });
 });
-function printGabc() {
 
-    document.body.classList.add('is-printing');
-    updateAll();
-}
-function unprintGabc() {
-
-    document.body.classList.remove('is-printing');
-    updateAll();
-}
 function updateModelDisplay() {
     document.getElementById('model').innerHTML = document.getElementById("models").value;
     initializeAndLayoutChant("model", "svg-model");

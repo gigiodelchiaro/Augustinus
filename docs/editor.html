@@ -10,6 +10,7 @@
 </head>
 
 <body onload="initializeAndLayoutChant('gabc', 'svg-final')" onresize="updateAll()">
+    <div class="hide-print">
     <header>
         <h1>Augustinus - editor gabc</h1>
         <div class="white">
@@ -27,15 +28,20 @@
             
             <label for="gabcSource">GabC:</label><br>
             <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final" onchange="initializeAndLayoutChant('gabc', 'svg-final')"></textarea>
-            <div id="svg-final" class="gabc final chant-container"></div>
-        </form>
-    </main>
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script>
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>
+            <button type="button" onclick="printGabc()">Imprimir</button>
+            </form>
+        </main>
+    </div>
+    <div class="print">
+        <div id="svg-final" class="gabc final chant-container"></div>
+    </div>
+    <div class="back-print">
+        <button type="button" onclick="unprintGabc()">Voltar</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>
     <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
     <script type="text/javascript" src="gabc.js"></script>
+    <script type="text/javascript" src="print.js"></script>
 </body>
 
 </html>

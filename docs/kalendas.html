@@ -10,59 +10,64 @@
 </head>
 
 <body onresize="updateAll()">
-    <header>
-        <h1>Augustinus - kalendas</h1>
-        <div class="white">
+    <div class="hide-print">
+        <header>
+            <h1>Augustinus - kalendas</h1>
+            <div class="white">
 
-            <label>
-                Ano
-                <select id="models" onchange="kalendas()">
-                    <option value="">Personalizado</option>
-                    <option value="Lu(d)a(e) quin(fvED)ta.(c) (::)">
-                        2025</option>
-                    <option value="Lu(g)a(g) dé(g)ci(d)ma(e) sex(fvED)ta.(c) (::)">
-                        2026</option>
-                    <option value="Lu(g)a(g) vi(g)gé(g)si(d)ma(e) sé(fvED)ti(c)ma.(c) (::)">
-                        2027</option>
-                    <option value="Lu(g)a(d) oi(e)ta(fvED)va.(c) (::)">
-                        2028</option>
-                    <option value="Lu(g)a(g) dé(g)ci(d)ma(e) no(fvED)na.(c) (::)">
-                        2029</option>
-                    <option value="Lu(g)a(g) vi(g)gé(g)si(d)ma(e) no(fvED)na.(c) (::)">
-                        2030</option>
-                    <option value="Lu(g)a(g) dé(g)ci(g)ma(d) pri(e)mei(fvED)ra.(c) (::)">
-                        2031</option>
-                    <option value="Lu(g)a(g) vi(g)gé(g)si(g)ma(d) se(e)gun(fvED)da.(c) (::)">
-                        2032</option>
-                    <option value="Lu(d)a(e) quar(fvED)ta.(c) (::)">
-                        2033</option>
-                    <option value="Lu(g)a(g) dé(g)ci(d)ma(e) quin(fvED)ta.(c) (::)">
-                        2034</option>
-                </select>
+                <label>
+                    Ano
+                    <select id="models" onchange="kalendas()">
+                        <option value="">Personalizado</option>
+                        <option value="Lu(d)a(e) quin(fvED)ta.(c) (::)">
+                            2025</option>
+                        <option value="Lu(g)a(g) dé(g)ci(d)ma(e) sex(fvED)ta.(c) (::)">
+                            2026</option>
+                        <option value="Lu(g)a(g) vi(g)gé(g)si(d)ma(e) sé(fvED)ti(c)ma.(c) (::)">
+                            2027</option>
+                        <option value="Lu(g)a(d) oi(e)ta(fvED)va.(c) (::)">
+                            2028</option>
+                        <option value="Lu(g)a(g) dé(g)ci(d)ma(e) no(fvED)na.(c) (::)">
+                            2029</option>
+                        <option value="Lu(g)a(g) vi(g)gé(g)si(d)ma(e) no(fvED)na.(c) (::)">
+                            2030</option>
+                        <option value="Lu(g)a(g) dé(g)ci(g)ma(d) pri(e)mei(fvED)ra.(c) (::)">
+                            2031</option>
+                        <option value="Lu(g)a(g) vi(g)gé(g)si(g)ma(d) se(e)gun(fvED)da.(c) (::)">
+                            2032</option>
+                        <option value="Lu(d)a(e) quar(fvED)ta.(c) (::)">
+                            2033</option>
+                        <option value="Lu(g)a(g) dé(g)ci(d)ma(e) quin(fvED)ta.(c) (::)">
+                            2034</option>
+                    </select>
 
-            </label>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Voltar</a></li>
-            </ul>
-        </nav>
-    </header>
+                </label>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Voltar</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    <main>
-        <form>
-            <div id="svg-final" class="gabc final chant-container"></div>
-            <label for="gabcSource">GabC:</label><br>
-            <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final"></textarea>
-
-        </form>
-    </main>
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/syllable.js"></script>
-    <script src="https://gigiodelchiaro.github.io/separador-silabas/tonic.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>
+        <main>
+            <form>
+                <label for="gabcSource">GabC:</label><br>
+                <textarea rows="10" cols="80" id="gabc" name="gabcSource" class="gabc-source final"></textarea>
+                <button type="button" onclick="printGabc()">Imprimir</button>
+            </form>
+        </main>
+    </div>
+    <div class="print">
+        <div id="svg-final" class="gabc final chant-container"></div>
+    </div>
+    <div class="back-print">
+        <button type="button" onclick="unprintGabc()">Voltar</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>
     <script type="text/javascript" src="https://ex.surge.sh/exsurge.js"></script>
     <script type="text/javascript" src="gabc.js"></script>
+    <script type="text/javascript" src="print.js"></script>
     <script>
         function kalendas() {
             let pre = "(c4) Oi(c)ta(e)vo(g) di(g)a(g) an(g)tes(g) das(g) Ca(g)len(f)das(e) de(f) ja(g)nei(h)ro.(g) (:) "
@@ -72,7 +77,7 @@
             document.getElementById("gabc").value = gabc;
             initializeAndLayoutChant("gabc", "svg-final");
         }
-        
+
     </script>
 </body>
 
