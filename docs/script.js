@@ -21,6 +21,7 @@ function generateGabcNotation() {
 
     const inputText = document.getElementById('text').value;
     const shouldRemoveNumbers = document.getElementById('remove-numbers').checked;
+    const shouldAddAmen = document.getElementById('amen').checked;
     const gabcOutputElement = document.getElementById('gabc');
     const flexaTemplateElement = document.getElementById('flexa');
     const selectedModelPattern = document.getElementById('model').value;
@@ -49,7 +50,7 @@ function generateGabcNotation() {
     ];
     for (let fragmentIndex = 0; fragmentIndex < textFragments.length; fragmentIndex++) {
         let isEnding = false;
-        let currentText = textFragments[fragmentIndex];
+        let currentText = textFragments[fragmentIndex].trim();
         for (let endingIndex = 0; endingIndex < endings.length / 2; endingIndex++) {
             if (currentText.toLowerCase().replaceAll(/\W+/gm, '') == endings[endingIndex].toLowerCase().replaceAll(/\W+/gm, '')) {
                 gabcOutput += endings[endingIndex + 1];
@@ -158,7 +159,10 @@ function generateGabcNotation() {
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
     }
-
+    if (shouldAddAmen)
+    {
+        gabcOutput +=  "A(g) mém.(gh) (::)";
+    }
     gabcOutputElement.value = gabcOutput;
     initializeAndLayoutChant("gabc", "svg-final");
     initializeAndLayoutChant("model", "svg-model");
