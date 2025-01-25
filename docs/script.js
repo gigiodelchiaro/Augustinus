@@ -11,31 +11,80 @@ advancedCheckbox.addEventListener('change', function () {
     });
 });
 
-function updateModelDisplay() {
-    document.getElementById('model').innerHTML = document.getElementById("models").value;
-    initializeAndLayoutChant("model", "svg-model");
+document.addEventListener('DOMContentLoaded', function() {
+
+    const select = document.getElementById('chant-type');
+    const startElement = document.getElementById('start');
+    const flexaTemplateElement = document.getElementById('flexa');
+    const asteriscTemplateElement = document.getElementById('asterisc');
+    const selectedDefaultPatternElement = document.getElementById('default');
+
+    // Load models and populate dropdown
+    fetch('models.json')
+        .then(response => response.json())
+        .then(data => {
+            const models = data.define;
+
+            // Populate select options
+            models.forEach((model, index) => {
+                const option = new Option(model.name, index);
+                select.add(option);
+            });
+
+            // Add change listener
+            select.addEventListener('change', function() {
+                const selectedModel = models[this.value];
+                if (selectedModel) {
+                    startElement.value = selectedModel.start;
+                    flexaTemplateElement.value = selectedModel.flexa;
+                    asteriscTemplateElement.value = selectedModel.asterisc;
+                    selectedDefaultPatternElement.value = selectedModel.default;
+                }
+            });
+
+            // Trigger initial population
+            select.dispatchEvent(new Event('change'));
+        })
+        .catch(error => console.error('Error loading models:', error));
+});
+
+function copyGabc() {
+    const gabcOutput = document.getElementById('gabc').value;
+    navigator.clipboard.writeText(gabcOutput);
 }
+
+
+
 function generateGabcNotation() {
     const syllableSeparator = "@";
     definirSeparador(syllableSeparator);
-
     const inputText = document.getElementById('text').value;
     const shouldRemoveNumbers = document.getElementById('remove-numbers').checked;
     const shouldAddAmen = document.getElementById('amen').checked;
     const gabcOutputElement = document.getElementById('gabc');
-    const flexaTemplateElement = document.getElementById('flexa');
-    const selectedModelPattern = document.getElementById('model').value;
+    const flexaTemplate = document.getElementById('flexa').value;
+    const asteriscTemplate = document.getElementById('asterisc').value;
+    const selectedDefaultPattern = document.getElementById('default').value;
+    const selectedStartPattern = document.getElementById('start').value;
 
-    const modelSymbols = selectedModelPattern.match(/\([^\(\)]+\)/gm);
+    const modelRepeat = selectedDefaultPattern.split("|");
+
     const basicNoteRegex = /[a-m][^\dr]/;
     const tonicNoteRegex = /\([^\s]+r1\)/;
     const genericNoteRegex = /\(([a-z]r\s?)+\)/;
     let text = inputText;
-    text = text.replace("+", '+\n');
-    text = text.replace('.', '.\n');
-    text = text.replace(/\n+/, '\n');
+    text = text.replaceAll('-', '- ');
+    
+    text = text.replaceAll(' \n', '\n');
+    text = text.replaceAll("+", '+\n');
+    text = text.replaceAll("*", '*\n');
+    text = text.replaceAll('.', '.\n');
+    
+    text = text.replaceAll(/\n+/gm, '\n');
+    text = text.replaceAll(/ +/gm, ' ');
+    
     const textFragments = text.split("\n");
-    let gabcOutput = "";
+    let gabcOutput = selectedStartPattern;
     const endings = [
         "Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
         "Por(g) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hg) (:) e(g) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
@@ -48,7 +97,8 @@ function generateGabcNotation() {
         "Ele que vive e reina pelos séculos dos séculos.",
         "E(g)le(h) que(h) vi(h)ve(h) e(h) rei(h)na(h) pe(h)los(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los(g) (::)"
     ];
-    for (let fragmentIndex = 0; fragmentIndex < textFragments.length; fragmentIndex++) {
+    let modelIndex = 0;
+    for (let fragmentIndex = 0; fragmentIndex < textFragments.length - 1; fragmentIndex++) {
         let isEnding = false;
         let currentText = textFragments[fragmentIndex].trim();
         for (let endingIndex = 0; endingIndex < endings.length / 2; endingIndex++) {
@@ -67,21 +117,33 @@ function generateGabcNotation() {
             currentText = currentText.replace(/\d/gm, '');
         }
 
-        const processedText = separarTexto(currentText).replaceAll(" ", syllableSeparator + " ");
+        const processedText = separarTexto(currentText).replaceAll(" ", syllableSeparator + " ").replaceAll(syllableSeparator + syllableSeparator, syllableSeparator);
         processedTextFinal = processedText;
 
         let syllablesList = processedTextFinal.split(syllableSeparator);
-        let remainingSymbols = modelSymbols;
+        let remainingSymbols = modelRepeat[modelIndex].match(/\([^\(\)]+\)/gm); // this line
+        
+        
         let remainingSyllables = syllablesList;
         if (remainingSyllables[remainingSyllables.length - 1] == " +") {
             remainingSyllables.pop();
-            remainingSymbols = flexaTemplateElement.value.match(/\([^\(\)]+\)/gm);
+            remainingSymbols = flexaTemplate.match(/\([^\(\)]+\)/gm);
         }
-
+        else if (remainingSyllables[remainingSyllables.length - 1] == " *") {
+            remainingSyllables.pop();
+            remainingSymbols = asteriscTemplate.match(/\([^\(\)]+\)/gm);
+        }
+        else {
+            modelIndex++;
+            if (modelIndex >= modelRepeat.length) {
+                modelIndex = 0;
+            }
+        }
         let hasGenericNote = false;
         let hasLastNote = false;
 
-        let wordsArray = processedTextFinal.replace(" +", "").split(" ");
+        let wordsArray = processedTextFinal.replace(" +", "").replace(" *", "").split(" ");
+        console.log(wordsArray);
         let tonicSyllablePosition = tonica(wordsArray[wordsArray.length - 1].split(syllableSeparator));
         let genericNotePlaceholder = "";
         let preTonicNotes = [];
@@ -111,8 +173,8 @@ function generateGabcNotation() {
                 currentSymbol = currentSymbol.replace("r1", "");
 
                 gabcOutput += remainingSyllables[remainingSyllables.length - tonicSyllablePosition] + currentSymbol;
-
                 let middleNoteSymbol = remainingSymbolsString.match(genericNoteRegex)[0].replace("r", "");
+                
                 remainingSymbolsString = remainingSymbolsString.replace(genericNoteRegex, "");
                 let finalNoteSymbol = "(" + remainingSymbolsString.match(basicNoteRegex)[0];
 
@@ -165,6 +227,4 @@ function generateGabcNotation() {
     }
     gabcOutputElement.value = gabcOutput;
     initializeAndLayoutChant("gabc", "svg-final");
-    initializeAndLayoutChant("model", "svg-model");
-    initializeAndLayoutChant("flexa", "svg-flexa");
 }
