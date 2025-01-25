@@ -45,7 +45,6 @@
             }
             let words = text.split(/\s+/gm);
             for (let word of words) {
-                console.log(word);
                 let syllables = separarTexto(word).split(separator);
                 let tonicNumber = syllables.length - tonica(syllables);
                 syllables[tonicNumber] = "<b>" + syllables[tonicNumber] + "</b>";

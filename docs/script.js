@@ -14,11 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const flexaTemplateElement = document.getElementById('flexa');
     const asteriscTemplateElement = document.getElementById('asterisc');
     const selectedDefaultPatternElement = document.getElementById('default');
+    const selectedStartPatternOptionalElement = document.getElementById('start-opt');
+    const selectedEndPatternOptionalElement = document.getElementById('end-opt');
     const modelsJson = `{
     "define":[
         {
             "name": "Prefácio tom solene",
             "type": "prefacio",
+            "optional_end": "",
+            "optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(hg)co.(g)(::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg)(::Z) Co(g)ra(h)ções(i) ao(h) al(gh)to.(gf)(::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf)(::Z) De(hg)mos(f) gra(fg)ças(h) ao(g) Se(h)nhor(ih) nos(gf)so(gh) Deus.(ghg)(::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf)(::Z) ",
             "start": "(c4) ",
             "default": "(hr hr hr) (gf) (fg) (h) (ghr1) (gr) (g) (::)",
             "flexa": "(g) (hr hr hr) (ir1) (hr) (h) (:)",
@@ -27,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             "name": "Prefácio tom simples",
             "type": "prefacio",
+            "optional_end": "",
+            "optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(h)co.(g)(::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg)(::Z) Co(g)ra(h)ções(i) ao(h) al(g)to.(g)(::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf)(::Z) De(ih)mos(g) gra(h)ças(h) ao(h) Se(h)nhor(h) nos(f)so(g) Deus.(hg)(::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf)(::Z)",
             "start": "(c4) ",
             "default": "(hr hr hr) (f) (g) (hr1) (gr) (g) (::)",
             "flexa": "(hr hr hr) (ir1) (hr) (h) (:)",
@@ -35,6 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             "name": "Oração tom solene",
             "type": "oracao",
+            "optional_end": "A(g) mém.(gh) (::)",
+            "optional_start": "O(h) re(gh) mos:(h) (:)",
             "start": "(c4) ",
             "default": "(g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)",
             "flexa": "(g) (hr hr hr) (hr1) (gr) (g) (:)",
@@ -59,6 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
             flexaTemplateElement.value = selectedModel.flexa;
             asteriscTemplateElement.value = selectedModel.asterisc;
             selectedDefaultPatternElement.value = selectedModel.default;
+            selectedStartPatternOptionalElement.value = selectedModel.optional_start;
+            selectedEndPatternOptionalElement.value = selectedModel.optional_end;
+
         }
     });
 
@@ -73,12 +84,15 @@ function generateGabcNotation() {
     definirSeparador(syllableSeparator);
     const inputText = document.getElementById('text').value;
     const shouldRemoveNumbers = document.getElementById('remove-numbers').checked;
-    const shouldAddAmen = document.getElementById('amen').checked;
+    const shouldAddOptionalEnd = document.getElementById('amen').checked;
+    const shouldAddOptionalStart = document.getElementById('entoation').checked;
     const gabcOutputElement = document.getElementById('gabc');
     const flexaTemplate = document.getElementById('flexa').value;
     const asteriscTemplate = document.getElementById('asterisc').value;
     const selectedDefaultPattern = document.getElementById('default').value;
     const selectedStartPattern = document.getElementById('start').value;
+    const selectedStartPatternOptional = document.getElementById('start-opt').value;
+    const selectedEndPatternOptional = document.getElementById('end-opt').value;
     const modelRepeat = selectedDefaultPattern.split("|");
     const basicNoteRegex = /[a-m][^\dr]/;
     const tonicNoteRegex = /r1/;
@@ -92,6 +106,9 @@ function generateGabcNotation() {
     text = text.replaceAll(/\n+/gm, '\n');
     const textFragments = text.split("\n");
     let gabcOutput = selectedStartPattern;
+    if(shouldAddOptionalStart){
+        gabcOutput += selectedStartPatternOptional;
+    }
     const endings = [
         "Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
         "Por(g) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hg) (:) e(g) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
@@ -122,8 +139,14 @@ function generateGabcNotation() {
         if (shouldRemoveNumbers) {
             currentText = currentText.replace(/\d/gm, '');
         }
-    
-        processedTextFinal = separarTexto(currentText)
+        let words = currentText.split(" ");
+        let separatedWords = [];
+        for (let word of words)
+        {
+            separatedWords.push(separarTexto(word));
+
+        }
+        processedTextFinal = separatedWords.join(" ")
             .replaceAll(" ", `${syllableSeparator} `)
             .replaceAll(`${syllableSeparator}${syllableSeparator}`, syllableSeparator);
         let syllablesList = processedTextFinal.split(syllableSeparator).filter(s => s.trim() !== "");
@@ -222,8 +245,8 @@ function generateGabcNotation() {
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
     }
-    if (shouldAddAmen) {
-        gabcOutput += "A(g) mém.(gh) (::)";
+    if (shouldAddOptionalEnd) {
+        gabcOutput += selectedEndPatternOptional;
     }
     gabcOutputElement.value = gabcOutput;
     initializeAndLayoutChant("gabc", "svg-final");
