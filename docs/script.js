@@ -1,60 +1,73 @@
-// Get the checkbox and advanced elements
+
 const advancedCheckbox = document.getElementById('advanced');
 const advancedElements = document.querySelectorAll('.advanced');
-
-// Add an event listener to the checkbox
 advancedCheckbox.addEventListener('change', function () {
-    // Loop through all advanced elements
+
     advancedElements.forEach(element => {
-        // Toggle visibility based on checkbox state
+
         element.style.display = this.checked ? 'block' : 'none';
     });
 });
-
-document.addEventListener('DOMContentLoaded', function() {
-
+document.addEventListener('DOMContentLoaded', function () {
     const select = document.getElementById('chant-type');
     const startElement = document.getElementById('start');
     const flexaTemplateElement = document.getElementById('flexa');
     const asteriscTemplateElement = document.getElementById('asterisc');
     const selectedDefaultPatternElement = document.getElementById('default');
+    const modelsJson = `{
+    "define":[
+        {
+            "name": "Prefácio tom solene",
+            "type": "prefacio",
+            "start": "(c4) ",
+            "default": "(hr hr hr) (f) (g) (hr1) (gr) (g) (::)",
+            "flexa": "(hr hr hr) (ir1) (hr) (h) (:)",
+            "asterisc": "(g) (ir ir ir) (h) (g) (hr1) (hr) (h) (:)"
+        },
+        {
+            "name": "Prefácio tom simples",
+            "type": "prefacio",
+            "start": "(c4) ",
+            "default": "(hr hr hr) (f) (g) (hr1) (gr) (g) (::)",
+            "flexa": "(hr hr hr) (ir1) (hr) (h) (:)",
+            "asterisc": "(g) (ir ir ir) (h) (g) (hr1) (hr) (h) (:)"
+        },
+        {
+            "name": "Oração tom solene",
+            "type": "oracao",
+            "start": "(c4) ",
+            "default": "(g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)",
+            "flexa": "(g) (hr hr hr) (hr1) (gr) (g) (:)",
+            "asterisc": ""
+        }
+        
+    ]
+}`;
+    
+    const data = JSON.parse(modelsJson);
+    const models = data.define;
 
-    // Load models and populate dropdown
-    fetch('models.json')
-        .then(response => response.json())
-        .then(data => {
-            const models = data.define;
+    models.forEach((model, index) => {
+        const option = new Option(model.name, index);
+        select.add(option);
+    });
 
-            // Populate select options
-            models.forEach((model, index) => {
-                const option = new Option(model.name, index);
-                select.add(option);
-            });
+    select.addEventListener('change', function () {
+        const selectedModel = models[this.value];
+        if (selectedModel) {
+            startElement.value = selectedModel.start;
+            flexaTemplateElement.value = selectedModel.flexa;
+            asteriscTemplateElement.value = selectedModel.asterisc;
+            selectedDefaultPatternElement.value = selectedModel.default;
+        }
+    });
 
-            // Add change listener
-            select.addEventListener('change', function() {
-                const selectedModel = models[this.value];
-                if (selectedModel) {
-                    startElement.value = selectedModel.start;
-                    flexaTemplateElement.value = selectedModel.flexa;
-                    asteriscTemplateElement.value = selectedModel.asterisc;
-                    selectedDefaultPatternElement.value = selectedModel.default;
-                }
-            });
-
-            // Trigger initial population
-            select.dispatchEvent(new Event('change'));
-        })
-        .catch(error => console.error('Error loading models:', error));
+    select.dispatchEvent(new Event('change'));
 });
-
 function copyGabc() {
     const gabcOutput = document.getElementById('gabc').value;
     navigator.clipboard.writeText(gabcOutput);
 }
-
-
-
 function generateGabcNotation() {
     const syllableSeparator = "@";
     definirSeparador(syllableSeparator);
@@ -66,23 +79,17 @@ function generateGabcNotation() {
     const asteriscTemplate = document.getElementById('asterisc').value;
     const selectedDefaultPattern = document.getElementById('default').value;
     const selectedStartPattern = document.getElementById('start').value;
-
     const modelRepeat = selectedDefaultPattern.split("|");
-
     const basicNoteRegex = /[a-m][^\dr]/;
     const tonicNoteRegex = /\([^\s]+r1\)/;
     const genericNoteRegex = /\(([a-z]r\s?)+\)/;
     let text = inputText;
     text = text.replaceAll('-', '- ');
-    
     text = text.replaceAll(' \n', '\n');
     text = text.replaceAll("+", '+\n');
     text = text.replaceAll("*", '*\n');
     text = text.replaceAll('.', '.\n');
-    
     text = text.replaceAll(/\n+/gm, '\n');
-    text = text.replaceAll(/ +/gm, ' ');
-    
     const textFragments = text.split("\n");
     let gabcOutput = selectedStartPattern;
     const endings = [
@@ -112,45 +119,46 @@ function generateGabcNotation() {
             continue;
         }
         let processedTextFinal = "";
-
         if (shouldRemoveNumbers) {
             currentText = currentText.replace(/\d/gm, '');
         }
 
-        const processedText = separarTexto(currentText).replaceAll(" ", syllableSeparator + " ").replaceAll(syllableSeparator + syllableSeparator, syllableSeparator);
-        processedTextFinal = processedText;
+        processedTextFinal = separarTexto(currentText)
+            .replaceAll(" ", `${syllableSeparator} `)
+            .replaceAll(`${syllableSeparator}${syllableSeparator}`, syllableSeparator);
 
-        let syllablesList = processedTextFinal.split(syllableSeparator);
-        let remainingSymbols = modelRepeat[modelIndex].match(/\([^\(\)]+\)/gm); // this line
-        
-        
+        let syllablesList = processedTextFinal.split(syllableSeparator).filter(s => s.trim() !== "");
         let remainingSyllables = syllablesList;
-        if (remainingSyllables[remainingSyllables.length - 1] == " +") {
-            remainingSyllables.pop();
-            remainingSymbols = flexaTemplate.match(/\([^\(\)]+\)/gm);
-        }
-        else if (remainingSyllables[remainingSyllables.length - 1] == " *") {
-            remainingSyllables.pop();
-            remainingSymbols = asteriscTemplate.match(/\([^\(\)]+\)/gm);
-        }
-        else {
-            modelIndex++;
-            if (modelIndex >= modelRepeat.length) {
-                modelIndex = 0;
-            }
-        }
-        let hasGenericNote = false;
-        let hasLastNote = false;
 
-        let wordsArray = processedTextFinal.replace(" +", "").replace(" *", "").split(" ");
-        console.log(wordsArray);
-        let tonicSyllablePosition = tonica(wordsArray[wordsArray.length - 1].split(syllableSeparator));
+        let remainingSymbols;
+        const lastSymbol = syllablesList[syllablesList.length - 1];
+        if (lastSymbol === " +") {
+            syllablesList.pop();
+            remainingSymbols = flexaTemplate.match(/\([^()]+\)/gm) || [];
+        } else if (lastSymbol === " *") {
+            syllablesList.pop();
+            remainingSymbols = asteriscTemplate.match(/\([^()]+\)/gm) || [];
+        } else {
+            remainingSymbols = modelRepeat[modelIndex].match(/\([^()]+\)/gm) || [];
+            modelIndex = (modelIndex + 1) % modelRepeat.length;
+        }
+        processedTextFinal = syllablesList.join(syllableSeparator);
+
+        const wordsArray = processedTextFinal
+            .split(' ')
+            .filter(word => word.trim() !== '');
+
+        let tonicSyllablePosition = -1;
+        if (wordsArray.length > 0) {
+            const lastWord = wordsArray[wordsArray.length - 1];
+            tonicSyllablePosition = tonica(lastWord.split(syllableSeparator));
+        }
         let genericNotePlaceholder = "";
         let preTonicNotes = [];
-
+        let hasGenericNote = false;
+        let hasLastNote = false;
         while (remainingSymbols.length > 0) {
             let currentSymbol = remainingSymbols[0];
-
             if (currentSymbol.match(basicNoteRegex)) {
                 if (hasGenericNote) {
                     preTonicNotes.push(currentSymbol);
@@ -171,17 +179,13 @@ function generateGabcNotation() {
                 remainingSymbols.shift();
                 let remainingSymbolsString = remainingSymbols.join(" ");
                 currentSymbol = currentSymbol.replace("r1", "");
-
                 gabcOutput += remainingSyllables[remainingSyllables.length - tonicSyllablePosition] + currentSymbol;
                 let middleNoteSymbol = remainingSymbolsString.match(genericNoteRegex)[0].replace("r", "");
-                
                 remainingSymbolsString = remainingSymbolsString.replace(genericNoteRegex, "");
                 let finalNoteSymbol = "(" + remainingSymbolsString.match(basicNoteRegex)[0];
-
                 if (tonicSyllablePosition == 1) {
                     gabcOutput = gabcOutput.slice(0, -1);
                     gabcOutput += finalNoteSymbol.replace("(", "");
-
                 } else {
                     let syllablesToInsert = remainingSyllables.slice(tonicSyllablePosition * (-1) + 1);
                     for (let i = 1; i < syllablesToInsert.length; i++) {
@@ -189,7 +193,6 @@ function generateGabcNotation() {
                     }
                     gabcOutput += syllablesToInsert.shift() + finalNoteSymbol;
                 }
-
                 remainingSymbols.shift();
                 remainingSymbols.shift();
                 for (let index = 0; index < tonicSyllablePosition; index++) {
@@ -207,12 +210,10 @@ function generateGabcNotation() {
                 remainingSymbols.shift();
             }
         }
-
         while (remainingSyllables.length > preTonicNotes.length) {
             let placeholderIndex = gabcOutput.match(genericNoteRegex).index;
             gabcOutput = gabcOutput.slice(0, placeholderIndex) + remainingSyllables.shift() + genericNotePlaceholder + gabcOutput.slice(placeholderIndex);
         }
-
         while (remainingSyllables.length > 0) {
             let placeholderIndex = gabcOutput.match(genericNoteRegex).index;
             gabcOutput = gabcOutput.slice(0, placeholderIndex) + remainingSyllables.shift() + preTonicNotes.shift() + gabcOutput.slice(placeholderIndex);
@@ -221,9 +222,8 @@ function generateGabcNotation() {
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
         gabcOutput = gabcOutput.replace(genericNoteRegex, "");
     }
-    if (shouldAddAmen)
-    {
-        gabcOutput +=  "A(g) mém.(gh) (::)";
+    if (shouldAddAmen) {
+        gabcOutput += "A(g) mém.(gh) (::)";
     }
     gabcOutputElement.value = gabcOutput;
     initializeAndLayoutChant("gabc", "svg-final");
