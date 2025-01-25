@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
             "name": "Prefácio tom solene",
             "type": "prefacio",
             "start": "(c4) ",
-            "default": "(hr hr hr) (f) (g) (hr1) (gr) (g) (::)",
-            "flexa": "(hr hr hr) (ir1) (hr) (h) (:)",
-            "asterisc": "(g) (ir ir ir) (h) (g) (hr1) (hr) (h) (:)"
+            "default": "(hr hr hr) (gf) (fg) (h) (ghr1) (gr) (g) (::)",
+            "flexa": "(g) (hr hr hr) (ir1) (hr) (h) (:)",
+            "asterisc": "(g) (ir ir ir) (hg) (ghr1) (hr) (h) (:)"
         },
         {
             "name": "Prefácio tom simples",
@@ -81,7 +81,7 @@ function generateGabcNotation() {
     const selectedStartPattern = document.getElementById('start').value;
     const modelRepeat = selectedDefaultPattern.split("|");
     const basicNoteRegex = /[a-m][^\dr]/;
-    const tonicNoteRegex = /\([^\s]+r1\)/;
+    const tonicNoteRegex = /r1/;
     const genericNoteRegex = /\(([a-z]r\s?)+\)/;
     let text = inputText;
     text = text.replaceAll('-', '- ');
@@ -122,14 +122,13 @@ function generateGabcNotation() {
         if (shouldRemoveNumbers) {
             currentText = currentText.replace(/\d/gm, '');
         }
-
+    
         processedTextFinal = separarTexto(currentText)
             .replaceAll(" ", `${syllableSeparator} `)
             .replaceAll(`${syllableSeparator}${syllableSeparator}`, syllableSeparator);
-
         let syllablesList = processedTextFinal.split(syllableSeparator).filter(s => s.trim() !== "");
         let remainingSyllables = syllablesList;
-
+        
         let remainingSymbols;
         const lastSymbol = syllablesList[syllablesList.length - 1];
         if (lastSymbol === " +") {
@@ -143,11 +142,10 @@ function generateGabcNotation() {
             modelIndex = (modelIndex + 1) % modelRepeat.length;
         }
         processedTextFinal = syllablesList.join(syllableSeparator);
-
+        
         const wordsArray = processedTextFinal
             .split(' ')
             .filter(word => word.trim() !== '');
-
         let tonicSyllablePosition = -1;
         if (wordsArray.length > 0) {
             const lastWord = wordsArray[wordsArray.length - 1];
@@ -159,23 +157,7 @@ function generateGabcNotation() {
         let hasLastNote = false;
         while (remainingSymbols.length > 0) {
             let currentSymbol = remainingSymbols[0];
-            if (currentSymbol.match(basicNoteRegex)) {
-                if (hasGenericNote) {
-                    preTonicNotes.push(currentSymbol);
-                } else {
-                    gabcOutput += remainingSyllables.shift() + currentSymbol;
-                }
-                remainingSymbols.shift();
-            }
-            else if (currentSymbol.match(genericNoteRegex)) {
-                if (!hasGenericNote) {
-                    genericNotePlaceholder = "(" + currentSymbol.match(/[a-m]/) + ")";
-                    gabcOutput += currentSymbol;
-                    hasGenericNote = true;
-                }
-                remainingSymbols.shift();
-            }
-            else if (currentSymbol.match(tonicNoteRegex)) {
+            if (currentSymbol.match(tonicNoteRegex)) {
                 remainingSymbols.shift();
                 let remainingSymbolsString = remainingSymbols.join(" ");
                 currentSymbol = currentSymbol.replace("r1", "");
@@ -203,6 +185,24 @@ function generateGabcNotation() {
                 hasLastNote = true;
                 break;
             }
+            else if (currentSymbol.match(genericNoteRegex)) {
+                if (!hasGenericNote) {
+                    genericNotePlaceholder = "(" + currentSymbol.match(/[a-m]/) + ")";
+                    gabcOutput += currentSymbol;
+                    hasGenericNote = true;
+                }
+                remainingSymbols.shift();
+            }
+
+            else if (currentSymbol.match(basicNoteRegex)) {
+                if (hasGenericNote) {
+                    preTonicNotes.push(currentSymbol);
+                } else {
+                    gabcOutput += remainingSyllables.shift() + currentSymbol;
+                }
+                remainingSymbols.shift();
+            }
+            
             else if (!hasLastNote) {
                 gabcOutput += currentSymbol;
                 remainingSymbols.shift();
