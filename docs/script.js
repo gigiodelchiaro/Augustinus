@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const modelsJson = `{
     "define":[
         {
+            "name": "Salmo tom VIII",
+            "type": "salmo",
+            "optional_end": "",
+            "optional_start": "(g) (h)",
+            "start": "(c4) ",
+            "default": "(j) (jr jr jr) (i) (j) (hr1) (gr) (g) (::Z)",
+            "flexa": "(jr jr jr) (jr1) (hr) (h) (:)",
+            "asterisc": "(jr jr jr) (kr1) (jr) (j) (:)"
+        },
+        {
             "name": "Prefácio tom solene",
             "type": "prefacio",
             "optional_end": "",
@@ -46,8 +56,9 @@ document.addEventListener('DOMContentLoaded', function () {
             "start": "(c4) ",
             "default": "(g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)",
             "flexa": "(g) (hr hr hr) (hr1) (gr) (g) (:)",
-            "asterisc": ""
+            "asterisc": "(g) (hr hr hr) (hr1) (gr) (g) (:)"
         }
+        
         
     ]
 }`;
@@ -98,7 +109,7 @@ function generateGabcNotation() {
     const tonicNoteRegex = /r1/;
     const genericNoteRegex = /\(([a-z]r\s?)+\)/;
     let text = inputText;
-    text = text.replaceAll('-', '- ');
+    //text = text.replaceAll('-', '- ');
     text = text.replaceAll(' \n', '\n');
     text = text.replaceAll("+", '+\n');
     text = text.replaceAll("*", '*\n');
@@ -111,13 +122,13 @@ function generateGabcNotation() {
     }
     const endings = [
         "Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
-        "Por(g) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hg) (:) e(g) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
+        "Por(g) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hg) (:) e(g) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(g) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
         "Por Cristo nosso Senhor.",
         "Por(g) Cris(h)to,(h) nos(h)so(g) Se(h)nhor.(hg) (::)",
         "Vós que sois Deus, e vós que viveis e reinais com o Pai, na unidade do Espírito Santo, por todos os séculos dos séculos.",
-        "Vós(g) que(h) sois(h) Deus,(h) e(h) vi(h)veis(h) e(h) e(h) rei(h)nais(h) com(h) o(h) Pai,(hg) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
+        "Vós(g) que(h) sois(h) Deus,(h) e(h) vi(h)veis(h) e(h) e(h) rei(h)nais(h) com(h) o(h) Pai,(hg) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(g) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
         "Ele que é Deus, e conosco vive e reina na unidade do Espírito Santo, por todos os séculos dos séculos.",
-        "E(g)le(h) que_é(h) Deus,(h) e(h) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(g) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(g)ri(g)to(h) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
+        "E(g)le(h) que_é(h) Deus,(h) e(h) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(g) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(g) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
         "Ele que vive e reina pelos séculos dos séculos.",
         "E(g)le(h) que(h) vi(h)ve(h) e(h) rei(h)na(h) pe(h)los(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los(g) (::)"
     ];

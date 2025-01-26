@@ -11,4 +11,4 @@ Para erros de separação de sílabas / tônicas, veja o projeto de separação 
 ## Links
 Gregorio - https://github.com/gregorio-project/gregorio  
 Separador de sílabas - https://github.com/gigiodelchiaro/separador-silabas
-Renderizador de gabc em html - https://github.com/frmatthew/exsurge
+Renderizador de gabc em html - https://github.com/bbloomf/exsurge
