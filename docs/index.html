@@ -14,6 +14,12 @@
 					alt="augustunus.jpg">
 				<div class="white">
 					<label>
+						Tipo de canto
+						<select id="chant-type">
+						</select>
+						<!--salmo, prefacio or oracao-->
+					</label>
+					<label>
 					<input type="checkbox" id="remove-numbers" checked>
 					Remover números
 					</label>
@@ -24,19 +30,13 @@
 					</label>
 
 					<label>
-					<input type="checkbox" id="amen" unchecked class="oracao">
+					<input type="checkbox" id="amen" unchecked>
 					Inserir Amém no final
 					</label>
 
                     <label>
-                    <input type="checkbox" id="entoation" unchecked class="prefacio">
-					Inserir entoação
-					</label>
-
-					<label>
-					Tipo de canto
-					<select id="chant-type">
-					</select>
+                    <input type="checkbox" id="entoation" unchecked>
+					Inserir introdução
 					</label>
 					<nav>
 						<ul>
@@ -90,7 +90,7 @@ cantando a uma só voz:
 					</div>
 					<button type="button" onclick="generateGabcNotation()">Gerar</button>
 					<button type="button" onclick="printGabc()">Imprimir</button>
-					<button type="button" onclick="copyGabc()">Copiar</button>
+					<button type="button" onclick="copyGabc()">Copiar .gabc</button>
 				</form>
 			</main>
 		</div>
