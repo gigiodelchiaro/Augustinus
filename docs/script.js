@@ -17,24 +17,33 @@ API_POCKET_CHECKBOX.addEventListener('change', function () {
 
 async function getPocketTerco() {
     const date = document.getElementById('date').value;
-    const base_url = "https://augustinus.musicaclassica.com.br";
+    const base_url = "https://pocket.augustinus.workers.dev";
     const oracaoDoDiaElement = document.getElementById('oracaoDoDia');
     const sobreAsOferendasElement = document.getElementById('sobreAsOferendas');
     const depoisDaComunhaoElement = document.getElementById('depoisDaComunhao');
 
     const url = `${base_url}?date=${date}`;
+    console.log(url);
     try {
-        const response = await fetch(url);
+        const token = localStorage.getItem('token');
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        console.log(data);
+        console.log(data.results.oracaoDoDia);
+        // Update your element assignments like this:
         oracaoDoDiaElement.value = data.results.oracaoDoDia;
         sobreAsOferendasElement.value = data.results.sobreAsOferendas;
         depoisDaComunhaoElement.value = data.results.depoisDaComunhao;
-        
-        console.log(response).json();
-        return await response.json();
+
+
+        // return await response.json();
     } catch (error) {
         return console.error('Error:', error);
     }
-    
 }
 
 
