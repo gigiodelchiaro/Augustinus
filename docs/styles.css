@@ -90,7 +90,7 @@ a {
 .gabc {
     width: 100%;
 }
-.advanced {
+.advanced, .api-pocket{
     display: none;
 }
 .back-print {
