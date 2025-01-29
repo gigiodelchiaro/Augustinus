@@ -23,7 +23,6 @@ async function getPocketTerco() {
     const depoisDaComunhaoElement = document.getElementById('depoisDaComunhao');
 
     const url = `${base_url}?date=${date}`;
-    console.log(url);
     try {
         const token = localStorage.getItem('token');
         const response = await fetch(url, {
@@ -32,8 +31,6 @@ async function getPocketTerco() {
             }
         });
         const data = await response.json();
-        console.log(data);
-        console.log(data.results.oracaoDoDia);
         // Update your element assignments like this:
         oracaoDoDiaElement.value = data.results.oracaoDoDia;
         sobreAsOferendasElement.value = data.results.sobreAsOferendas;
@@ -46,61 +43,79 @@ async function getPocketTerco() {
     }
 }
 
-
-
-var find_json;
-var replace_json;
+var selected_model;
 document.addEventListener('DOMContentLoaded', function () {
     const SELECT = document.getElementById('chant-type');
-    const START_ELEMENT = document.getElementById('start');
-    const FLEXA_TEMPLATE_ELEMENT = document.getElementById('flexa');
-    const ASTERISC_TEMPLATE_ELEMENT = document.getElementById('asterisc');
-    const SELECTED_DEFAULT_PATTERN_ELEMENT = document.getElementById('default');
-    const SELECTED_START_OPTIONAL_PATTERN_ELEMENT = document.getElementById('start-opt');
-    const SELECTED_END_OPTIONAL_PATTERN_ELEMENT = document.getElementById('end-opt');
     const MODELS_JSON = `
-    {
+{
     "define": [
         {
             "name": "Prefácio tom solene",
             "type": "prefacio",
+            "tom": "solene",
             "optional_end": "",
             "optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(hg)co.(g) (::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) Co(g)ra(h)ções(i) ao(h) al(gh)to.(gf) (::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) De(hg)mos(f) gra(fg)ças(h) ao(g) Se(h)nhor(ih) nos(gf)so(gh) Deus.(ghg) (::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z) ",
-            "end": "",
+            "end": "(::)",
             "start": "(c4) ",
             "default": "(hr hr hr) (gf) (fg) (h) (ghr1) (gr) (g) (::)",
-            "flexa": "(g) (hr hr hr) (ir1) (hr) (h) (:)",
-            "asterisc": "(g) (ir ir ir) (hg) (ghr1) (hr) (h) (:)",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": "(g) (ir ir ir) (hg) (ghr1) (hr) (h) (:)"
+                },
+                {
+                    "symbol": "+",
+                    "gabc": "(g) (hr hr hr) (ir1) (hr) (h) (:)"
+                }
+            ],
             "find": [
-            "Por isso,"
+                "Por isso,"
             ],
             "replace": [
-            "Por(g) is(fg)so,(g) (;) "
+                "Por(g) is(fg)so,(g) (;) "
             ]
         },
         {
             "name": "Prefácio tom simples",
             "type": "prefacio",
+            "tom": "simples",
             "optional_end": "",
             "optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(h)co.(g) (::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) Co(g)ra(h)ções(i) ao(h) al(g)to.(g) (::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) De(ih)mos(g) gra(h)ças(h) ao(h) Se(h)nhor(h) nos(f)so(g) Deus.(hg) (::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z)",
-            "end": "",
+            "end": "(::)",
             "start": "(c4) ",
             "default": "(hr hr hr) (f) (g) (hr1) (gr) (g) (::)",
-            "flexa": "(hr hr hr) (ir1) (hr) (h) (:)",
-            "asterisc": "(g) (ir ir ir) (h) (g) (hr1) (hr) (h) (:)",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": "(g) (ir ir ir) (h) (g) (hr1) (hr) (h) (:)"
+                },
+                {
+                    "symbol": "+",
+                    "gabc": "(hr hr hr) (ir1) (hr) (h) (:)"
+                }
+            ],
             "find": [],
             "replace": []
         },
         {
             "name": "Oração tom solene",
             "type": "oracao",
+            "tom": "solene",
             "optional_end": "A(g) mém.(gh) (::)",
             "optional_start": "O(h) re(gh) mos:(h) (:)",
-            "end": "",
+            "end": "(::)",
             "start": "(c4) ",
             "default": "(g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)",
-            "flexa": "(g) (hr hr hr) (hr1) (gr) (g) (:)",
-            "asterisc": "(g) (hr hr hr) (hr1) (gr) (g) (:)",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": "(g) (hr hr hr) (hr1) (gr) (g) (:)"
+                },
+                {
+                    "symbol": "+",
+                    "gabc": "(g) (hr hr hr) (hr1) (gr) (g) (:)"
+                }
+            ],
             "find": [
                 "Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
                 "Por Cristo nosso Senhor.",
@@ -119,13 +134,22 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             "name": "Oração tom simples",
             "type": "oracao",
+            "tom": "simples",
             "optional_end": "A(h) mém.(h) (::)",
             "optional_start": "O(h) re(h) mos:(h) (:)",
-            "end": "",
+            "end": "(::)",
             "start": "(c4) ",
             "default": "(hr hr hr) (hr1) (hr) (h) (::)",
-            "flexa": "(hr hr hr) (hr1) (gr) (g) (:)",
-            "asterisc": "(hr hr hr) (g) (f) (hr1) (gr) (g) (:)",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": "(hr hr hr) (g) (f) (hr1) (gr) (g) (:)"
+                },
+                {
+                    "symbol": "+",
+                    "gabc": "(hr hr hr) (hr1) (gr) (g) (:)"
+                }
+            ],
             "find": [
                 "Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
                 "Por Cristo nosso Senhor.",
@@ -144,35 +168,58 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             "name": "Salmo tom VIII (em breve)",
             "type": "salmo",
+            "tom": "VIII",
             "optional_end": "",
             "optional_start": "(g) (h)",
-            "end": "",
+            "end": "(::)",
             "start": "(c4) ",
             "default": "(jr jr jr) (i) (j) (hr1) (gr) (g) (::Z)",
-            "flexa": "(jr jr jr) (jr1) (hr) (h) (:)",
-            "asterisc": "(jr jr jr) (kr1) (jr) (j) (:)",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": "(jr jr jr) (kr1) (jr) (j) (:)"
+                },
+                {
+                    "symbol": "+",
+                    "gabc": "(jr jr jr) (jr1) (hr) (h) (:)"
+                }
+            ],
             "find": [],
             "replace": []
         },
         {
-            "name": "Evangelho (em breve)",
+            "name": "Evangelho",
             "type": "evangelho",
+            "tom": "",
             "optional_end": "Pa(h)la(h)vra(h) da(h) Sal(f)va(h)ção.(h) (::Z)Gló(h)ri(h)a_a(h) vós,(f) Se(h)nhor.(h) (::Z)",
             "optional_start": "O(h) Se(h)nhor(h) es(h)te(h)ja(h) con(h)vos(h)co.(h) (::Z)E(h)le(h) es(h)tá(h) no(h) meio(h) de(h) nós.(h) (::Z)",
-            "end": "",
+            "end": "(::)",
             "start": "(c4) ",
             "default": "(hr hr hr) (f) (h) (hr1) (hr) (h) (:)",
-            "flexa": "(g) (gr gr gr) (f) (g) (ghr1) (hr) (h) (:)",
-            "asterisc": "(hr hr hr) (fghr1) (hr) (h) (:)",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": "(hr hr hr) (fghr1) (hr) (h)"
+                },
+                {
+                    "symbol": "?",
+                    "gabc": "(g) (gr gr gr) (f) (g) (ghr1) (hr) (h) (:)"
+                },
+                {
+                    "symbol": ":",
+                    "gabc": "(hr hr hr) (hr1) (hr) (h)"
+                }
+            ],
             "find": [],
             "replace": []
         }
     ]
 }
-`;
+    `;
 
     const DATA = JSON.parse(MODELS_JSON);
     const MODELS = DATA.define;
+    models = MODELS;
     MODELS.forEach((model, index) => {
         const option = new Option(model.name, index);
         SELECT.add(option);
@@ -181,14 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
     SELECT.addEventListener('change', function () {
         const selectedModel = MODELS[this.value];
         if (selectedModel) {
-            START_ELEMENT.value = selectedModel.start;
-            FLEXA_TEMPLATE_ELEMENT.value = selectedModel.flexa;
-            ASTERISC_TEMPLATE_ELEMENT.value = selectedModel.asterisc;
-            SELECTED_DEFAULT_PATTERN_ELEMENT.value = selectedModel.default;
-            SELECTED_START_OPTIONAL_PATTERN_ELEMENT.value = selectedModel.optional_start;
-            SELECTED_END_OPTIONAL_PATTERN_ELEMENT.value = selectedModel.optional_end;
-            find_json = selectedModel.find;
-            replace_json = selectedModel.replace;
+            selected_model = selectedModel;
         }
     });
 
@@ -206,12 +246,11 @@ function generateGabcNotation() {
     const SHOULD_ADD_OPTIONAL_END = document.getElementById('amen').checked;
     const SHOULD_ADD_OPTIONAL_START = document.getElementById('entoation').checked;
     const GABC_OUTPUT_ELEMENT = document.getElementById('gabc');
-    const FLEXA_TEMPLATE = document.getElementById('flexa').value;
-    const ASTERISC_TEMPLATE = document.getElementById('asterisc').value;
-    const SELECTED_DEFAULT_PATTERN = document.getElementById('default').value;
-    const SELECTED_START_PATTERN = document.getElementById('start').value;
-    const SELECTED_START_PATTERN_OPTIONAL = document.getElementById('start-opt').value;
-    const SELECTED_END_PATTERN_OPTIONAL = document.getElementById('end-opt').value;
+    const SELECTED_START_PATTERN = selected_model.start;
+    const SELECTED_START_PATTERN_OPTIONAL = selected_model.optional_start;
+    const SELECTED_END_PATTERN_OPTIONAL = selected_model.optional_end;
+    const SELECTED_DEFAULT_PATTERN = selected_model.default;
+    const SELECTED_END_PATTERN =  selected_model.end;
     const MODEL_REPEAT = SELECTED_DEFAULT_PATTERN.split("|");
     const BASIC_NOTE_REGEX = /[a-m][^\dr]/;
     const TONIC_NOTE_REGEX = /r1/;
@@ -220,10 +259,19 @@ function generateGabcNotation() {
     let text = INPUT_TEXT;
     //text = text.replaceAll('-', '- ');
     text = text.replaceAll(' \n', '\n');
-    text = text.replaceAll("+", '+\n');
-    text = text.replaceAll("*", '*\n');
+
+    if (selected_model.patterns) {
+        for (let pattern of selected_model.patterns) {
+            text = text.replaceAll(" " + pattern.symbol, pattern.symbol);
+            text = text.replaceAll(pattern.symbol, pattern.symbol + '\n');
+        }
+    }
+
     text = text.replaceAll('.', '.\n');
-    text = text.replaceAll('Por isso,', 'Por isso,\n');
+    if (selected_model.tom === "solene" && selected_model.type === "prefacio")
+    {
+        text = text.replaceAll('Por isso,', 'Por isso,\n');
+    }
     text = text.replaceAll(/\n+/gm, '\n');
     const TEXT_FRAGMENTS = text.split("\n");
     let gabcOutput = SELECTED_START_PATTERN;
@@ -237,13 +285,13 @@ function generateGabcNotation() {
         let currentText = TEXT_FRAGMENTS[fragmentIndex].trim();
 
         // Loop through all find/replace pairs
-        for (let i = 0; i < find_json.length; i++) {
+        for (let i = 0; i < selected_model.find.length; i++) {
             // Normalize both texts for comparison
             const cleanCurrent = currentText.toLowerCase().replaceAll(/\W+/gm, '');
-            const cleanFind = find_json[i].toLowerCase().replaceAll(/\W+/gm, '');
+            const cleanFind = selected_model.find[i].toLowerCase().replaceAll(/\W+/gm, '');
 
             if (cleanCurrent === cleanFind) {
-                gabcOutput += replace_json[i];
+                gabcOutput += selected_model.replace[i];
                 isEnding = true;
                 break;
             }
@@ -271,17 +319,26 @@ function generateGabcNotation() {
         let remainingSymbols;
         const LAST_SYLLABLE = syllablesList[syllablesList.length - 1];
 
-        if (LAST_SYLLABLE === " +") {
-            syllablesList.pop();
-            remainingSymbols = FLEXA_TEMPLATE.match(/\([^()]+\)/gm) || [];
-        } else if (LAST_SYLLABLE === " *") {
-            syllablesList.pop();
-            remainingSymbols = ASTERISC_TEMPLATE.match(/\([^()]+\)/gm) || [];
-        } else {
+        let isSpecialPattern = false;
+        for (let i = 0; i < selected_model.patterns.length; i++) {
+            let pattern = selected_model.patterns[i];
+            if (processedTextFinal.endsWith(pattern.symbol)) {
+                remainingSymbols = pattern.gabc.match(/\([^()]+\)/gm) || [];
+                isSpecialPattern = true;
+                if (selected_model.type != "evangelho") {
+                    syllablesList[syllablesList.length - 1] = LAST_SYLLABLE.replace(pattern.symbol, '');
+                }
+                
+                break;
+            }
+        }
+       
+        if (!isSpecialPattern) {
             remainingSymbols = MODEL_REPEAT[modelIndex].match(/\([^()]+\)/gm) || [];
             modelIndex = (modelIndex + 1) % MODEL_REPEAT.length;
             shouldAddLastSyllable = false;
         }
+
         processedTextFinal = syllablesList.join(syllableSeparator);
 
         const wordsArray = processedTextFinal
@@ -368,6 +425,7 @@ function generateGabcNotation() {
     if (SHOULD_ADD_OPTIONAL_END) {
         gabcOutput += SELECTED_END_PATTERN_OPTIONAL;
     }
+    gabcOutput += SELECTED_END_PATTERN;
     GABC_OUTPUT_ELEMENT.value = gabcOutput;
     initializeAndLayoutChant("gabc", "svg-final");
 }
