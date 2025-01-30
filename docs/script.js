@@ -21,6 +21,8 @@ async function getPocketTerco() {
     const oracaoDoDiaElement = document.getElementById('oracaoDoDia');
     const sobreAsOferendasElement = document.getElementById('sobreAsOferendas');
     const depoisDaComunhaoElement = document.getElementById('depoisDaComunhao');
+    const evangelhoElement = document.getElementById('evangelho');
+    const salmolmoElement = document.getElementById('salmo');
 
     const url = `${base_url}?date=${date}`;
     try {
@@ -35,7 +37,8 @@ async function getPocketTerco() {
         oracaoDoDiaElement.value = data.results.oracaoDoDia;
         sobreAsOferendasElement.value = data.results.sobreAsOferendas;
         depoisDaComunhaoElement.value = data.results.depoisDaComunhao;
-
+        evangelhoElement.innerHTML = data.results.evangelhoOriginal;
+        salmolmoElement.innerHTML = data.results.salmo;
 
         // return await response.json();
     } catch (error) {
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
             "tom": "solene",
             "optional_end": "",
             "optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(hg)co.(g) (::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) Co(g)ra(h)ções(i) ao(h) al(gh)to.(gf) (::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) De(hg)mos(f) gra(fg)ças(h) ao(g) Se(h)nhor(ih) nos(gf)so(gh) Deus.(ghg) (::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z) ",
-            "end": "(::)",
+            "end": "",
             "start": "(c4) ",
             "default": "(hr hr hr) (gf) (fg) (h) (ghr1) (gr) (g) (::)",
             "patterns": [
@@ -166,28 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
         },
         {
-            "name": "Salmo tom VIII (em breve)",
-            "type": "salmo",
-            "tom": "VIII",
-            "optional_end": "",
-            "optional_start": "(g) (h)",
-            "end": "(::)",
-            "start": "(c4) ",
-            "default": "(jr jr jr) (i) (j) (hr1) (gr) (g) (::Z)",
-            "patterns": [
-                {
-                    "symbol": "*",
-                    "gabc": "(jr jr jr) (kr1) (jr) (j) (:)"
-                },
-                {
-                    "symbol": "+",
-                    "gabc": "(jr jr jr) (jr1) (hr) (h) (:)"
-                }
-            ],
-            "find": [],
-            "replace": []
-        },
-        {
             "name": "Evangelho",
             "type": "evangelho",
             "tom": "",
@@ -212,6 +193,32 @@ document.addEventListener('DOMContentLoaded', function () {
             ],
             "find": [],
             "replace": []
+        },
+        {
+            "name": "Salmo tom VIII (em breve)",
+            "type": "salmo",
+            "tom": "VIII",
+            "optional_end": "",
+            "optional_start": "(g) (h)",
+            "end": "(::)",
+            "start": "(c4) ",
+            "default": "",
+            "patterns": [
+                {
+                    "symbol": "*",
+                    "gabc": ""
+                },
+                {
+                    "symbol": "&",
+                    "gabc": ""
+                },
+                {
+                    "symbol": "+",
+                    "gabc": ""
+                }
+            ],
+            "find": [],
+            "replace": []
         }
     ]
 }
@@ -219,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const DATA = JSON.parse(MODELS_JSON);
     const MODELS = DATA.define;
-    models = MODELS;
     MODELS.forEach((model, index) => {
         const option = new Option(model.name, index);
         SELECT.add(option);
@@ -256,8 +262,9 @@ function generateGabcNotation() {
     const TONIC_NOTE_REGEX = /r1/;
     const GENERIC_NOTE_REGEX = /\(([a-z]r\s?)+\)/;
 
-    let text = INPUT_TEXT;
-    //text = text.replaceAll('-', '- ');
+    let text = INPUT_TEXT.trim() + '\n';
+    text = text.replaceAll('℟.', '');
+    text = text.replaceAll('—', '');
     text = text.replaceAll(' \n', '\n');
 
     if (selected_model.patterns) {

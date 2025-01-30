@@ -71,9 +71,21 @@ main {
     padding: 20px;
 }
 
-/* Additional Styling for Textarea */
-
-
+#evangelho, #salmo {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    font-family: 'EB Garamond';
+    background-color: #fff;
+    color: #333 !important;
+    p {
+        margin: 0;
+    }
+}
 textarea:focus {
     outline: none;
     border-color: #4CAF50;
