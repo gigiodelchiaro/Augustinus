@@ -77,7 +77,7 @@
 			<form>
 				<p>Digite + para flexa e * para mediante</p>
 				<label for="text">Digite o texto:</label><br>
-				<textarea id="text" name="text" rows="5" cols="40">Na verdade, é digno e justo, *
+				<textarea id="text" name="text" rows="20" cols="40">Na verdade, é digno e justo, *
 é nosso dever e salvação dar-vos graças, sempre e em todo lugar, *
 Senhor, Pai santo, +
 Deus eterno e todo-poderoso.
@@ -92,6 +92,181 @@ cantando a uma só voz:
                         </textarea>
 				<br><br>
 				<div class="advanced">
+					<label for="models">Modelos:</label>
+					<textarea id="models" name="models" rows="100" cols="40">
+						{
+							"define": [
+								{
+									"name": "Prefácio tom solene",
+									"type": "prefacio",
+									"tom": "solene",
+									"optional_end": "",
+									"optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(hg)co.(g) (::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) Co(g)ra(h)ções(i) ao(h) al(gh)to.(gf) (::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) De(hg)mos(f) gra(fg)ças(h) ao(g) Se(h)nhor(ih) nos(gf)so(gh) Deus.(ghg) (::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z) ",
+									"end": "",
+									"start": "(c4) ",
+									"default": "(hr hr hr) (gf) (fg) (h) (ghr1) (gr) (g) (::)",
+									"patterns": [
+										{
+											"symbol": "*",
+											"gabc": "(g) (ir ir ir) (hg) (ghr1) (hr) (h) (:)"
+										},
+										{
+											"symbol": "+",
+											"gabc": "(g) (hr hr hr) (ir1) (hr) (h) (:)"
+										}
+									],
+									"find": [
+										"Por isso,"
+									],
+									"replace": [
+										"Por(g) is(fg)so,(g) (;) "
+									]
+								},
+								{
+									"name": "Prefácio tom simples",
+									"type": "prefacio",
+									"tom": "simples",
+									"optional_end": "",
+									"optional_start": "O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(h)co.(g) (::) E(f)le_es(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) Co(g)ra(h)ções(i) ao(h) al(g)to.(g) (::) O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) De(ih)mos(g) gra(h)ças(h) ao(h) Se(h)nhor(h) nos(f)so(g) Deus.(hg) (::) É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z)",
+									"end": "(::)",
+									"start": "(c4) ",
+									"default": "(hr hr hr) (f) (g) (hr1) (gr) (g) (::)",
+									"patterns": [
+										{
+											"symbol": "*",
+											"gabc": "(g) (ir ir ir) (h) (g) (hr1) (hr) (h) (:)"
+										},
+										{
+											"symbol": "+",
+											"gabc": "(hr hr hr) (ir1) (hr) (h) (:)"
+										}
+									],
+									"find": [],
+									"replace": []
+								},
+								{
+									"name": "Oração tom solene",
+									"type": "oracao",
+									"tom": "solene",
+									"optional_end": "A(g) mém.(gh) (::)",
+									"optional_start": "O(h) re(gh) mos:(h) (:)",
+									"end": "(::)",
+									"start": "(c4) ",
+									"default": "(g) (hr hr hr) (g) (g) (hr1) (hr) (h) (::)",
+									"patterns": [
+										{
+											"symbol": "*",
+											"gabc": "(g) (hr hr hr) (hr1) (gr) (g) (:)"
+										},
+										{
+											"symbol": "+",
+											"gabc": "(g) (hr hr hr) (hr1) (gr) (g) (:)"
+										}
+									],
+									"find": [
+										"Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
+										"Por Cristo nosso Senhor.",
+										"Vós que sois Deus, e vós que viveis e reinais com o Pai, na unidade do Espírito Santo, por todos os séculos dos séculos.",
+										"Ele que é Deus, e conosco vive e reina na unidade do Espírito Santo, por todos os séculos dos séculos.",
+										"Ele que vive e reina pelos séculos dos séculos."
+									],
+									"replace": [
+										"Por(g) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hg) (:) e(g) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(g) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
+										"Por(g) Cris(h)to,(h) nos(h)so(g) Se(h)nhor.(hg) (::)",
+										"Vós(g) que(h) sois(h) Deus,(h) e(h) vi(h)veis(h) e(h) e(h) rei(h)nais(h) com(h) o(h) Pai,(hg) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(g) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
+										"E(g)le(h) que(h) é(h) Deus,(h) e(h) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(g) (:) na(g) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(g) San(h)to,(h) (:) por(g) to(h)dos(h) os(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)",
+										"E(g)le(h) que(h) vi(h)ve(h) e(h) rei(h)na(h) pe(h)los(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(g)los.(g) (::)"
+									]
+								},
+								{
+									"name": "Oração tom simples",
+									"type": "oracao",
+									"tom": "simples",
+									"optional_end": "A(h) mém.(h) (::)",
+									"optional_start": "O(h) re(h) mos:(h) (:)",
+									"end": "(::)",
+									"start": "(c4) ",
+									"default": "(hr hr hr) (hr1) (hr) (h) (::)",
+									"patterns": [
+										{
+											"symbol": "*",
+											"gabc": "(hr hr hr) (g) (f) (hr1) (gr) (g) (:)"
+										},
+										{
+											"symbol": "+",
+											"gabc": "(hr hr hr) (hr1) (gr) (g) (:)"
+										}
+									],
+									"find": [
+										"Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e convosco vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.",
+										"Por Cristo nosso Senhor.",
+										"Vós que sois Deus, e vós que viveis e reinais com o Pai, na unidade do Espírito Santo, por todos os séculos dos séculos.",
+										"Ele que é Deus, e conosco vive e reina na unidade do Espírito Santo, por todos os séculos dos séculos.",
+										"Ele que vive e reina pelos séculos dos séculos."
+									],
+									"replace": [
+										"Por(h) nos(h)so(h) Se(h)nhor(h) Je(h)sus(h) Cris(h)to,(h) vos(h)so(h) Fi(h)lho,(h) que(h) é(h) Deus,(hf) (:) e(h) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(h) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(f) San(h)to,(h) (:) por(h) to(h)dos(h) os(h) sé(h)cu(h)los(h) dos(h) sé(h)cu(h)los.(h) (::)",
+										"Por(h) Cris(h)to,(h) nos(h)so(h) Se(h)nhor.(h) (::)",
+										"Vós(h) que(h) sois(h) Deus,(h) e(h) vi(h)veis(h) e(h) e(h) rei(h)nais(h) com(h) o(h) Pai,(hf) (:) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(f) San(h)to,(h) (:) por(h) to(h)dos(h) os(h) sé(h)cu(h)los(h) dos(h) sé(h)cu(h)los.(h) (::)",
+										"E(h)le(h) que(h) é(h) Deus,(h) e(h) con(h)vos(h)co(h) vi(h)ve(h) e(h) rei(h)na,(f) (:) na(h) u(h)ni(h)da(h)de(h) do(h) Es(h)pí(h)ri(g)to(f) San(h)to,(h) (:) por(h) to(h)dos(h) os(h) sé(h)cu(h)los(h) dos(h) sé(h)cu(h)los.(h) (::)",
+										"E(h)le(h) que(h) vi(h)ve(g) e(f) rei(h)na(h) pe(h)los(h) sé(h)cu(h)los(g) dos(h) sé(h)cu(h)los.(h) (::)"
+									]
+								},
+								{
+									"name": "Evangelho",
+									"type": "evangelho",
+									"tom": "",
+									"optional_end": "Pa(h)la(h)vra(h) da(h) Sal(f)va(h)ção.(h) (::Z)Gló(h)ri(h)a_a(h) vós,(f) Se(h)nhor.(h) (::Z)",
+									"optional_start": "O(h) Se(h)nhor(h) es(h)te(h)ja(h) con(h)vos(h)co.(h) (::Z)E(h)le(h) es(h)tá(h) no(h) meio(h) de(h) nós.(h) (::Z)",
+									"end": "(::)",
+									"start": "(c4) ",
+									"default": "(hr hr hr) (f) (h) (hr1) (hr) (h) (:)",
+									"patterns": [
+										{
+											"symbol": "*",
+											"gabc": "(hr hr hr) (fghr1) (hr) (h)"
+										},
+										{
+											"symbol": "?",
+											"gabc": "(g) (gr gr gr) (f) (g) (ghr1) (hr) (h) (:)"
+										},
+										{
+											"symbol": ":",
+											"gabc": "(hr hr hr) (hr1) (hr) (h)"
+										}
+									],
+									"find": [],
+									"replace": []
+								},
+								{
+									"name": "Salmo tom VI (teste)",
+									"type": "salmo",
+									"tom": "VIII",
+									"optional_end": "",
+									"optional_start": "(g) (h)",
+									"end": "",
+									"start": "(c4) ",
+									"default": "(hr hr hr) (f) (gh) (hr1) (gr) (f) (::) ",
+									"patterns": [
+										{
+											"symbol": "*",
+											"gabc": "(hr hr hr) (g) (hr1) (fr) (f) (;) "
+										},
+										{
+											"symbol": "&",
+											"gabc": "(f) (gh) (hr hr hr) (g) (hr1) (fr) (f) (;)"
+										},
+										{
+											"symbol": "+",
+											"gabc": "(hr hr hr) (hr1) (gr) (g)"
+										}
+									],
+									"find": [],
+									"replace": []
+								}
+							]
+						}
+					</textarea>			
 					<label for="gabc">GabC:</label><br>
 					<textarea rows="10" cols="80" id="gabc" class="gabc-source final"></textarea>
 				</div>
