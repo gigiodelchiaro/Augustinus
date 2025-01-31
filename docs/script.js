@@ -47,9 +47,11 @@ async function getPocketTerco() {
 }
 
 var selected_model;
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const SELECT = document.getElementById('chant-type');
-    const MODELS_JSON = document.getElementById('models').textContent;
+
+    const response = await fetch('models.json');
+    const MODELS_JSON = await response.text();
 
     const DATA = JSON.parse(MODELS_JSON);
     const MODELS = DATA.define;
@@ -66,8 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     SELECT.dispatchEvent(new Event('change'));
-});
-function copyGabc() {
+});function copyGabc() {
     const gabcOutput = document.getElementById('gabc').value;
     navigator.clipboard.writeText(gabcOutput);
 }
@@ -108,11 +109,11 @@ function generateGabcNotation() {
     }
     text = text.replaceAll(/\n+/gm, '\n');
     const TEXT_FRAGMENTS = text.split("\n");
-    let gabcOutput = SELECTED_START_PATTERN;
+    let gabcOutput = "";
     if (SHOULD_ADD_OPTIONAL_START) {
         gabcOutput += SELECTED_START_PATTERN_OPTIONAL;
     }
-
+    gabcOutput += SELECTED_START_PATTERN;
     let modelIndex = 0;
     for (let fragmentIndex = 0; fragmentIndex < TEXT_FRAGMENTS.length - 1; fragmentIndex++) {
         let isEnding = false;
