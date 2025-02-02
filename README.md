@@ -9,7 +9,7 @@ O Augustinus é um gerador de canto gregoriano em formato .gabc.
 ### Mais informações
 Para erros de separação de sílabas / tônicas, veja o projeto de separação de sílabas através do link
 ## Links
-Site principal - https://liturgiacantada.com.br
-Gregorio - https://github.com/gregorio-project/gregorio  
-Separador de sílabas - https://github.com/gigiodelchiaro/separador-silabas
-Renderizador de gabc em html - https://github.com/bbloomf/exsurge
+- Site principal - https://liturgiacantada.com.br
+- Gregorio - https://github.com/gregorio-project/gregorio
+- Separador de sílabas - https://github.com/gigiodelchiaro/separador-silabas
+- Renderizador de gabc em html - https://github.com/bbloomf/exsurge
