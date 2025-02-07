@@ -27,7 +27,7 @@
             ]
         },
         {
-            "name": "Prefácio tom simples - OK",
+            "name": "Prefácio tom simples",
             "type": "prefacio",
             "tom": "simples",
             "optional_end": "",
@@ -49,7 +49,7 @@
             "replace": []
         },
         {
-            "name": "Oração tom solene - OK",
+            "name": "Oração tom solene",
             "type": "oracao",
             "tom": "solene",
             "optional_end": "<sp>R/</sp> A(g) mém.(gh) (::)",
@@ -83,7 +83,7 @@
             ]
         },
         {
-            "name": "Oração tom simples A - 1 final",
+            "name": "Oração tom simples A",
             "type": "oracao",
             "tom": "simples",
             "optional_end": "<sp>R/</sp> A(h) mém.(h) (::)",
@@ -121,7 +121,7 @@
             ]
         },
         {
-            "name": "Oração tom simples B - 1 final",
+            "name": "Oração tom simples B",
             "type": "oracao",
             "tom": "simples",
             "optional_end": "<sp>R/</sp> A(h) mém.(h) (::)",
@@ -166,19 +166,19 @@
             "optional_start": "O(h) Se(h)nhor(h) es(h)te(h)ja(h) con(h)vos(h)co.(h) (::Z)E(h)le(h) es(h)tá(h) no(h) meio(h) de(h) nós.(h) (::Z)",
             "end": "",
             "start": "(c4) ",
-            "default": "(hr hr hr) (f) (h) (hr1) (hr) (h) (:)",
+            "default": "(hr hr hr) (f) (h) (h) (h) (:)",
             "patterns": [
                 {
                     "symbol": "*",
-                    "gabc": "(hr hr hr) (fgwhr1) (hr) (h)"
+                    "gabc": "(hr hr hr) (fgwh) (h) (h)"
                 },
                 {
                     "symbol": "?",
-                    "gabc": "(g) (gr gr gr) (f) (g) (ghr1) (hr) (h) (:)"
+                    "gabc": "(g) (gr gr gr) (f) (g) (gh) (h) (:)"
                 },
                 {
                     "symbol": ":",
-                    "gabc": "(hr hr hr) (hr1) (hr) (h) (:)"
+                    "gabc": "(hr hr hr) (h) (:)"
                 }
             ],
             "find": [],
