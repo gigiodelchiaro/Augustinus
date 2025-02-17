@@ -159,7 +159,7 @@
             ]
         },
         {
-            "name": "Evangelho tom A",
+            "name": "Evangelho tom A (teste)",
             "type": "evangelho",
             "tom": "",
             "optional_end": "Pa(h)la(h)vra(h) da(h) Sal(f)va(h)ção.(h) (::Z)Gló(h)ri(h)a_a(h) vós,(f) Se(h)nhor.(h) (::Z)",
@@ -170,7 +170,7 @@
             "patterns": [
                 {
                     "symbol": "*",
-                    "gabc": "(hr hr hr) (fgwh) (h) (h)"
+                    "gabc": "(hr hr hr) (fgwhr1) (hr) (h) (hr1) (hr) (h) (::)"
                 },
                 {
                     "symbol": "?",
