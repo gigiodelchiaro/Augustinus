@@ -94,7 +94,7 @@ function generateGabcNotation() {
 	text = text.replaceAll('℟.', '');
 	text = text.replaceAll('—', '');
 	text = text.replaceAll(' \n', '\n');
-
+	text = text.replaceAll(/([aeiou])_([aeiou])/g, '{$1‿$2}');
 	if (selected_model.patterns) {
 		for (let pattern of selected_model.patterns) {
 			text = text.replaceAll(" " + pattern.symbol, pattern.symbol);
