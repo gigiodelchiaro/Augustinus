@@ -79,6 +79,7 @@ function generateGabcNotation() {
 	const SHOULD_REMOVE_NUMBERS = document.getElementById('remove-numbers').checked;
 	const SHOULD_ADD_OPTIONAL_END = document.getElementById('amen').checked;
 	const SHOULD_ADD_OPTIONAL_START = document.getElementById('entoation').checked;
+	const SHOULD_REMOVE_NEWLINE = document.getElementById('newline').checked;
 	const GABC_OUTPUT_ELEMENT = document.getElementById('gabc');
 	const SELECTED_START_PATTERN = selected_model.start;
 	const SELECTED_START_PATTERN_OPTIONAL = selected_model.optional_start;
@@ -89,12 +90,16 @@ function generateGabcNotation() {
 	const BASIC_NOTE_REGEX = /[a-m][^\dr]/;
 	const TONIC_NOTE_REGEX = /r1/;
 	const GENERIC_NOTE_REGEX = /\(([a-z]r\s?)+\)/;
-
+	
 	let text = INPUT_TEXT.trim() + '\n';
+	if (SHOULD_REMOVE_NEWLINE) {
+		text = text.replaceAll('\n', '') + '\n';
+	}
 	text = text.replaceAll('℟.', '');
 	text = text.replaceAll('—', '');
 	text = text.replaceAll(' \n', '\n');
 	text = text.replaceAll(/([aeiou])_([aeiou])/g, '{$1‿$2}');
+	
 	if (selected_model.patterns) {
 		for (let pattern of selected_model.patterns) {
 			text = text.replaceAll(" " + pattern.symbol, pattern.symbol);
