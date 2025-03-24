@@ -80,6 +80,7 @@ function generateGabcNotation() {
 	const SHOULD_ADD_OPTIONAL_END = document.getElementById('amen').checked;
 	const SHOULD_ADD_OPTIONAL_START = document.getElementById('entoation').checked;
 	const SHOULD_REMOVE_NEWLINE = document.getElementById('newline').checked;
+	const SHOULD_REMOVE_PARENTESIS = document.getElementById('parenteses').checked;
 	const GABC_OUTPUT_ELEMENT = document.getElementById('gabc');
 	const SELECTED_START_PATTERN = selected_model.start;
 	const SELECTED_START_PATTERN_OPTIONAL = selected_model.optional_start;
@@ -99,7 +100,9 @@ function generateGabcNotation() {
 	text = text.replaceAll('—', '');
 	text = text.replaceAll(' \n', '\n');
 	text = text.replaceAll(/([aeiou])_([aeiou])/g, '{$1‿$2}');
-	
+	if (SHOULD_REMOVE_PARENTESIS) {
+		text = text.replaceAll(/\([^)]*\)/g, '');
+	}
 	if (selected_model.patterns) {
 		for (let pattern of selected_model.patterns) {
 			text = text.replaceAll(" " + pattern.symbol, pattern.symbol);
@@ -108,6 +111,7 @@ function generateGabcNotation() {
 	}
 
 	text = text.replaceAll('.', '.\n');
+	text = text.replaceAll(';', ';\n');
 	if (selected_model.tom === "solene" && selected_model.type === "prefacio") {
 		text = text.replaceAll('Por isso,', 'Por isso,\n');
 	}
