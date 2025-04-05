@@ -264,7 +264,7 @@ function generateGabcNotation() {
 		gabcOutput = gabcOutput.replace(/([a-h])\1/gm, "$1");
 		gabcOutput = gabcOutput.replace(GENERIC_NOTE_REGEX, "");
 		gabcOutput = gabcOutput.replace(GENERIC_NOTE_REGEX, "");
-		gabcOutput = gabcOutput.replace("'", " (,) ");
+		gabcOutput = gabcOutput.replace("'", " (,) ") + " ";
 	}
 	if (SHOULD_ADD_OPTIONAL_END) {
 		gabcOutput += SELECTED_END_PATTERN_OPTIONAL;
