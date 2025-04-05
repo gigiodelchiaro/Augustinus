@@ -94,7 +94,7 @@ function generateGabcNotation() {
 	
 	let text = INPUT_TEXT.trim() + '\n';
 	if (SHOULD_REMOVE_NEWLINE) {
-		text = text.replaceAll('\n', '') + '\n';
+		text = text.replaceAll('\n', ' ') + '\n';
 	}
 	text = text.replaceAll('℟.', '');
 	text = text.replaceAll('—', '');
