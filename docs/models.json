@@ -5,9 +5,9 @@
             "type": "prefacio",
             "tom": "solene",
             "optional_end": "",
-            "optional_start": "(c3) <sp>V/</sp> O(e) Se(f)nhor(g) es(g)te(g)ja(e) con(f)vos(gf)co.(f) (::) <sp>R/</sp> E(e)l{e‿e}s(f)tá(g) no(g) mei(g)o(e) de(f) nós(gf) (::Z) <sp>V/</sp> Co(f)ra(g)ções(h) ao(g) al(fg)to.(fe) (::) <sp>R/</sp> O(g) nos(g)so(g) co(f)ra(g)ção(h) es(g)tá(f) em(g) Deus.(fe) (::Z) <sp>V/</sp> De(gf)mos(e) gra(ef)ças(g) ao(f) Se(g)nhor(hg) nos(fe)so(fg) Deus.(fgf) (::) <sp>V/</sp> É(f) nos(f)so(f) de(g)ver(h) e(g) nos(g)sa(f) sal(g)va(f)ção.(fe) (::Z) ",
+            "optional_start": "(c3) <sp>V/</sp> O(e) Se(f)nhor(g) es(g)te(g)ja(e) con(f)vos(gf)co.(f) (::) <sp>R/</sp> E(e)l{e‿e}s(f)tá(g) no(g) mei(g)o(e) de(f) nós(gf) (::Z) <sp>V/</sp> Co(f)ra(g)ções(h) ao(g) al(fg)to.(fe) (::) <sp>R/</sp> O(g) nos(g)so(g) co(f)ra(g)ção(h) es(g)tá(f) em(g) Deus.(fe) (::Z) <sp>V/</sp> De(gf)mos(e) gra(ef)ças(g) ao(f) Se(g)nhor(hg) nos(fe)so(fg) Deus.(fgf) (::) <sp>R/</sp> É(f) nos(f)so(f) de(g)ver(h) e(g) nos(g)sa(f) sal(g)va(f)ção.(fe) (::Z) ",
             "end": "",
-            "start": "(c3) <sp>V/</sp>",
+            "start": "(c3) <sp>V/</sp> ",
             "default": "(gr gr gr) (fe) (ef) (g) (fgr1) (fr) (f) (:)",
             "patterns": [
                 {
@@ -31,9 +31,9 @@
             "type": "prefacio",
             "tom": "simples",
             "optional_end": "",
-            "optional_start": "(c3) <sp>V/</sp> O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(h)co.(g) (::) <sp>R/</sp> E(f)l{e‿e}s(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) <sp>V/</sp> Co(g)ra(h)ções(i) ao(h) al(g)to.(g) (::) <sp>R/</sp> O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) <sp>V/</sp>De(ih)mos(g) gra(h)ças(h) ao(h) Se(h)nhor(h) nos(f)so(g) Deus.(hg) (::) <sp>R/</sp> É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z)",
+            "optional_start": "(c3) <sp>V/</sp> O(f) Se(g)nhor(h) es(h)te(h)ja(f) con(g)vos(h)co.(g) (::) <sp>R/</sp> E(f)l{e‿e}s(g)tá(h) no(h) mei(h)o(f) de(g) nós(hg) (::Z) <sp>V/</sp> Co(g)ra(h)ções(i) ao(h) al(g)to.(g) (::) <sp>R/</sp> O(h) nos(h)so(h) co(g)ra(h)ção(i) es(h)tá(g) em(h) Deus.(gf) (::Z) <sp>V/</sp> De(ih)mos(g) gra(h)ças(h) ao(h) Se(h)nhor(h) nos(f)so(g) Deus.(hg) (::) <sp>R/</sp> É(g) nos( g)so(g) de(h)ver(i) e(h) nos(h)sa(g) sal(h)va(g)ção.(gf) (::Z)",
             "end": "",
-            "start": "(c3) <sp>V/</sp>",
+            "start": "(c3) <sp>V/</sp> ",
             "default": "(gr gr gr) (e) (f) (gr1) (fr) (f) (:)",
             "patterns": [
                 {

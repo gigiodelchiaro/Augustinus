@@ -14,6 +14,50 @@ API_POCKET_CHECKBOX.addEventListener('change', function () {
 		element.style.display = this.checked ? 'block' : 'none';
 	});
 });
+function processGabc(gabcOutput) {
+    const parts = gabcOutput.split(/(<sp>[VR]\/<\/sp>)/g);
+    const sections = [];
+    
+    // Handle initial text before any tag
+    if (parts[0]) {
+        sections.push({ type: 'text', content: parts[0] });
+    }
+
+    let currentSection = null;
+
+    for (let i = 1; i < parts.length; i += 2) {
+        const tag = parts[i];
+        const content = parts[i + 1] || ''; // handle possible undefined
+        const tagType = tag === '<sp>V/</sp>' ? 'V' : 'R';
+
+        if (tagType === 'V') {
+            if (currentSection && currentSection.type === 'V') {
+                // Merge with current V section
+                currentSection.content += content;
+            } else {
+                // Start new V section
+                currentSection = { type: 'V', content: content };
+                sections.push(currentSection);
+            }
+        } else {
+            // R section, cannot merge
+            currentSection = { type: 'R', content: content };
+            sections.push(currentSection);
+        }
+    }
+
+    // Reconstruct the output string
+    let result = '';
+    for (const section of sections) {
+        if (section.type === 'text') {
+            result += section.content;
+        } else {
+            result += `<sp>${section.type}/</sp>${section.content}`;
+        }
+    }
+
+    return result;
+}
 
 async function getPocketTerco() {
 	const date = document.getElementById('date').value;
@@ -81,6 +125,7 @@ function generateGabcNotation() {
 	const SHOULD_ADD_OPTIONAL_START = document.getElementById('entoation').checked;
 	const SHOULD_REMOVE_NEWLINE = document.getElementById('newline').checked;
 	const SHOULD_REMOVE_PARENTESIS = document.getElementById('parenteses').checked;
+	const LATEX_MODE = document.getElementById('latex').checked;
 	const GABC_OUTPUT_ELEMENT = document.getElementById('gabc');
 	const SELECTED_START_PATTERN = selected_model.start;
 	const SELECTED_START_PATTERN_OPTIONAL = selected_model.optional_start;
@@ -264,12 +309,30 @@ function generateGabcNotation() {
 		gabcOutput = gabcOutput.replace(/([a-h])\1/gm, "$1");
 		gabcOutput = gabcOutput.replace(GENERIC_NOTE_REGEX, "");
 		gabcOutput = gabcOutput.replace(GENERIC_NOTE_REGEX, "");
-		gabcOutput = gabcOutput.replace("'", " (,) ") + " ";
+		gabcOutput = gabcOutput.replace("'", " (,) ");
+		gabcOutput += " "
 	}
 	if (SHOULD_ADD_OPTIONAL_END) {
 		gabcOutput += SELECTED_END_PATTERN_OPTIONAL;
 	}
 	gabcOutput += SELECTED_END_PATTERN;
+		let clef = gabcOutput.match(/\(c[0-9]\)/);
+ 	if (clef) {
+ 		clef = clef[0];
+ 		gabcOutput = gabcOutput.replace(/\(c[0-9]\)/g, "");
+ 		gabcOutput = clef + gabcOutput;
+ 	}
+	// <sp>V/</sp> -> response mode 1
+	// <sp>R/</sp> -> response mode 2
+	// <sp>V/</sp> (something) <sp>V/</sp> (another thing)-> <sp>V/</sp> (something) (another thing)
+	// <sp>V/</sp> (1) <sp>R/</sp> (2) <sp>V/</sp> (3) -> <sp>V/</sp> (1) <sp>R/</sp> (2) <sp>V/</sp> (3)
+	// example (c4) <sp>V/</sp> O(h) re(gh) mos:(h) (::) <sp>V/</sp> Deus -> (c4) <sp>V/</sp> O(h) re(gh) mos:(h) (::) Deus
+	gabcOutput = processGabc(gabcOutput);
+	
+	if (LATEX_MODE) {
+		gabcOutput = gabcOutput.replaceAll("<sp>V/</sp>", "<c><sp>V/</sp></c>. ");
+		gabcOutput = gabcOutput.replaceAll("<sp>R/</sp>", "<c><sp>R/</sp></c>. ")
+	}
 	GABC_OUTPUT_ELEMENT.value = gabcOutput;
 	initializeAndLayoutChant("gabc", "svg-final");
 }
